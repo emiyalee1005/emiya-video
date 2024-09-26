@@ -6,6 +6,20 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 export namespace Components {
+    interface EmiyaVideo {
+        /**
+          * The first name
+         */
+        "first": string;
+        /**
+          * The last name
+         */
+        "last": string;
+        /**
+          * The middle name
+         */
+        "middle": string;
+    }
     interface MyComponent {
         /**
           * The first name
@@ -22,6 +36,12 @@ export namespace Components {
     }
 }
 declare global {
+    interface HTMLEmiyaVideoElement extends Components.EmiyaVideo, HTMLStencilElement {
+    }
+    var HTMLEmiyaVideoElement: {
+        prototype: HTMLEmiyaVideoElement;
+        new (): HTMLEmiyaVideoElement;
+    };
     interface HTMLMyComponentElement extends Components.MyComponent, HTMLStencilElement {
     }
     var HTMLMyComponentElement: {
@@ -29,10 +49,25 @@ declare global {
         new (): HTMLMyComponentElement;
     };
     interface HTMLElementTagNameMap {
+        "emiya-video": HTMLEmiyaVideoElement;
         "my-component": HTMLMyComponentElement;
     }
 }
 declare namespace LocalJSX {
+    interface EmiyaVideo {
+        /**
+          * The first name
+         */
+        "first"?: string;
+        /**
+          * The last name
+         */
+        "last"?: string;
+        /**
+          * The middle name
+         */
+        "middle"?: string;
+    }
     interface MyComponent {
         /**
           * The first name
@@ -48,6 +83,7 @@ declare namespace LocalJSX {
         "middle"?: string;
     }
     interface IntrinsicElements {
+        "emiya-video": EmiyaVideo;
         "my-component": MyComponent;
     }
 }
@@ -55,6 +91,7 @@ export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
+            "emiya-video": LocalJSX.EmiyaVideo & JSXBase.HTMLAttributes<HTMLEmiyaVideoElement>;
             "my-component": LocalJSX.MyComponent & JSXBase.HTMLAttributes<HTMLMyComponentElement>;
         }
     }
