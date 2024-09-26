@@ -8,10 +8,6 @@ import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 export namespace Components {
     interface EmiyaVideo {
         /**
-          * The first name
-         */
-        "first": string;
-        /**
           * The last name
          */
         "last": string;
@@ -19,6 +15,10 @@ export namespace Components {
           * The middle name
          */
         "middle": string;
+        /**
+          * The first name
+         */
+        "sources": string[];
     }
     interface MyComponent {
         /**
@@ -56,10 +56,6 @@ declare global {
 declare namespace LocalJSX {
     interface EmiyaVideo {
         /**
-          * The first name
-         */
-        "first"?: string;
-        /**
           * The last name
          */
         "last"?: string;
@@ -67,6 +63,10 @@ declare namespace LocalJSX {
           * The middle name
          */
         "middle"?: string;
+        /**
+          * The first name
+         */
+        "sources"?: string[];
     }
     interface MyComponent {
         /**

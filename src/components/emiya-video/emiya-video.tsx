@@ -10,7 +10,7 @@ export class EmiyaVideo {
   /**
    * The first name
    */
-  @Prop() first: string;
+  @Prop() sources: string[];
 
   /**
    * The middle name
@@ -27,6 +27,10 @@ export class EmiyaVideo {
   }
 
   render() {
-    return <div>Hello EMIYA, World! I'm {this.getText()}</div>;
+    return (
+      <div class="relative w-full h-full ">
+        <video class="w-full h-full" />
+      </div>
+    );
   }
 }
