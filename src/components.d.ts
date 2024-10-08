@@ -18,7 +18,7 @@ export namespace Components {
         /**
           * The first name
          */
-        "sources": string[];
+        "sources": string;
     }
     interface MyComponent {
         /**
@@ -66,7 +66,7 @@ declare namespace LocalJSX {
         /**
           * The first name
          */
-        "sources"?: string[];
+        "sources"?: string;
     }
     interface MyComponent {
         /**

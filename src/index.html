@@ -9,6 +9,9 @@
     <script nomodule src="/build/emiya-video.js"></script>
   </head>
   <body>
-    <emiya-video first="Stencil" last="'Don't call me a framework' JS"></emiya-video>
+    <emiya-video id="emiya" sources='["https://media.w3.org/2010/05/sintel/trailer.mp4"]' first="Stencil" last="'Don't call me a framework' JS"></emiya-video>
+    <script>
+      setTimeout(()=>document.querySelector('#emiya').setAttribute('sources','[8,3]'),1000)
+    </script>
   </body>
 </html>

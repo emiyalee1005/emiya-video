@@ -1,4 +1,4 @@
-import { Component, Prop, h } from '@stencil/core';
+import { Component, Prop, h, Watch } from '@stencil/core';
 import { format } from '../../utils/utils';
 
 @Component({
@@ -10,7 +10,7 @@ export class EmiyaVideo {
   /**
    * The first name
    */
-  @Prop() sources: string[];
+  @Prop() sources: string;
 
   /**
    * The middle name
@@ -22,8 +22,20 @@ export class EmiyaVideo {
    */
   @Prop() last: string;
 
+  parsedSources: string[];
+
+  @Watch('sources')
+  sourcesDidChangeHandler(newValue: string) {
+    this.parsedSources = JSON.parse(newValue);
+  }
+
   private getText(): string {
-    return format(this.first, this.middle, this.last);
+    return format('EMIYA', this.middle, this.last);
+  }
+
+  componentWillLoad() {
+    this.sourcesDidChangeHandler(this.sources);
+    console.log('Component loaded', this.sources, this.parsedSources);
   }
 
   render() {
