@@ -15,7 +15,7 @@ export const requestFullscreen = () => {
   }
 };
 
-function isFullScreen() {
+export function isFullScreen() {
   const doc = document as any;
   return doc.fullscreenElement || doc.mozFullScreenElement || doc.webkitFullscreenElement || doc.msFullscreenElement;
 }

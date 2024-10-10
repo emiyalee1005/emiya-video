@@ -1,5 +1,4 @@
-import { Component, Prop, h } from '@stencil/core';
-import { format } from '../../utils/utils';
+import { Component, h, Prop } from '@stencil/core';
 
 @Component({
   tag: 'my-component',
@@ -22,13 +21,11 @@ export class MyComponent {
    */
   @Prop() last: string;
 
-  private getText(): string {
-    return format(this.first, this.middle, this.last);
-  }
-
   render() {
-    return <div class="bg-indigo-500 p-6 rounded-md flex justify-center">
-      <h1 class="text-white font-sans">This is a Stencil component using Tailwind</h1>
-    </div>
+    return (
+      <div class="bg-indigo-500 p-6 rounded-md flex justify-center">
+        <h1 class="text-white font-sans">This is a Stencil component using Tailwind</h1>
+      </div>
+    );
   }
 }
