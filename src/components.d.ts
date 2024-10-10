@@ -6,19 +6,11 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 export namespace Components {
+    interface EmiyaTeleport {
+        "targetSelector"?: string;
+    }
     interface EmiyaVideo {
-        /**
-          * The last name
-         */
-        "last": string;
-        /**
-          * The middle name
-         */
-        "middle": string;
-        /**
-          * The first name
-         */
-        "sources": string;
+        "src"?: string;
     }
     interface MyComponent {
         /**
@@ -36,6 +28,12 @@ export namespace Components {
     }
 }
 declare global {
+    interface HTMLEmiyaTeleportElement extends Components.EmiyaTeleport, HTMLStencilElement {
+    }
+    var HTMLEmiyaTeleportElement: {
+        prototype: HTMLEmiyaTeleportElement;
+        new (): HTMLEmiyaTeleportElement;
+    };
     interface HTMLEmiyaVideoElement extends Components.EmiyaVideo, HTMLStencilElement {
     }
     var HTMLEmiyaVideoElement: {
@@ -49,24 +47,17 @@ declare global {
         new (): HTMLMyComponentElement;
     };
     interface HTMLElementTagNameMap {
+        "emiya-teleport": HTMLEmiyaTeleportElement;
         "emiya-video": HTMLEmiyaVideoElement;
         "my-component": HTMLMyComponentElement;
     }
 }
 declare namespace LocalJSX {
+    interface EmiyaTeleport {
+        "targetSelector"?: string;
+    }
     interface EmiyaVideo {
-        /**
-          * The last name
-         */
-        "last"?: string;
-        /**
-          * The middle name
-         */
-        "middle"?: string;
-        /**
-          * The first name
-         */
-        "sources"?: string;
+        "src"?: string;
     }
     interface MyComponent {
         /**
@@ -83,6 +74,7 @@ declare namespace LocalJSX {
         "middle"?: string;
     }
     interface IntrinsicElements {
+        "emiya-teleport": EmiyaTeleport;
         "emiya-video": EmiyaVideo;
         "my-component": MyComponent;
     }
@@ -91,6 +83,7 @@ export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
+            "emiya-teleport": LocalJSX.EmiyaTeleport & JSXBase.HTMLAttributes<HTMLEmiyaTeleportElement>;
             "emiya-video": LocalJSX.EmiyaVideo & JSXBase.HTMLAttributes<HTMLEmiyaVideoElement>;
             "my-component": LocalJSX.MyComponent & JSXBase.HTMLAttributes<HTMLMyComponentElement>;
         }

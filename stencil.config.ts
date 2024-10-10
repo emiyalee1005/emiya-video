@@ -1,12 +1,10 @@
 import { Config } from '@stencil/core';
-import tailwind, { tailwindHMR } from 'stencil-tailwind-plugin'
+import { sass } from '@stencil/sass';
+import tailwind, { tailwindHMR } from 'stencil-tailwind-plugin';
 
 export const config: Config = {
   namespace: 'emiya-video',
-  plugins:[
-    tailwind(),
-    tailwindHMR()
-  ],
+  plugins: [tailwind(), tailwindHMR(), sass()],
   outputTargets: [
     {
       type: 'dist',
@@ -26,6 +24,6 @@ export const config: Config = {
     },
   ],
   testing: {
-    browserHeadless: "new",
+    browserHeadless: 'new',
   },
 };
