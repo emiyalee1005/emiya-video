@@ -83,7 +83,10 @@ export class EmiyaVideo {
           )}
           {(1 || this.isRecentlyClicked || this.isMouseHover) && (
             <div class="absolute left-0 top-0 w-full h-full">
-              <div class="w-full control-bar absolute bottom-0 left-0 h-[66px]">EMIYA</div>
+              <div class="w-full control-bar absolute bottom-0 left-0 h-[66px]">
+                EMIYA
+                <emiya-slider value={50}></emiya-slider>
+              </div>
             </div>
           )}
         </div>

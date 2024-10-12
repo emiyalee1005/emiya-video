@@ -6,6 +6,11 @@
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 export namespace Components {
+    interface EmiyaSlider {
+        "max": number;
+        "min": number;
+        "value": number;
+    }
     interface EmiyaTeleport {
         "targetSelector"?: string;
     }
@@ -28,6 +33,12 @@ export namespace Components {
     }
 }
 declare global {
+    interface HTMLEmiyaSliderElement extends Components.EmiyaSlider, HTMLStencilElement {
+    }
+    var HTMLEmiyaSliderElement: {
+        prototype: HTMLEmiyaSliderElement;
+        new (): HTMLEmiyaSliderElement;
+    };
     interface HTMLEmiyaTeleportElement extends Components.EmiyaTeleport, HTMLStencilElement {
     }
     var HTMLEmiyaTeleportElement: {
@@ -47,12 +58,18 @@ declare global {
         new (): HTMLMyComponentElement;
     };
     interface HTMLElementTagNameMap {
+        "emiya-slider": HTMLEmiyaSliderElement;
         "emiya-teleport": HTMLEmiyaTeleportElement;
         "emiya-video": HTMLEmiyaVideoElement;
         "my-component": HTMLMyComponentElement;
     }
 }
 declare namespace LocalJSX {
+    interface EmiyaSlider {
+        "max"?: number;
+        "min"?: number;
+        "value"?: number;
+    }
     interface EmiyaTeleport {
         "targetSelector"?: string;
     }
@@ -74,6 +91,7 @@ declare namespace LocalJSX {
         "middle"?: string;
     }
     interface IntrinsicElements {
+        "emiya-slider": EmiyaSlider;
         "emiya-teleport": EmiyaTeleport;
         "emiya-video": EmiyaVideo;
         "my-component": MyComponent;
@@ -83,6 +101,7 @@ export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
+            "emiya-slider": LocalJSX.EmiyaSlider & JSXBase.HTMLAttributes<HTMLEmiyaSliderElement>;
             "emiya-teleport": LocalJSX.EmiyaTeleport & JSXBase.HTMLAttributes<HTMLEmiyaTeleportElement>;
             "emiya-video": LocalJSX.EmiyaVideo & JSXBase.HTMLAttributes<HTMLEmiyaVideoElement>;
             "my-component": LocalJSX.MyComponent & JSXBase.HTMLAttributes<HTMLMyComponentElement>;

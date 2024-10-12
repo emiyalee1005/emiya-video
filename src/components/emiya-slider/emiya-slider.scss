@@ -1,0 +1,28 @@
+:host {
+  display: block;
+  .slider-container {
+    position: relative;
+    width: 100%;
+    height: 10px;
+    background-color: #ccc;
+  }
+
+  .progress-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background-color: #007bff;
+  }
+
+  .slider {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    background-color: #007bff;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+}

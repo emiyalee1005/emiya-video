@@ -7,12 +7,25 @@
 
 ## Properties
 
-| Property | Attribute | Description     | Type     | Default     |
-| -------- | --------- | --------------- | -------- | ----------- |
-| `first`  | `first`   | The first name  | `string` | `undefined` |
-| `last`   | `last`    | The last name   | `string` | `undefined` |
-| `middle` | `middle`  | The middle name | `string` | `undefined` |
+| Property | Attribute | Description | Type     | Default     |
+| -------- | --------- | ----------- | -------- | ----------- |
+| `src`    | `src`     |             | `string` | `undefined` |
 
+
+## Dependencies
+
+### Depends on
+
+- [emiya-teleport](../emiya-teleport)
+- [emiya-slider](../emiya-slider)
+
+### Graph
+```mermaid
+graph TD;
+  emiya-video --> emiya-teleport
+  emiya-video --> emiya-slider
+  style emiya-video fill:#f9f,stroke:#333,stroke-width:4px
+```
 
 ----------------------------------------------
 
