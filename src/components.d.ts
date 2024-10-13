@@ -9,6 +9,10 @@ export namespace Components {
     interface EmiyaSlider {
         "max": number;
         "min": number;
+        "progressBarBaseColor": string;
+        "progressBarHeight": number;
+        "progressBarLeftColor": string;
+        "slideHandleRadius": number;
         "value": number;
     }
     interface EmiyaTeleport {
@@ -68,6 +72,10 @@ declare namespace LocalJSX {
     interface EmiyaSlider {
         "max"?: number;
         "min"?: number;
+        "progressBarBaseColor"?: string;
+        "progressBarHeight"?: number;
+        "progressBarLeftColor"?: string;
+        "slideHandleRadius"?: number;
         "value"?: number;
     }
     interface EmiyaTeleport {

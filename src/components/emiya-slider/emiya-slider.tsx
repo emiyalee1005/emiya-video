@@ -1,25 +1,54 @@
-import { Component, h, Prop } from '@stencil/core';
+import { Component, h, Prop, State } from '@stencil/core';
 
 @Component({
   tag: 'emiya-slider',
   styleUrl: 'emiya-slider.scss',
-  shadow: true,
 })
 export class EmiyaSlider {
+  @Prop() slideHandleRadius: number = 5;
   @Prop() value: number = 0;
   @Prop() min: number = 0;
   @Prop() max: number = 100;
+  @Prop() progressBarHeight: number = 6;
+  @Prop() progressBarBaseColor: string = 'rgba(255, 255, 255, 0.35)';
+  @Prop() progressBarLeftColor: string = '#e12617';
+
+  @State() isDragging: boolean = false;
+  @State() isHovered: boolean = false;
+  @State() isClicked: boolean = false;
 
   render() {
     return (
-      <div class="slider-container">
-        <div class="progress-bar" style={{ width: `${this.value}%` }}></div>
-        <div class="slider" style={{ left: `${this.value}%` }} onPointerDown={e => this.handlePointerDown(e)}></div>
+      <div class="emiya-slider select-none" style={{ padding: `0 ${this.slideHandleRadius}px` }} onPointerLeave={() => console.log(1)} onContextMenu={a => a.preventDefault()}>
+        <div
+          onPointerDown={e => this.handleBarDown(e)}
+          class={{ 'slider-container': true, 'focused': this.isDragging }}
+          style={{ height: `${this.progressBarHeight}px`, backgroundColor: this.progressBarBaseColor }}
+        >
+          <div class="progress-bar" style={{ backgroundColor: this.progressBarLeftColor, width: `${this.value}%` }}></div>
+          <div
+            class={{ slider: true, show: this.isDragging }}
+            style={{
+              width: `${this.slideHandleRadius * 2}px`,
+              height: `${this.slideHandleRadius * 2}px`,
+              top: `${-(this.slideHandleRadius - this.progressBarHeight / 2)}px`,
+              left: `${this.value}%`,
+            }}
+            onPointerDown={e => this.handlePointerDown(e)}
+          ></div>
+        </div>
       </div>
     );
   }
 
+  handleBarDown(e: PointerEvent) {
+    const containerRect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+    this.value = (e.offsetX / containerRect.width) * 100;
+    this.handlePointerDown(e);
+  }
+
   handlePointerDown(e: PointerEvent) {
+    e.stopPropagation();
     const slider = e.currentTarget as HTMLElement;
     const container = slider.parentElement as HTMLElement;
     const containerRect = container.getBoundingClientRect();
@@ -28,6 +57,7 @@ export class EmiyaSlider {
     let startValue = this.value;
 
     const handlePointerMove = (e: PointerEvent) => {
+      this.isDragging = true;
       const deltaX = e.clientX - startX;
       const newValue = startValue + (deltaX / containerRect.width) * 100;
       this.value = Math.min(Math.max(newValue, this.min), this.max);
@@ -36,6 +66,7 @@ export class EmiyaSlider {
     const handlePointerUp = () => {
       document.removeEventListener('pointermove', handlePointerMove);
       document.removeEventListener('pointerup', handlePointerUp);
+      this.isDragging = false;
     };
 
     document.addEventListener('pointermove', handlePointerMove);
