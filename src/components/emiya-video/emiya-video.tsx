@@ -1,8 +1,6 @@
 import { Component, h, Prop, State, Watch } from '@stencil/core';
-import Hls from 'hls.js';
+import Hls, { Level } from 'hls.js';
 import spinnerImg from './assets/spinner.svg';
-
-console.log(Hls);
 
 @Component({
   tag: 'emiya-video',
@@ -16,15 +14,59 @@ export class EmiyaVideo {
   @State() status: 'loading' | 'ready' | 'waiting' | 'playing' | 'paused' | 'ended' | 'error' = 'ready';
   @State() isMouseHover: boolean = false;
   @State() isRecentlyClicked: boolean = false;
+  @State() levels: { id: number; name: string; level: Level }[] = [];
+  @State() currentLevel: number;
 
+  hls: Hls;
+  videoRef: HTMLVideoElement;
   removeRecentlyClickedStatusTimer: any;
 
   @Watch('src')
   onSrcChange(newValue: string) {
     this.status = newValue ? 'loading' : 'ready';
+    this.levels = [];
+    if (this.hls) {
+      this.hls.destroy();
+      this.hls = undefined;
+    }
+    if (this.videoRef) {
+      this.videoRef?.pause();
+      this.videoRef.src = '';
+      this.videoRef.load();
+    }
+
+    if (newValue) {
+      if (Hls.isSupported()) {
+        this.hls = new Hls();
+        this.hls.loadSource(newValue);
+        this.hls.attachMedia(this.videoRef);
+
+        this.hls.on(Hls.Events.MANIFEST_PARSED, () => {
+          this.levels = this.hls.levels.map(function (level) {
+            return {
+              level,
+              id: level.height,
+              name: level.height + 'p',
+            };
+          });
+          console.log('可用分辨率: ', this.levels);
+        });
+
+        this.hls.on(Hls.Events.LEVEL_SWITCHED, (event, data) => {
+          console.log(event, data);
+          this.currentLevel = this.levels[data.level]?.id;
+          console.log('当前分辨率: ', this.currentLevel);
+        });
+      } else if (this.videoRef.canPlayType('application/vnd.apple.mpegurl')) {
+        alert('浏览器版本过低，请升级');
+        //this.videoRef.src = newValue;
+      } else {
+        alert('浏览器版本过旧，请升级');
+      }
+    }
   }
 
-  componentWillLoad() {
+  componentDidLoad() {
     this.onSrcChange(this.src);
     // setInterval(() => {
     //   this.isFullScreen = !this.isFullScreen;
@@ -70,11 +112,12 @@ export class EmiyaVideo {
           onClick={() => this.onClick()}
         >
           <video
+            ref={a => (this.videoRef = a)}
             key={this.src}
-            src={this.src}
+            // src={this.src}
             autoplay={true}
             class="w-full h-full"
-            controls={false}
+            controls={true}
             onWaiting={() => this.onVideoWaiting()}
             onPlaying={() => this.onVideoPlaying()}
             onLoadedData={() => this.onVideoLoadedData()}
