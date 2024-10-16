@@ -1,5 +1,8 @@
 import { Component, h, Prop, State, Watch } from '@stencil/core';
+import Hls from 'hls.js';
 import spinnerImg from './assets/spinner.svg';
+
+console.log(Hls);
 
 @Component({
   tag: 'emiya-video',
