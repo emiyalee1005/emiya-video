@@ -22,6 +22,9 @@ export namespace Components {
     interface EmiyaVideo {
         "src"?: string;
     }
+    interface EmiyaVideoProgressBar {
+        "videoRef": HTMLVideoElement;
+    }
     interface MyComponent {
         /**
           * The first name
@@ -56,6 +59,12 @@ declare global {
         prototype: HTMLEmiyaVideoElement;
         new (): HTMLEmiyaVideoElement;
     };
+    interface HTMLEmiyaVideoProgressBarElement extends Components.EmiyaVideoProgressBar, HTMLStencilElement {
+    }
+    var HTMLEmiyaVideoProgressBarElement: {
+        prototype: HTMLEmiyaVideoProgressBarElement;
+        new (): HTMLEmiyaVideoProgressBarElement;
+    };
     interface HTMLMyComponentElement extends Components.MyComponent, HTMLStencilElement {
     }
     var HTMLMyComponentElement: {
@@ -66,6 +75,7 @@ declare global {
         "emiya-slider": HTMLEmiyaSliderElement;
         "emiya-teleport": HTMLEmiyaTeleportElement;
         "emiya-video": HTMLEmiyaVideoElement;
+        "emiya-video-progress-bar": HTMLEmiyaVideoProgressBarElement;
         "my-component": HTMLMyComponentElement;
     }
 }
@@ -86,6 +96,9 @@ declare namespace LocalJSX {
     interface EmiyaVideo {
         "src"?: string;
     }
+    interface EmiyaVideoProgressBar {
+        "videoRef"?: HTMLVideoElement;
+    }
     interface MyComponent {
         /**
           * The first name
@@ -104,6 +117,7 @@ declare namespace LocalJSX {
         "emiya-slider": EmiyaSlider;
         "emiya-teleport": EmiyaTeleport;
         "emiya-video": EmiyaVideo;
+        "emiya-video-progress-bar": EmiyaVideoProgressBar;
         "my-component": MyComponent;
     }
 }
@@ -114,6 +128,7 @@ declare module "@stencil/core" {
             "emiya-slider": LocalJSX.EmiyaSlider & JSXBase.HTMLAttributes<HTMLEmiyaSliderElement>;
             "emiya-teleport": LocalJSX.EmiyaTeleport & JSXBase.HTMLAttributes<HTMLEmiyaTeleportElement>;
             "emiya-video": LocalJSX.EmiyaVideo & JSXBase.HTMLAttributes<HTMLEmiyaVideoElement>;
+            "emiya-video-progress-bar": LocalJSX.EmiyaVideoProgressBar & JSXBase.HTMLAttributes<HTMLEmiyaVideoProgressBarElement>;
             "my-component": LocalJSX.MyComponent & JSXBase.HTMLAttributes<HTMLMyComponentElement>;
         }
     }
