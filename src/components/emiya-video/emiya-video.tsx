@@ -16,6 +16,13 @@ export class EmiyaVideo {
   @State() isRecentlyClicked: boolean = false;
   @State() levels: { id: number; name: string; level: Level }[] = [];
   @State() currentLevel: number;
+  @State() duration = 0;
+  @State() currentTime: number = 0;
+
+  get progressInPercentage() {
+    if (!this.duration) return 0;
+    return (this.currentTime / this.duration) * 100;
+  }
 
   hls: Hls;
   videoRef: HTMLVideoElement;
@@ -24,7 +31,9 @@ export class EmiyaVideo {
   @Watch('src')
   onSrcChange(newValue: string) {
     this.status = newValue ? 'loading' : 'ready';
+    this.duration = 0;
     this.levels = [];
+    this.currentLevel = undefined;
     if (this.hls) {
       this.hls.destroy();
       this.hls = undefined;
@@ -68,9 +77,12 @@ export class EmiyaVideo {
 
   componentDidLoad() {
     this.onSrcChange(this.src);
-    // setInterval(() => {
-    //   this.isFullScreen = !this.isFullScreen;
-    // }, 3000);
+    this.videoRef.addEventListener('durationchange', () => {
+      this.duration = this.videoRef.duration;
+    });
+    this.videoRef.addEventListener('timeupdate', () => {
+      this.currentTime = this.videoRef.currentTime;
+    });
   }
 
   onVideoLoadedData() {
@@ -102,6 +114,10 @@ export class EmiyaVideo {
     }, 3000);
   }
 
+  onChangeProgress(progress: number) {
+    this.currentTime = this.videoRef.currentTime = this.duration * (progress / 100);
+  }
+
   render() {
     return (
       <emiya-teleport targetSelector={this.isFullScreen ? 'body' : undefined}>
@@ -131,7 +147,7 @@ export class EmiyaVideo {
             <div class="absolute left-0 top-0 w-full h-full">
               <div class="w-full control-bar absolute bottom-0 left-0 h-[66px]">
                 EMIYA
-                <emiya-slider value={50}></emiya-slider>
+                <emiya-slider value={this.progressInPercentage} onChange={a => this.onChangeProgress(a)}></emiya-slider>
               </div>
             </div>
           )}
