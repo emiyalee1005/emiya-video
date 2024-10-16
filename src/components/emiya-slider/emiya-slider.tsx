@@ -60,11 +60,19 @@ export class EmiyaSlider {
     return this.isDragging ? this.tempValue : this.value;
   }
 
+  setIsDragging(isDragging: boolean) {
+    if (this.isDragging === isDragging) return;
+    this.isDragging = isDragging;
+    if (isDragging) {
+      this.tempValue = this.value;
+    }
+  }
+
   handleBarDown(e: PointerEvent) {
     const containerRect = (e.currentTarget as HTMLElement).getBoundingClientRect();
-    console.log((e.offsetX / containerRect.width) * 100);
-    this.onChange && this.onChange((e.offsetX / containerRect.width) * 100);
-    //this.handlePointerDown(e);
+    this.setIsDragging(true);
+    this.onChange && this.onChange((this.tempValue = (e.offsetX / containerRect.width) * 100));
+    this.handlePointerDown(e);
   }
 
   handlePointerDown(e: PointerEvent) {
@@ -73,7 +81,7 @@ export class EmiyaSlider {
     const container = slider.parentElement as HTMLElement;
     const containerRect = container.getBoundingClientRect();
 
-    this.isDragging = true;
+    this.setIsDragging(true);
     let startX = e.clientX;
     let startValue = this.renderedValue;
 
@@ -86,7 +94,7 @@ export class EmiyaSlider {
     const handlePointerUp = () => {
       document.removeEventListener('pointermove', handlePointerMove);
       document.removeEventListener('pointerup', handlePointerUp);
-      this.isDragging = false;
+      this.setIsDragging(false);
     };
 
     document.addEventListener('pointermove', handlePointerMove);
