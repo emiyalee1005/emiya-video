@@ -129,7 +129,10 @@ export class EmiyaVideo {
           {(1 || this.isRecentlyClicked || this.isMouseHover) && (
             <div class="absolute left-0 top-0 w-full h-full">
               <div class="w-full control-bar absolute bottom-0 left-0 h-[66px]">
-                EMIYA
+                <emiya-tooltip>
+                  <div slot="trigger">EMIYA</div>
+                  <div>DETAIL</div>
+                </emiya-tooltip>
                 <emiya-vertical-slider style={{ height: '180px' }} value={this.volume} onChange={a => (this.volume = a)}></emiya-vertical-slider>
                 <emiya-video-progress-bar key={this.src} videoRef={this.videoRef} />
               </div>

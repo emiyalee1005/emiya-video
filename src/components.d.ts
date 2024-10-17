@@ -19,6 +19,8 @@ export namespace Components {
     interface EmiyaTeleport {
         "targetSelector"?: string;
     }
+    interface EmiyaTooltip {
+    }
     interface EmiyaVerticalSlider {
         "max": number;
         "min": number;
@@ -63,6 +65,12 @@ declare global {
         prototype: HTMLEmiyaTeleportElement;
         new (): HTMLEmiyaTeleportElement;
     };
+    interface HTMLEmiyaTooltipElement extends Components.EmiyaTooltip, HTMLStencilElement {
+    }
+    var HTMLEmiyaTooltipElement: {
+        prototype: HTMLEmiyaTooltipElement;
+        new (): HTMLEmiyaTooltipElement;
+    };
     interface HTMLEmiyaVerticalSliderElement extends Components.EmiyaVerticalSlider, HTMLStencilElement {
     }
     var HTMLEmiyaVerticalSliderElement: {
@@ -90,6 +98,7 @@ declare global {
     interface HTMLElementTagNameMap {
         "emiya-slider": HTMLEmiyaSliderElement;
         "emiya-teleport": HTMLEmiyaTeleportElement;
+        "emiya-tooltip": HTMLEmiyaTooltipElement;
         "emiya-vertical-slider": HTMLEmiyaVerticalSliderElement;
         "emiya-video": HTMLEmiyaVideoElement;
         "emiya-video-progress-bar": HTMLEmiyaVideoProgressBarElement;
@@ -109,6 +118,8 @@ declare namespace LocalJSX {
     }
     interface EmiyaTeleport {
         "targetSelector"?: string;
+    }
+    interface EmiyaTooltip {
     }
     interface EmiyaVerticalSlider {
         "max"?: number;
@@ -143,6 +154,7 @@ declare namespace LocalJSX {
     interface IntrinsicElements {
         "emiya-slider": EmiyaSlider;
         "emiya-teleport": EmiyaTeleport;
+        "emiya-tooltip": EmiyaTooltip;
         "emiya-vertical-slider": EmiyaVerticalSlider;
         "emiya-video": EmiyaVideo;
         "emiya-video-progress-bar": EmiyaVideoProgressBar;
@@ -155,6 +167,7 @@ declare module "@stencil/core" {
         interface IntrinsicElements {
             "emiya-slider": LocalJSX.EmiyaSlider & JSXBase.HTMLAttributes<HTMLEmiyaSliderElement>;
             "emiya-teleport": LocalJSX.EmiyaTeleport & JSXBase.HTMLAttributes<HTMLEmiyaTeleportElement>;
+            "emiya-tooltip": LocalJSX.EmiyaTooltip & JSXBase.HTMLAttributes<HTMLEmiyaTooltipElement>;
             "emiya-vertical-slider": LocalJSX.EmiyaVerticalSlider & JSXBase.HTMLAttributes<HTMLEmiyaVerticalSliderElement>;
             "emiya-video": LocalJSX.EmiyaVideo & JSXBase.HTMLAttributes<HTMLEmiyaVideoElement>;
             "emiya-video-progress-bar": LocalJSX.EmiyaVideoProgressBar & JSXBase.HTMLAttributes<HTMLEmiyaVideoProgressBarElement>;
