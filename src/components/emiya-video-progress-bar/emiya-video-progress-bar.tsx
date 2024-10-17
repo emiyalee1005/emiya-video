@@ -3,7 +3,6 @@ import { Component, h, Prop, State, Watch } from '@stencil/core';
 @Component({
   tag: 'emiya-video-progress-bar',
   styleUrl: 'emiya-video-progress-bar.scss',
-  shadow: true,
 })
 export class EmiyaVideoProgressBar {
   @Prop() videoRef: HTMLVideoElement;

@@ -19,6 +19,16 @@ export namespace Components {
     interface EmiyaTeleport {
         "targetSelector"?: string;
     }
+    interface EmiyaVerticalSlider {
+        "max": number;
+        "min": number;
+        "onChange": (value: number) => void;
+        "progressBarBaseColor": string;
+        "progressBarHeight": number;
+        "progressBarLeftColor": string;
+        "slideHandleRadius": number;
+        "value": number;
+    }
     interface EmiyaVideo {
         "src"?: string;
     }
@@ -53,6 +63,12 @@ declare global {
         prototype: HTMLEmiyaTeleportElement;
         new (): HTMLEmiyaTeleportElement;
     };
+    interface HTMLEmiyaVerticalSliderElement extends Components.EmiyaVerticalSlider, HTMLStencilElement {
+    }
+    var HTMLEmiyaVerticalSliderElement: {
+        prototype: HTMLEmiyaVerticalSliderElement;
+        new (): HTMLEmiyaVerticalSliderElement;
+    };
     interface HTMLEmiyaVideoElement extends Components.EmiyaVideo, HTMLStencilElement {
     }
     var HTMLEmiyaVideoElement: {
@@ -74,6 +90,7 @@ declare global {
     interface HTMLElementTagNameMap {
         "emiya-slider": HTMLEmiyaSliderElement;
         "emiya-teleport": HTMLEmiyaTeleportElement;
+        "emiya-vertical-slider": HTMLEmiyaVerticalSliderElement;
         "emiya-video": HTMLEmiyaVideoElement;
         "emiya-video-progress-bar": HTMLEmiyaVideoProgressBarElement;
         "my-component": HTMLMyComponentElement;
@@ -92,6 +109,16 @@ declare namespace LocalJSX {
     }
     interface EmiyaTeleport {
         "targetSelector"?: string;
+    }
+    interface EmiyaVerticalSlider {
+        "max"?: number;
+        "min"?: number;
+        "onChange"?: (value: number) => void;
+        "progressBarBaseColor"?: string;
+        "progressBarHeight"?: number;
+        "progressBarLeftColor"?: string;
+        "slideHandleRadius"?: number;
+        "value"?: number;
     }
     interface EmiyaVideo {
         "src"?: string;
@@ -116,6 +143,7 @@ declare namespace LocalJSX {
     interface IntrinsicElements {
         "emiya-slider": EmiyaSlider;
         "emiya-teleport": EmiyaTeleport;
+        "emiya-vertical-slider": EmiyaVerticalSlider;
         "emiya-video": EmiyaVideo;
         "emiya-video-progress-bar": EmiyaVideoProgressBar;
         "my-component": MyComponent;
@@ -127,6 +155,7 @@ declare module "@stencil/core" {
         interface IntrinsicElements {
             "emiya-slider": LocalJSX.EmiyaSlider & JSXBase.HTMLAttributes<HTMLEmiyaSliderElement>;
             "emiya-teleport": LocalJSX.EmiyaTeleport & JSXBase.HTMLAttributes<HTMLEmiyaTeleportElement>;
+            "emiya-vertical-slider": LocalJSX.EmiyaVerticalSlider & JSXBase.HTMLAttributes<HTMLEmiyaVerticalSliderElement>;
             "emiya-video": LocalJSX.EmiyaVideo & JSXBase.HTMLAttributes<HTMLEmiyaVideoElement>;
             "emiya-video-progress-bar": LocalJSX.EmiyaVideoProgressBar & JSXBase.HTMLAttributes<HTMLEmiyaVideoProgressBarElement>;
             "my-component": LocalJSX.MyComponent & JSXBase.HTMLAttributes<HTMLMyComponentElement>;

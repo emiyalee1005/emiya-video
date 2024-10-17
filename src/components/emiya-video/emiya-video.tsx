@@ -16,6 +16,7 @@ export class EmiyaVideo {
   @State() isRecentlyClicked: boolean = false;
   @State() levels: { id: number; name: string; level: Level }[] = [];
   @State() currentLevel: number;
+  @State() volume: number = 80;
 
   hls: Hls;
   videoRef: HTMLVideoElement;
@@ -115,7 +116,7 @@ export class EmiyaVideo {
             // src={this.src}
             autoplay={true}
             class="w-full h-full"
-            controls={true}
+            controls={false}
             onWaiting={() => this.onVideoWaiting()}
             onPlaying={() => this.onVideoPlaying()}
             onLoadedData={() => this.onVideoLoadedData()}
@@ -129,6 +130,7 @@ export class EmiyaVideo {
             <div class="absolute left-0 top-0 w-full h-full">
               <div class="w-full control-bar absolute bottom-0 left-0 h-[66px]">
                 EMIYA
+                <emiya-vertical-slider style={{ height: '180px' }} value={this.volume} onChange={a => (this.volume = a)}></emiya-vertical-slider>
                 <emiya-video-progress-bar key={this.src} videoRef={this.videoRef} />
               </div>
             </div>
