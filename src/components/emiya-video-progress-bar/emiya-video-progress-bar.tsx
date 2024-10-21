@@ -5,7 +5,7 @@ import { Component, h, Host, Prop, State, Watch } from '@stencil/core';
   styleUrl: 'emiya-video-progress-bar.scss',
 })
 export class EmiyaVideoProgressBar {
-  @Prop() videoRef: HTMLVideoElement;
+  @Prop() videoRef?: HTMLVideoElement | undefined;
 
   @State() duration = 0;
   @State() currentTime = 0;
@@ -48,6 +48,7 @@ export class EmiyaVideoProgressBar {
   }
 
   onChangeProgress(progress: number) {
+    if (!this.videoRef) return;
     this.currentTime = this.videoRef.currentTime = this.duration * (progress / 100);
   }
 

@@ -37,7 +37,7 @@ export namespace Components {
         "src"?: string;
     }
     interface EmiyaVideoProgressBar {
-        "videoRef": HTMLVideoElement;
+        "videoRef"?: HTMLVideoElement | undefined;
     }
     interface MyComponent {
         /**
@@ -181,7 +181,7 @@ declare namespace LocalJSX {
         "src"?: string;
     }
     interface EmiyaVideoProgressBar {
-        "videoRef"?: HTMLVideoElement;
+        "videoRef"?: HTMLVideoElement | undefined;
     }
     interface MyComponent {
         /**

@@ -45,6 +45,11 @@ export class VolumeController {
     this.isBarVisible = event.detail;
   }
 
+  onChangeVolume(volume: number) {
+    if (!this.videoRef) return;
+    this.volume = this.videoRef.volume = volume / 100;
+  }
+
   render() {
     return (
       <emiya-tooltip forceVisible={this.isDragging} class="h-full">
@@ -52,12 +57,7 @@ export class VolumeController {
           <img class="!h-[16px]" src={this.isBarVisible ? icon1 : icon}></img>
         </div>
         <div>
-          <emiya-vertical-slider
-            class="m-3"
-            style={{ height: '100px' }}
-            value={this.volume * 100}
-            onChange={a => this.videoRef && (this.videoRef.volume = a / 100)}
-          ></emiya-vertical-slider>
+          <emiya-vertical-slider class="m-3" style={{ height: '100px' }} value={this.volume * 100} onChange={a => this.onChangeVolume(a)}></emiya-vertical-slider>
         </div>
       </emiya-tooltip>
     );
