@@ -20,6 +20,7 @@ export namespace Components {
         "targetSelector"?: string;
     }
     interface EmiyaTooltip {
+        "boundingElement"?: HTMLElement | undefined;
     }
     interface EmiyaVerticalSlider {
         "max": number;
@@ -120,6 +121,7 @@ declare namespace LocalJSX {
         "targetSelector"?: string;
     }
     interface EmiyaTooltip {
+        "boundingElement"?: HTMLElement | undefined;
     }
     interface EmiyaVerticalSlider {
         "max"?: number;
