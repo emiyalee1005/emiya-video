@@ -21,14 +21,15 @@ export namespace Components {
     }
     interface EmiyaTooltip {
         "boundingElement"?: HTMLElement | undefined;
+        "forceVisible"?: boolean;
     }
     interface EmiyaVerticalSlider {
         "max": number;
         "min": number;
         "onChange": (value: number) => void;
         "progressBarBaseColor": string;
-        "progressBarHeight": number;
         "progressBarLeftColor": string;
+        "progressBarWidth": number;
         "slideHandleRadius": number;
         "value": number;
     }
@@ -52,6 +53,17 @@ export namespace Components {
          */
         "middle": string;
     }
+    interface VolumeController {
+        "videoRef": HTMLVideoElement;
+    }
+}
+export interface EmiyaTooltipCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLEmiyaTooltipElement;
+}
+export interface EmiyaVerticalSliderCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLEmiyaVerticalSliderElement;
 }
 declare global {
     interface HTMLEmiyaSliderElement extends Components.EmiyaSlider, HTMLStencilElement {
@@ -66,13 +78,35 @@ declare global {
         prototype: HTMLEmiyaTeleportElement;
         new (): HTMLEmiyaTeleportElement;
     };
+    interface HTMLEmiyaTooltipElementEventMap {
+        "onVisibilityChange": boolean;
+    }
     interface HTMLEmiyaTooltipElement extends Components.EmiyaTooltip, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLEmiyaTooltipElementEventMap>(type: K, listener: (this: HTMLEmiyaTooltipElement, ev: EmiyaTooltipCustomEvent<HTMLEmiyaTooltipElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLEmiyaTooltipElementEventMap>(type: K, listener: (this: HTMLEmiyaTooltipElement, ev: EmiyaTooltipCustomEvent<HTMLEmiyaTooltipElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLEmiyaTooltipElement: {
         prototype: HTMLEmiyaTooltipElement;
         new (): HTMLEmiyaTooltipElement;
     };
+    interface HTMLEmiyaVerticalSliderElementEventMap {
+        "onIsDraggingChange": boolean;
+    }
     interface HTMLEmiyaVerticalSliderElement extends Components.EmiyaVerticalSlider, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLEmiyaVerticalSliderElementEventMap>(type: K, listener: (this: HTMLEmiyaVerticalSliderElement, ev: EmiyaVerticalSliderCustomEvent<HTMLEmiyaVerticalSliderElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLEmiyaVerticalSliderElementEventMap>(type: K, listener: (this: HTMLEmiyaVerticalSliderElement, ev: EmiyaVerticalSliderCustomEvent<HTMLEmiyaVerticalSliderElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLEmiyaVerticalSliderElement: {
         prototype: HTMLEmiyaVerticalSliderElement;
@@ -96,6 +130,12 @@ declare global {
         prototype: HTMLMyComponentElement;
         new (): HTMLMyComponentElement;
     };
+    interface HTMLVolumeControllerElement extends Components.VolumeController, HTMLStencilElement {
+    }
+    var HTMLVolumeControllerElement: {
+        prototype: HTMLVolumeControllerElement;
+        new (): HTMLVolumeControllerElement;
+    };
     interface HTMLElementTagNameMap {
         "emiya-slider": HTMLEmiyaSliderElement;
         "emiya-teleport": HTMLEmiyaTeleportElement;
@@ -104,6 +144,7 @@ declare global {
         "emiya-video": HTMLEmiyaVideoElement;
         "emiya-video-progress-bar": HTMLEmiyaVideoProgressBarElement;
         "my-component": HTMLMyComponentElement;
+        "volume-controller": HTMLVolumeControllerElement;
     }
 }
 declare namespace LocalJSX {
@@ -122,14 +163,17 @@ declare namespace LocalJSX {
     }
     interface EmiyaTooltip {
         "boundingElement"?: HTMLElement | undefined;
+        "forceVisible"?: boolean;
+        "onOnVisibilityChange"?: (event: EmiyaTooltipCustomEvent<boolean>) => void;
     }
     interface EmiyaVerticalSlider {
         "max"?: number;
         "min"?: number;
         "onChange"?: (value: number) => void;
+        "onOnIsDraggingChange"?: (event: EmiyaVerticalSliderCustomEvent<boolean>) => void;
         "progressBarBaseColor"?: string;
-        "progressBarHeight"?: number;
         "progressBarLeftColor"?: string;
+        "progressBarWidth"?: number;
         "slideHandleRadius"?: number;
         "value"?: number;
     }
@@ -153,6 +197,9 @@ declare namespace LocalJSX {
          */
         "middle"?: string;
     }
+    interface VolumeController {
+        "videoRef"?: HTMLVideoElement;
+    }
     interface IntrinsicElements {
         "emiya-slider": EmiyaSlider;
         "emiya-teleport": EmiyaTeleport;
@@ -161,6 +208,7 @@ declare namespace LocalJSX {
         "emiya-video": EmiyaVideo;
         "emiya-video-progress-bar": EmiyaVideoProgressBar;
         "my-component": MyComponent;
+        "volume-controller": VolumeController;
     }
 }
 export { LocalJSX as JSX };
@@ -174,6 +222,7 @@ declare module "@stencil/core" {
             "emiya-video": LocalJSX.EmiyaVideo & JSXBase.HTMLAttributes<HTMLEmiyaVideoElement>;
             "emiya-video-progress-bar": LocalJSX.EmiyaVideoProgressBar & JSXBase.HTMLAttributes<HTMLEmiyaVideoProgressBarElement>;
             "my-component": LocalJSX.MyComponent & JSXBase.HTMLAttributes<HTMLMyComponentElement>;
+            "volume-controller": LocalJSX.VolumeController & JSXBase.HTMLAttributes<HTMLVolumeControllerElement>;
         }
     }
 }

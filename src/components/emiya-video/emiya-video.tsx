@@ -16,7 +16,6 @@ export class EmiyaVideo {
   @State() isRecentlyClicked: boolean = false;
   @State() levels: { id: number; name: string; level: Level }[] = [];
   @State() currentLevel: number;
-  @State() volume: number = 80;
 
   hls: Hls;
   videoRef: HTMLVideoElement;
@@ -72,6 +71,18 @@ export class EmiyaVideo {
     this.onSrcChange(this.src);
   }
 
+  componentWillUnload() {
+    if (this.hls) {
+      this.hls.destroy();
+      this.hls = undefined;
+    }
+    if (this.videoRef) {
+      this.videoRef?.pause();
+      this.videoRef.src = '';
+      this.videoRef.load();
+    }
+  }
+
   onVideoLoadedData() {
     this.status = 'ready';
   }
@@ -105,7 +116,7 @@ export class EmiyaVideo {
     return (
       <emiya-teleport targetSelector={this.isFullScreen ? 'body' : undefined}>
         <div
-          class={`${this.isFullScreen ? 'fixed top-0 left-0' : 'relative'} bg-white w-full h-full`}
+          class={`${this.isFullScreen ? 'fixed top-0 left-0' : 'relative'} bg-black text-white w-full h-full`}
           onMouseEnter={() => this.onMouseEnter()}
           onMouseLeave={() => this.onMouseLeave()}
           onClick={() => this.onClick()}
@@ -126,17 +137,14 @@ export class EmiyaVideo {
               <img src={spinnerImg} alt="加载中.." />
             </div>
           )}
-          {(1 || this.isRecentlyClicked || this.isMouseHover) && (
+          {(3 || this.isRecentlyClicked || this.isMouseHover) && (
             <div class="absolute left-0 top-0 w-full h-full">
-              <div class="w-full control-bar absolute bottom-0 left-0 h-[66px]">
-                <div class="flex">
-                  <emiya-tooltip>
-                    <div slot="trigger">EMIYA</div>
-                    <div>DETAIL</div>
-                  </emiya-tooltip>
+              <div class="w-full control-bar absolute bottom-0 left-0 h-[48px] flex justify-between">
+                <emiya-video-progress-bar class="absolute bottom-[100%] left-0 w-full" key={this.src} videoRef={this.videoRef} />
+                <div class="left"></div>
+                <div class="right flex items-center h-full pr-8">
+                  <volume-controller class="h-full" videoRef={this.videoRef} />
                 </div>
-                <emiya-vertical-slider style={{ height: '180px' }} value={this.volume} onChange={a => (this.volume = a)}></emiya-vertical-slider>
-                <emiya-video-progress-bar key={this.src} videoRef={this.videoRef} />
               </div>
             </div>
           )}

@@ -28,13 +28,7 @@ export class EmiyaSlider {
 
   render() {
     return (
-      <div
-        class="emiya-slider select-none"
-        style={{ padding: `0 ${this.slideHandleRadius}px` }}
-        onTouchStart={a => a.preventDefault()}
-        onPointerLeave={() => console.log(1)}
-        onContextMenu={a => a.preventDefault()}
-      >
+      <div class="emiya-slider select-none" style={{ _padding: `0 ${this.slideHandleRadius}px` }} onTouchStart={a => a.preventDefault()} onContextMenu={a => a.preventDefault()}>
         <div
           onPointerDown={e => this.handleBarDown(e)}
           class={{ 'slider-container': true, 'focused': this.isDragging }}

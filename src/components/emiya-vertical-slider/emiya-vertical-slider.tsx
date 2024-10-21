@@ -1,4 +1,4 @@
-import { Component, h, Prop, State, Watch } from '@stencil/core';
+import { Component, Event, EventEmitter, h, Host, Prop, State, Watch } from '@stencil/core';
 
 @Component({
   tag: 'emiya-vertical-slider',
@@ -10,15 +10,18 @@ export class EmiyaVerticalSlider {
   @Prop() onChange: (value: number) => void;
   @Prop() min: number = 0;
   @Prop() max: number = 100;
-  @Prop() progressBarHeight: number = 6;
+  @Prop() progressBarWidth: number = 6;
   @Prop() progressBarBaseColor: string = 'rgba(255, 255, 255, 0.35)';
   @Prop() progressBarLeftColor: string = '#e12617';
 
   @State() tempValue: number;
   @State() isDragging: boolean = false;
 
+  @Event({ eventName: 'onIsDraggingChange' }) onIsDraggingChange: EventEmitter<boolean>;
+
   @Watch('isDragging')
   onDraggingChange(newValue: boolean) {
+    this.onIsDraggingChange.emit(newValue);
     if (newValue) {
       this.tempValue = this.value;
     } else {
@@ -28,31 +31,30 @@ export class EmiyaVerticalSlider {
 
   render() {
     return (
-      <div
+      <Host
         class="emiya-vertical-slider select-none"
-        style={{ padding: `${this.slideHandleRadius}px 0` }}
+        style={{ _padding: `${this.slideHandleRadius}px 0` }}
         onTouchStart={a => a.preventDefault()}
-        onPointerLeave={() => console.log(1)}
         onContextMenu={a => a.preventDefault()}
       >
         <div
           onPointerDown={e => this.handleBarDown(e)}
           class={{ 'slider-container': true, 'focused': this.isDragging }}
-          style={{ width: `${this.progressBarHeight}px`, backgroundColor: this.progressBarBaseColor }}
+          style={{ width: `${this.progressBarWidth}px`, backgroundColor: this.progressBarBaseColor }}
         >
-          <div class="progress-bar" style={{ backgroundColor: this.progressBarLeftColor, height: `${this.renderedValue}%` }}></div>
+          <div class="progress-bar pointer-events-none" style={{ backgroundColor: this.progressBarLeftColor, height: `${this.renderedValue}%` }}></div>
           <div
             class={{ slider: true, show: this.isDragging }}
             style={{
               width: `${this.slideHandleRadius * 2}px`,
               height: `${this.slideHandleRadius * 2}px`,
-              left: `${-(this.slideHandleRadius - this.progressBarHeight / 2)}px`,
+              left: `${-(this.slideHandleRadius - this.progressBarWidth / 2)}px`,
               bottom: `${this.renderedValue}%`,
             }}
             onPointerDown={e => this.handlePointerDown(e)}
           ></div>
         </div>
-      </div>
+      </Host>
     );
   }
 
@@ -71,7 +73,7 @@ export class EmiyaVerticalSlider {
   handleBarDown(e: PointerEvent) {
     const containerRect = (e.currentTarget as HTMLElement).getBoundingClientRect();
     this.setIsDragging(true);
-    this.onChange && this.onChange((this.tempValue = (e.offsetY / containerRect.height) * 100));
+    this.onChange && this.onChange((this.tempValue = 100 - (e.offsetY / containerRect.height) * 100));
     this.handlePointerDown(e);
   }
 
