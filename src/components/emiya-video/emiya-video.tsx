@@ -1,4 +1,4 @@
-import { Component, h, Prop, State, Watch } from '@stencil/core';
+import { Component, h, Host, Prop, State, Watch } from '@stencil/core';
 import Hls, { Level } from 'hls.js';
 import pauseIcon from './assets/pause.svg';
 import pauseIcon1 from './assets/pause1.svg';
@@ -81,7 +81,7 @@ export class EmiyaVideo {
   }
 
   get shouldShowControl() {
-    return true || this.isRecentlyClicked || this.isMouseHover;
+    return this.isRecentlyClicked || this.isMouseHover;
   }
 
   get isPlaying() {
@@ -151,75 +151,78 @@ export class EmiyaVideo {
 
   render() {
     return (
-      <emiya-teleport targetSelector={this.isFullScreen ? 'body' : undefined}>
-        <div
-          class={`${this.isFullScreen ? 'fixed top-0 left-0' : 'relative'} bg-black text-white w-full h-full`}
-          onMouseEnter={() => this.onMouseEnter()}
-          onMouseLeave={() => this.onMouseLeave()}
-          onClick={() => this.onClick()}
-        >
-          <video
-            ref={a => (this.videoRef = a)}
-            key={this.src}
-            // src={this.src}
-            autoplay={false}
-            class="w-full h-full cursor-pointer"
-            controls={false}
-            onClick={() => (this.videoRef.paused ? this.videoRef.play() : this.videoRef.pause())}
-            onError={() => this.onVideoError()}
-            onCanPlay={() => this.onVideoCanPlay()}
-            onWaiting={() => this.onVideoWaiting()}
-            onPlaying={() => this.onVideoPlaying()}
-            onPause={() => this.onVideoPaused()}
-            onPlay={() => this.onVideoPlay()}
-            onLoadedData={() => this.onVideoLoadedData()}
-          />
-          {this.shouldShowCenterPlay && (
-            <div class="absolute left-0 top-0 w-full h-full flex items-center justify-center pointer-events-none">
-              <div
-                class="pointer-events-auto flex items-center justify-center cursor-pointer"
-                onPointerEnter={() => (this.hoveringTarget = 'center-play')}
-                onPointerLeave={() => (this.hoveringTarget = null)}
-              >
-                <img
-                  class="h-[68px] m-3"
-                  style={{ borderRadius: '50%', backgroundColor: 'rgba(0, 16, 27, 0.7)' }}
-                  src={this.hoveringTarget === 'center-play' ? playIcon1 : playIcon}
-                  onClick={() => this.videoRef.play()}
-                />
+      <Host>
+        <emiya-teleport targetSelector={this.isFullScreen ? 'body' : undefined}>
+          <div
+            class={`${this.isFullScreen ? 'fixed top-0 left-0' : 'relative'} bg-black text-white w-full h-full`}
+            onPointerEnter={() => this.onMouseEnter()}
+            onPointerLeave={() => this.onMouseLeave()}
+            onPointerCancel={() => this.onMouseLeave()}
+            onClick={() => this.onClick()}
+          >
+            <video
+              ref={a => (this.videoRef = a)}
+              key={this.src}
+              // src={this.src}
+              autoplay={false}
+              class="w-full h-full pointer-events-none"
+              controls={false}
+              onError={() => this.onVideoError()}
+              onCanPlay={() => this.onVideoCanPlay()}
+              onWaiting={() => this.onVideoWaiting()}
+              onPlaying={() => this.onVideoPlaying()}
+              onPause={() => this.onVideoPaused()}
+              onPlay={() => this.onVideoPlay()}
+              onLoadedData={() => this.onVideoLoadedData()}
+            />
+            <div class="absolute left-0 bottom-0 w-full h-full cursor-pointer" onClick={() => (this.videoRef.paused ? this.videoRef.play() : this.videoRef.pause())}></div>
+            {this.shouldShowCenterPlay && (
+              <div class="absolute left-0 top-0 w-full h-full flex items-center justify-center pointer-events-none">
+                <div
+                  class="pointer-events-auto flex items-center justify-center cursor-pointer"
+                  onPointerEnter={() => (this.hoveringTarget = 'center-play')}
+                  onPointerLeave={() => (this.hoveringTarget = null)}
+                >
+                  <img
+                    class="h-[68px] m-3"
+                    style={{ borderRadius: '50%', backgroundColor: 'rgba(0, 16, 27, 0.7)' }}
+                    src={this.hoveringTarget === 'center-play' ? playIcon1 : playIcon}
+                    onClick={() => this.videoRef.play()}
+                  />
+                </div>
               </div>
-            </div>
-          )}
-          {this.shouldShowLoading && (
-            <div class="absolute left-0 top-0 w-full h-full flex items-center justify-center pointer-events-none">
-              <img class="h-[100px]" src={spinnerImg} alt="加载中.." />
-            </div>
-          )}
-          {this.shouldShowControl && (
-            <div class="absolute left-0 top-0 w-full h-full pointer-events-none">
-              <div class="w-full control-bar absolute bottom-0 left-0 h-[48px] flex justify-between pointer-events-auto">
-                <emiya-video-progress-bar class="absolute bottom-[100%] left-0 w-full" key={this.src} videoRef={this.videoRef} />
-                <div class="left pl-3">
-                  <div
-                    class="flex items-center justify-center cursor-pointer h-full w-[34px]"
-                    onPointerEnter={() => (this.hoveringTarget = 'play')}
-                    onPointerLeave={() => (this.hoveringTarget = null)}
-                  >
-                    {this.isPlaying ? (
-                      <img class="h-[20px]" src={this.hoveringTarget === 'play' ? pauseIcon1 : pauseIcon} onClick={() => this.videoRef.pause()} />
-                    ) : (
-                      <img class="h-[20px]" src={this.hoveringTarget === 'play' ? playIcon1 : playIcon} onClick={() => this.videoRef.play()} />
-                    )}
+            )}
+            {this.shouldShowLoading && (
+              <div class="absolute left-0 top-0 w-full h-full flex items-center justify-center pointer-events-none">
+                <img class="h-[100px]" src={spinnerImg} alt="加载中.." />
+              </div>
+            )}
+            {this.shouldShowControl && (
+              <div class="absolute left-0 bottom-0 w-full h-full pointer-events-none">
+                <div class="w-full control-bar absolute bottom-0 left-0 h-[48px] flex justify-between pointer-events-auto">
+                  <emiya-video-progress-bar class="absolute bottom-[100%] left-0 w-full" key={this.src} videoRef={this.videoRef} />
+                  <div class="left pl-3">
+                    <div
+                      class="flex items-center justify-center cursor-pointer h-full w-[34px]"
+                      onPointerEnter={() => (this.hoveringTarget = 'play')}
+                      onPointerLeave={() => (this.hoveringTarget = null)}
+                    >
+                      {this.isPlaying ? (
+                        <img class="h-[20px]" src={this.hoveringTarget === 'play' ? pauseIcon1 : pauseIcon} onClick={() => this.videoRef.pause()} />
+                      ) : (
+                        <img class="h-[20px]" src={this.hoveringTarget === 'play' ? playIcon1 : playIcon} onClick={() => this.videoRef.play()} />
+                      )}
+                    </div>
+                  </div>
+                  <div class="right flex items-center h-full pr-3">
+                    <volume-controller class="h-full" videoRef={this.videoRef} />
                   </div>
                 </div>
-                <div class="right flex items-center h-full pr-3">
-                  <volume-controller class="h-full" videoRef={this.videoRef} />
-                </div>
               </div>
-            </div>
-          )}
-        </div>
-      </emiya-teleport>
+            )}
+          </div>
+        </emiya-teleport>
+      </Host>
     );
   }
 }
