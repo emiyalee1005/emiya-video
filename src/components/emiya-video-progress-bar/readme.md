@@ -7,9 +7,11 @@
 
 ## Properties
 
-| Property   | Attribute | Description | Type               | Default     |
-| ---------- | --------- | ----------- | ------------------ | ----------- |
-| `videoRef` | --        |             | `HTMLVideoElement` | `undefined` |
+| Property              | Attribute | Description | Type                  | Default     |
+| --------------------- | --------- | ----------- | --------------------- | ----------- |
+| `onCurrentTimeChange` | --        |             | `(a: number) => void` | `undefined` |
+| `onDurationChange`    | --        |             | `(a: number) => void` | `undefined` |
+| `videoRef`            | --        |             | `HTMLVideoElement`    | `undefined` |
 
 
 ## Dependencies
