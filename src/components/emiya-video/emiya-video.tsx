@@ -1,4 +1,4 @@
-import { Component, h, Host, Listen, Prop, State, Watch } from '@stencil/core';
+import { Component, h, Host, Prop, State, Watch } from '@stencil/core';
 import Hls, { Level } from 'hls.js';
 import fullscreen from './assets/fullscreen.svg';
 import fullscreen1 from './assets/fullscreen1.svg';
@@ -25,25 +25,20 @@ export class EmiyaVideo {
   @State() status: 'idle' | 'loading' | 'loaded' | 'canPlay' | 'waiting' | 'play' | 'playing' | 'paused' | 'ended' | 'error' = 'loaded';
   @State() isMouseHover: boolean = false;
   @State() isRecentlyClicked: boolean = false;
-  @State() levels: { id: number; name: string; level: Level }[] = [];
-  @State() currentLevel: number;
+  @State() levels: { id: number; name: string; level?: Level }[] = [];
+  @State() autoLevelEnabled: boolean = true;
+  @State() currentLevel: number = -1;
 
   hls: Hls;
   videoRef: HTMLVideoElement;
   removeRecentlyClickedStatusTimer: any;
 
-  @Listen('currentTimeChange') onCurrentTimeChange(event: CustomEvent<number>) {
-    this.currentTime = event.detail || 0;
-  }
-  @Listen('durationChange') onDurationChange(event: CustomEvent<number>) {
-    this.duration = event.detail || 0;
-  }
-
   @Watch('src')
   onSrcChange(newValue: string) {
     this.status = newValue ? 'loading' : 'idle';
     this.levels = [];
-    this.currentLevel = undefined;
+    this.autoLevelEnabled = true;
+    this.currentLevel = -1;
     if (this.hls) {
       this.hls.destroy();
       this.hls = undefined;
@@ -61,21 +56,26 @@ export class EmiyaVideo {
         this.hls.attachMedia(this.videoRef);
 
         this.hls.on(Hls.Events.MANIFEST_PARSED, () => {
-          this.levels = this.hls.levels.map(function (level) {
+          if (this.autoLevelEnabled) this.hls.currentLevel = -1;
+          this.levels = this.hls.levels.map(function (level, index) {
             return {
               level,
-              id: level.height,
-              name: level.height + 'p',
+              id: index,
+              name: `${level.name}p`,
             };
           });
           console.log('可用分辨率: ', this.levels);
         });
 
-        this.hls.on(Hls.Events.LEVEL_SWITCHED, (event, data) => {
+        const onLevelChange = (event?: any, data?: any) => {
           console.log(event, data);
-          this.currentLevel = this.levels[data.level]?.id;
+          this.currentLevel = this.hls.currentLevel;
           console.log('当前分辨率: ', this.currentLevel);
-        });
+        };
+
+        this.hls.on(Hls.Events.LEVEL_SWITCHED, onLevelChange);
+
+        onLevelChange();
       } else if (this.videoRef.canPlayType('application/vnd.apple.mpegurl')) {
         alert('浏览器版本过低，请升级');
         //this.videoRef.src = newValue;
@@ -83,6 +83,19 @@ export class EmiyaVideo {
         alert('浏览器版本过旧，请升级');
       }
     }
+  }
+
+  onCurrentTimeChange(event: number) {
+    this.currentTime = event || 0;
+  }
+  onDurationChange(event: number) {
+    this.duration = event || 0;
+  }
+
+  onSelectLevel(level: number) {
+    if (level === -1) this.autoLevelEnabled = true;
+    else this.autoLevelEnabled = false;
+    this.currentLevel = this.hls.currentLevel = level;
   }
 
   get shouldShowLoading() {
@@ -211,9 +224,15 @@ export class EmiyaVideo {
               </div>
             )}
             {this.shouldShowControl && (
-              <div class="absolute left-0 bottom-0 w-full h-full pointer-events-none">
+              <div key={this.isFullScreen ? 1 : 0} class="absolute left-0 bottom-0 w-full h-full pointer-events-none">
                 <div class="w-full control-bar absolute bottom-0 left-0 h-[48px] flex justify-between pointer-events-auto">
-                  <emiya-video-progress-bar class="absolute bottom-[100%] left-0 w-full" key={this.src} videoRef={this.videoRef} />
+                  <emiya-video-progress-bar
+                    class="absolute bottom-[100%] left-0 w-full"
+                    onCurrentTimeChange={this.onCurrentTimeChange.bind(this)}
+                    onDurationChange={this.onDurationChange.bind(this)}
+                    key={this.src}
+                    videoRef={this.videoRef}
+                  />
                   <div class="left pl-3 flex items-center">
                     <div
                       class="flex items-center justify-center cursor-pointer h-full w-[34px]"
@@ -231,7 +250,10 @@ export class EmiyaVideo {
                     </span>
                   </div>
                   <div class="right flex items-center h-full pr-3">
-                    <volume-controller class="h-full" videoRef={this.videoRef} />
+                    {!!this.levels.length && (
+                      <level-controller class="h-full mr-1" auto={this.autoLevelEnabled} value={this.currentLevel} onChange={a => this.onSelectLevel(a)} options={this.levels} />
+                    )}
+                    <volume-controller class="h-full mr-1" videoRef={this.videoRef} />
                     <div
                       class="flex items-center justify-center cursor-pointer h-full w-[34px]"
                       onPointerEnter={() => (this.hoveringTarget = 'fullscreen')}

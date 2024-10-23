@@ -5,6 +5,7 @@ import { Component, h, Prop, State, Watch } from '@stencil/core';
   styleUrl: 'emiya-slider.scss',
 })
 export class EmiyaSlider {
+  @Prop() realtime?: boolean = true;
   @Prop() slideHandleRadius: number = 5;
   @Prop() value: number = 0;
   @Prop() onChange: (value: number) => void;
@@ -83,6 +84,7 @@ export class EmiyaSlider {
       const deltaX = e.clientX - startX;
       const newValue = startValue + (deltaX / containerRect.width) * 100;
       this.tempValue = Math.min(Math.max(newValue, this.min), this.max);
+      this.realtime && this.onChange && this.onChange(this.tempValue);
     };
 
     const handlePointerUp = () => {

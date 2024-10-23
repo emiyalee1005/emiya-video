@@ -1,4 +1,4 @@
-import { Component, h, Listen, Prop, State, Watch } from '@stencil/core';
+import { Component, h, Prop, State, Watch } from '@stencil/core';
 import mute from './assets/mute.svg';
 import mute1 from './assets/mute1.svg';
 import icon from './assets/volume.svg';
@@ -44,12 +44,12 @@ export class VolumeController {
     }
   }
 
-  @Listen('isDraggingChange') onIsDraggingChange(event: CustomEvent<boolean>) {
-    this.isDragging = event.detail;
+  onIsDraggingChange(event: boolean) {
+    this.isDragging = event;
   }
 
-  @Listen('visibilityChange') onVisibilityChange(event: CustomEvent<boolean>) {
-    this.isBarVisible = event.detail;
+  onVisibilityChange(event: boolean) {
+    this.isBarVisible = event;
   }
 
   onChangeVolume(volume: number) {
@@ -68,12 +68,18 @@ export class VolumeController {
 
   render() {
     return (
-      <emiya-tooltip forceVisible={this.isDragging} class="h-full">
+      <emiya-tooltip onVisibilityChange={this.onVisibilityChange.bind(this)} forceVisible={this.isDragging} class="h-full">
         <div slot="trigger" class="h-full min-w-[34px] flex items-center justify-center cursor-pointer" onClick={() => this.mute()}>
           {this.volume ? <img class="!h-[16px]" src={this.isBarVisible ? icon1 : icon}></img> : <img class="!h-[18px]" src={this.isBarVisible ? mute1 : mute}></img>}
         </div>
         <div>
-          <emiya-vertical-slider class="m-3" style={{ height: '100px' }} value={this.volume * 100} onChange={a => this.onChangeVolume(a)}></emiya-vertical-slider>
+          <emiya-vertical-slider
+            onIsDraggingChange={this.onIsDraggingChange.bind(this)}
+            class="m-3"
+            style={{ height: '100px' }}
+            value={this.volume * 100}
+            onChange={a => this.onChangeVolume(a)}
+          ></emiya-vertical-slider>
         </div>
       </emiya-tooltip>
     );

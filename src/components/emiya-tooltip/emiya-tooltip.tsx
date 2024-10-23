@@ -1,17 +1,16 @@
-import { Component, Event, EventEmitter, h, Host, Prop, State, Watch } from '@stencil/core';
+import { Component, h, Host, Prop, State, Watch } from '@stencil/core';
 
 @Component({
   tag: 'emiya-tooltip',
   styleUrl: 'emiya-tooltip.scss',
 })
 export class EmiyaTooltip {
+  @Prop() onVisibilityChange?: (a: boolean) => void;
   @Prop() forceVisible?: boolean = false;
   @Prop() boundingElement?: HTMLElement | undefined;
 
   @State() onTriggerHovered: boolean = false;
   @State() onPopupHovered: boolean = false;
-
-  @Event({ eventName: 'visibilityChange' }) visibilityChange: EventEmitter<boolean>;
 
   get isVisible() {
     return this.onTriggerHovered || this.forceVisible;
@@ -19,8 +18,8 @@ export class EmiyaTooltip {
 
   @Watch('forceVisible')
   @Watch('onTriggerHovered')
-  onVisibleChange() {
-    this.visibilityChange.emit(this.isVisible);
+  watchVisibilityChange() {
+    this.onVisibilityChange && this.onVisibilityChange(this.isVisible);
   }
 
   render() {

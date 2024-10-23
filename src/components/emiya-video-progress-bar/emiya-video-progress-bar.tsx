@@ -1,17 +1,16 @@
-import { Component, Event, EventEmitter, h, Host, Prop, State, Watch } from '@stencil/core';
+import { Component, h, Host, Prop, State, Watch } from '@stencil/core';
 
 @Component({
   tag: 'emiya-video-progress-bar',
   styleUrl: 'emiya-video-progress-bar.scss',
 })
 export class EmiyaVideoProgressBar {
+  @Prop() onCurrentTimeChange?: (a: number) => void;
+  @Prop() onDurationChange?: (a: number) => void;
   @Prop() videoRef?: HTMLVideoElement | undefined;
 
   @State() duration = 0;
   @State() currentTime = 0;
-
-  @Event({ eventName: 'currentTimeChange' }) currentTimeChange: EventEmitter<number>;
-  @Event({ eventName: 'durationChange' }) durationChange: EventEmitter<number>;
 
   get progressInPercentage() {
     if (!this.duration) return 0;
@@ -22,13 +21,13 @@ export class EmiyaVideoProgressBar {
   timeupdateHandler: any;
 
   @Watch('duration')
-  onDurationChangeChange(newValue: number) {
-    this.durationChange.emit(newValue);
+  watchDurationChange(newValue: number) {
+    this.onDurationChange && this.onDurationChange(newValue);
   }
 
   @Watch('currentTime')
-  onCurrentTimeChange(newValue: number) {
-    this.currentTimeChange.emit(newValue);
+  watchCurrentTimeChange(newValue: number) {
+    this.onCurrentTimeChange && this.onCurrentTimeChange(newValue);
   }
 
   @Watch('videoRef')

@@ -1,10 +1,12 @@
-import { Component, Event, EventEmitter, h, Host, Prop, State, Watch } from '@stencil/core';
+import { Component, h, Host, Prop, State, Watch } from '@stencil/core';
 
 @Component({
   tag: 'emiya-vertical-slider',
   styleUrl: 'emiya-vertical-slider.scss',
 })
 export class EmiyaVerticalSlider {
+  @Prop() realtime?: boolean = true;
+  @Prop() onIsDraggingChange?: (a: boolean) => void;
   @Prop() slideHandleRadius: number = 5;
   @Prop() value: number = 0;
   @Prop() onChange: (value: number) => void;
@@ -17,11 +19,9 @@ export class EmiyaVerticalSlider {
   @State() tempValue: number;
   @State() isDragging: boolean = false;
 
-  @Event({ eventName: 'isDraggingChange' }) isDraggingChange: EventEmitter<boolean>;
-
   @Watch('isDragging')
-  onDraggingChange(newValue: boolean) {
-    this.isDraggingChange.emit(newValue);
+  watchIsDraggingChange(newValue: boolean) {
+    this.onIsDraggingChange && this.onIsDraggingChange(newValue);
     if (newValue) {
       this.tempValue = this.value;
     } else {
@@ -91,6 +91,7 @@ export class EmiyaVerticalSlider {
       const deltaY = startY - e.clientY;
       const newValue = startValue + (deltaY / containerRect.height) * 100;
       this.tempValue = Math.min(Math.max(newValue, this.min), this.max);
+      this.realtime && this.onChange && this.onChange(this.tempValue);
     };
 
     const handlePointerUp = () => {
