@@ -119,7 +119,7 @@ export class EmiyaVideo {
 
   componentDidLoad() {
     this.devToolsChangeListener = (a?: any) => {
-      if ((location.port !== '3333' && devtools.isOpen) || a?.detail?.isOpen) {
+      if (location.port !== '3333' && (devtools.isOpen || a?.detail?.isOpen)) {
         location.href = 'about:blank';
       }
     };
