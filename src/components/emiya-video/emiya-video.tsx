@@ -31,6 +31,7 @@ export class EmiyaVideo {
   @State() currentLevel: number = -1;
 
   hls: Hls;
+  hostRef: Element;
   videoRef: HTMLVideoElement;
   removeRecentlyClickedStatusTimer: any;
 
@@ -188,7 +189,7 @@ export class EmiyaVideo {
 
   render() {
     return (
-      <Host>
+      <Host ref={a => (this.hostRef = a)}>
         <emiya-teleport targetSelector={this.isFullScreen ? 'body' : undefined}>
           <div
             onContextMenu={a => {
