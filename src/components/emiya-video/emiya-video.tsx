@@ -1,4 +1,5 @@
 import { Component, h, Host, Prop, State, Watch } from '@stencil/core';
+import devtools from 'devtools-detect';
 import Hls, { Level } from 'hls.js';
 import fullscreen from './assets/fullscreen.svg';
 import fullscreen1 from './assets/fullscreen1.svg';
@@ -32,6 +33,8 @@ export class EmiyaVideo {
   hls: Hls;
   videoRef: HTMLVideoElement;
   removeRecentlyClickedStatusTimer: any;
+
+  devToolsChangeListener: any;
 
   @Watch('src')
   onSrcChange(newValue: string) {
@@ -115,6 +118,13 @@ export class EmiyaVideo {
   }
 
   componentDidLoad() {
+    this.devToolsChangeListener = (a?: any) => {
+      if (devtools.isOpen || a?.detail?.isOpen) {
+        location.href = 'about:blank';
+      }
+    };
+    window.addEventListener('devtoolschange', this.devToolsChangeListener);
+    this.devToolsChangeListener();
     this.onSrcChange(this.src);
   }
 
@@ -128,6 +138,7 @@ export class EmiyaVideo {
       this.videoRef.src = '';
       this.videoRef.load();
     }
+    window.removeEventListener('devtoolschange', this.devToolsChangeListener);
   }
 
   onVideoLoadedData() {

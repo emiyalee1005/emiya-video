@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      devtools-detect:
+        specifier: ^4.0.2
+        version: 4.0.2
       hls.js:
         specifier: ^1.5.17
         version: 1.5.17
@@ -763,6 +766,10 @@ packages:
 
   dettle@1.0.4:
     resolution: {integrity: sha512-ktaWiLYYc/ajSa819+HxwABpqtk3dGIAmo5CbHvT3B6XyQSM7VNGDvCPNu94Ptc+Ti4tjTvAKRUCXU/lrVG4WQ==}
+
+  devtools-detect@4.0.2:
+    resolution: {integrity: sha512-LfvHOc/a72gt4OvHOGFK51VmOeTM9Q5uuEeKX+k5oVWZM3qDoLBFVbdhjk7zXX54FuQ370L7OpmxQbNStT+7Gw==}
+    engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
 
   devtools-protocol@0.0.1354347:
     resolution: {integrity: sha512-BlmkSqV0V84E2WnEnoPnwyix57rQxAM5SKJjf4TbYOCGLAWtz8CDH8RIaGOjPgPCXo2Mce3kxSY497OySidY3Q==}
@@ -3136,6 +3143,8 @@ snapshots:
   detect-newline@3.1.0: {}
 
   dettle@1.0.4: {}
+
+  devtools-detect@4.0.2: {}
 
   devtools-protocol@0.0.1354347: {}
 
