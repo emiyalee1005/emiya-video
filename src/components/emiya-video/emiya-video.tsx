@@ -180,18 +180,30 @@ export class EmiyaVideo {
       <Host>
         <emiya-teleport targetSelector={this.isFullScreen ? 'body' : undefined}>
           <div
-            class={`${this.isFullScreen ? 'fixed top-0 left-0' : 'relative'} bg-black text-white w-full h-full`}
+            onContextMenu={a => {
+              a.preventDefault();
+              a.stopPropagation();
+              a.returnValue = false;
+              return false;
+            }}
+            class={`${this.isFullScreen ? 'fixed top-0 left-0' : 'relative'} bg-black text-white w-full h-full select-none`}
             onPointerEnter={() => this.onMouseEnter()}
             onPointerLeave={() => this.onMouseLeave()}
             onPointerCancel={() => this.onMouseLeave()}
             onClick={() => this.onClick()}
           >
             <video
+              onContextMenu={a => {
+                a.preventDefault();
+                a.stopPropagation();
+                a.returnValue = false;
+                return false;
+              }}
               ref={a => (this.videoRef = a)}
               key={this.src}
               // src={this.src}
               autoplay={false}
-              class="w-full h-full pointer-events-none"
+              class="w-full h-full pointer-events-none select-none"
               controls={false}
               onError={() => this.onVideoError()}
               onCanPlay={() => this.onVideoCanPlay()}
