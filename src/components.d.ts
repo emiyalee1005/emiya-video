@@ -65,6 +65,10 @@ export interface EmiyaVerticalSliderCustomEvent<T> extends CustomEvent<T> {
     detail: T;
     target: HTMLEmiyaVerticalSliderElement;
 }
+export interface EmiyaVideoProgressBarCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLEmiyaVideoProgressBarElement;
+}
 declare global {
     interface HTMLEmiyaSliderElement extends Components.EmiyaSlider, HTMLStencilElement {
     }
@@ -79,7 +83,7 @@ declare global {
         new (): HTMLEmiyaTeleportElement;
     };
     interface HTMLEmiyaTooltipElementEventMap {
-        "onVisibilityChange": boolean;
+        "visibilityChange": boolean;
     }
     interface HTMLEmiyaTooltipElement extends Components.EmiyaTooltip, HTMLStencilElement {
         addEventListener<K extends keyof HTMLEmiyaTooltipElementEventMap>(type: K, listener: (this: HTMLEmiyaTooltipElement, ev: EmiyaTooltipCustomEvent<HTMLEmiyaTooltipElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -96,7 +100,7 @@ declare global {
         new (): HTMLEmiyaTooltipElement;
     };
     interface HTMLEmiyaVerticalSliderElementEventMap {
-        "onIsDraggingChange": boolean;
+        "isDraggingChange": boolean;
     }
     interface HTMLEmiyaVerticalSliderElement extends Components.EmiyaVerticalSlider, HTMLStencilElement {
         addEventListener<K extends keyof HTMLEmiyaVerticalSliderElementEventMap>(type: K, listener: (this: HTMLEmiyaVerticalSliderElement, ev: EmiyaVerticalSliderCustomEvent<HTMLEmiyaVerticalSliderElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
@@ -118,7 +122,19 @@ declare global {
         prototype: HTMLEmiyaVideoElement;
         new (): HTMLEmiyaVideoElement;
     };
+    interface HTMLEmiyaVideoProgressBarElementEventMap {
+        "currentTimeChange": number;
+        "durationChange": number;
+    }
     interface HTMLEmiyaVideoProgressBarElement extends Components.EmiyaVideoProgressBar, HTMLStencilElement {
+        addEventListener<K extends keyof HTMLEmiyaVideoProgressBarElementEventMap>(type: K, listener: (this: HTMLEmiyaVideoProgressBarElement, ev: EmiyaVideoProgressBarCustomEvent<HTMLEmiyaVideoProgressBarElementEventMap[K]>) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
+        addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLEmiyaVideoProgressBarElementEventMap>(type: K, listener: (this: HTMLEmiyaVideoProgressBarElement, ev: EmiyaVideoProgressBarCustomEvent<HTMLEmiyaVideoProgressBarElementEventMap[K]>) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof DocumentEventMap>(type: K, listener: (this: Document, ev: DocumentEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener<K extends keyof HTMLElementEventMap>(type: K, listener: (this: HTMLElement, ev: HTMLElementEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+        removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
     }
     var HTMLEmiyaVideoProgressBarElement: {
         prototype: HTMLEmiyaVideoProgressBarElement;
@@ -164,13 +180,13 @@ declare namespace LocalJSX {
     interface EmiyaTooltip {
         "boundingElement"?: HTMLElement | undefined;
         "forceVisible"?: boolean;
-        "onOnVisibilityChange"?: (event: EmiyaTooltipCustomEvent<boolean>) => void;
+        "onVisibilityChange"?: (event: EmiyaTooltipCustomEvent<boolean>) => void;
     }
     interface EmiyaVerticalSlider {
         "max"?: number;
         "min"?: number;
         "onChange"?: (value: number) => void;
-        "onOnIsDraggingChange"?: (event: EmiyaVerticalSliderCustomEvent<boolean>) => void;
+        "onIsDraggingChange"?: (event: EmiyaVerticalSliderCustomEvent<boolean>) => void;
         "progressBarBaseColor"?: string;
         "progressBarLeftColor"?: string;
         "progressBarWidth"?: number;
@@ -181,6 +197,8 @@ declare namespace LocalJSX {
         "src"?: string;
     }
     interface EmiyaVideoProgressBar {
+        "onCurrentTimeChange"?: (event: EmiyaVideoProgressBarCustomEvent<number>) => void;
+        "onDurationChange"?: (event: EmiyaVideoProgressBarCustomEvent<number>) => void;
         "videoRef"?: HTMLVideoElement | undefined;
     }
     interface MyComponent {

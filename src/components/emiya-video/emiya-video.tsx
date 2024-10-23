@@ -1,9 +1,13 @@
-import { Component, h, Host, Prop, State, Watch } from '@stencil/core';
+import { Component, h, Host, Listen, Prop, State, Watch } from '@stencil/core';
 import Hls, { Level } from 'hls.js';
+import fullscreen from './assets/fullscreen.svg';
+import fullscreen1 from './assets/fullscreen1.svg';
 import pauseIcon from './assets/pause.svg';
 import pauseIcon1 from './assets/pause1.svg';
 import playIcon from './assets/play.svg';
 import playIcon1 from './assets/play1.svg';
+import smallscreen from './assets/smallscreen.svg';
+import smallscreen1 from './assets/smallscreen1.svg';
 import spinnerImg from './assets/spinner.svg';
 
 @Component({
@@ -14,7 +18,9 @@ import spinnerImg from './assets/spinner.svg';
 export class EmiyaVideo {
   @Prop() src?: string;
 
-  @State() hoveringTarget: 'center-play' | 'play' | null = null;
+  @State() currentTime: number = 0;
+  @State() duration: number = 0;
+  @State() hoveringTarget: 'fullscreen' | 'center-play' | 'play' | null = null;
   @State() isFullScreen: boolean = false;
   @State() status: 'idle' | 'loading' | 'loaded' | 'canPlay' | 'waiting' | 'play' | 'playing' | 'paused' | 'ended' | 'error' = 'loaded';
   @State() isMouseHover: boolean = false;
@@ -25,6 +31,13 @@ export class EmiyaVideo {
   hls: Hls;
   videoRef: HTMLVideoElement;
   removeRecentlyClickedStatusTimer: any;
+
+  @Listen('currentTimeChange') onCurrentTimeChange(event: CustomEvent<number>) {
+    this.currentTime = event.detail || 0;
+  }
+  @Listen('durationChange') onDurationChange(event: CustomEvent<number>) {
+    this.duration = event.detail || 0;
+  }
 
   @Watch('src')
   onSrcChange(newValue: string) {
@@ -81,7 +94,7 @@ export class EmiyaVideo {
   }
 
   get shouldShowControl() {
-    return this.isRecentlyClicked || this.isMouseHover;
+    return true || this.isRecentlyClicked || this.isMouseHover;
   }
 
   get isPlaying() {
@@ -201,7 +214,7 @@ export class EmiyaVideo {
               <div class="absolute left-0 bottom-0 w-full h-full pointer-events-none">
                 <div class="w-full control-bar absolute bottom-0 left-0 h-[48px] flex justify-between pointer-events-auto">
                   <emiya-video-progress-bar class="absolute bottom-[100%] left-0 w-full" key={this.src} videoRef={this.videoRef} />
-                  <div class="left pl-3">
+                  <div class="left pl-3 flex items-center">
                     <div
                       class="flex items-center justify-center cursor-pointer h-full w-[34px]"
                       onPointerEnter={() => (this.hoveringTarget = 'play')}
@@ -213,9 +226,23 @@ export class EmiyaVideo {
                         <img class="h-[20px]" src={this.hoveringTarget === 'play' ? playIcon1 : playIcon} onClick={() => this.videoRef.play()} />
                       )}
                     </div>
+                    <span class="ml-4 text-sm">
+                      {formatTime(this.currentTime)} / {formatTime(this.duration)}
+                    </span>
                   </div>
                   <div class="right flex items-center h-full pr-3">
                     <volume-controller class="h-full" videoRef={this.videoRef} />
+                    <div
+                      class="flex items-center justify-center cursor-pointer h-full w-[34px]"
+                      onPointerEnter={() => (this.hoveringTarget = 'fullscreen')}
+                      onPointerLeave={() => (this.hoveringTarget = null)}
+                    >
+                      {this.isFullScreen ? (
+                        <img class="h-[20px]" src={this.hoveringTarget === 'fullscreen' ? smallscreen1 : smallscreen} onClick={() => (this.isFullScreen = false)} />
+                      ) : (
+                        <img class="h-[20px]" src={this.hoveringTarget === 'fullscreen' ? fullscreen1 : fullscreen} onClick={() => (this.isFullScreen = true)} />
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -225,4 +252,24 @@ export class EmiyaVideo {
       </Host>
     );
   }
+}
+
+function formatTime(seconds: number) {
+  const hours = Math.floor(seconds / 3600);
+  const minutes = Math.floor((seconds % 3600) / 60);
+  seconds = Math.round(seconds % 60);
+
+  var formattedTime = '';
+
+  if (hours > 0) {
+    formattedTime += hours.toString().padStart(2, '0') + ':';
+  }
+
+  if (minutes > 0 || hours > 0 || (!minutes && !hours)) {
+    formattedTime += minutes.toString().padStart(2, '0') + ':';
+  }
+
+  formattedTime += seconds.toString().padStart(2, '0');
+
+  return formattedTime;
 }

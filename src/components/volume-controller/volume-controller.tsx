@@ -44,11 +44,11 @@ export class VolumeController {
     }
   }
 
-  @Listen('onIsDraggingChange') onIsDraggingChange(event: CustomEvent<boolean>) {
+  @Listen('isDraggingChange') onIsDraggingChange(event: CustomEvent<boolean>) {
     this.isDragging = event.detail;
   }
 
-  @Listen('onVisibilityChange') onVisibilityChange(event: CustomEvent<boolean>) {
+  @Listen('visibilityChange') onVisibilityChange(event: CustomEvent<boolean>) {
     this.isBarVisible = event.detail;
   }
 

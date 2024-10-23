@@ -17,11 +17,11 @@ export class EmiyaVerticalSlider {
   @State() tempValue: number;
   @State() isDragging: boolean = false;
 
-  @Event({ eventName: 'onIsDraggingChange' }) onIsDraggingChange: EventEmitter<boolean>;
+  @Event({ eventName: 'isDraggingChange' }) isDraggingChange: EventEmitter<boolean>;
 
   @Watch('isDragging')
   onDraggingChange(newValue: boolean) {
-    this.onIsDraggingChange.emit(newValue);
+    this.isDraggingChange.emit(newValue);
     if (newValue) {
       this.tempValue = this.value;
     } else {

@@ -11,7 +11,7 @@ export class EmiyaTooltip {
   @State() onTriggerHovered: boolean = false;
   @State() onPopupHovered: boolean = false;
 
-  @Event({ eventName: 'onVisibilityChange' }) onVisibilityChange: EventEmitter<boolean>;
+  @Event({ eventName: 'visibilityChange' }) visibilityChange: EventEmitter<boolean>;
 
   get isVisible() {
     return this.onTriggerHovered || this.forceVisible;
@@ -20,7 +20,7 @@ export class EmiyaTooltip {
   @Watch('forceVisible')
   @Watch('onTriggerHovered')
   onVisibleChange() {
-    this.onVisibilityChange.emit(this.isVisible);
+    this.visibilityChange.emit(this.isVisible);
   }
 
   render() {
