@@ -37,7 +37,13 @@ export class EmiyaVideoProgressBar {
           this.currentTime = this.videoRef.currentTime;
         }),
       );
+      this.durationchangeHandler();
+      this.timeupdateHandler();
     }
+  }
+
+  componentDidLoad() {
+    this.onVideoRefChange(this.videoRef, undefined);
   }
 
   componentWillUnload() {
