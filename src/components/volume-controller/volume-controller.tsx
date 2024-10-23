@@ -34,6 +34,10 @@ export class VolumeController {
     }
   }
 
+  componentDidLoad() {
+    this.onVideoRefChange(this.videoRef, undefined);
+  }
+
   componentWillUnload() {
     if (this.videoRef) {
       this.videoRef.removeEventListener('volumechange', this.volumechangeHandler);
