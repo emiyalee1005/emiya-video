@@ -25,7 +25,7 @@ export namespace Components {
     }
     interface EmiyaTooltip {
         "boundingElement"?: HTMLElement | undefined;
-        "forceVisible"?: boolean;
+        "forceVisible"?: boolean | undefined | null;
         "onVisibilityChange"?: (a: boolean) => void;
     }
     interface EmiyaVerticalSlider {
@@ -160,7 +160,7 @@ declare namespace LocalJSX {
     }
     interface EmiyaTooltip {
         "boundingElement"?: HTMLElement | undefined;
-        "forceVisible"?: boolean;
+        "forceVisible"?: boolean | undefined | null;
         "onVisibilityChange"?: (a: boolean) => void;
     }
     interface EmiyaVerticalSlider {

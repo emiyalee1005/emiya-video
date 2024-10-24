@@ -69,8 +69,8 @@ export class VolumeController {
 
   render() {
     return (
-      <emiya-tooltip onVisibilityChange={this.onVisibilityChange.bind(this)} forceVisible={true || this.isDragging} class="h-full">
-        <div slot="trigger" class="h-full min-w-[34px] flex items-center justify-center cursor-pointer" onClick={() => this.mute()}>
+      <emiya-tooltip onVisibilityChange={this.onVisibilityChange.bind(this)} forceVisible={this.isDragging ? true : undefined} class="h-full">
+        <div slot="trigger" class="h-full min-w-[34px] flex items-center justify-center cursor-pointer" onPointerUp={a => a.pointerType === 'mouse' && this.mute()}>
           {this.volume ? <img class="!h-[16px]" src={this.isBarVisible ? icon1 : icon}></img> : <img class="!h-[18px]" src={this.isBarVisible ? mute1 : mute}></img>}
         </div>
         <div>

@@ -101,7 +101,7 @@ export class EmiyaVerticalSlider {
     let startValue = this.renderedValue;
 
     const handlePointerMove = (e: PointerEvent) => {
-      const delta = start - e[`client${this.unit.XY}`];
+      const delta = (start - e[`client${this.unit.XY}`]) * (this.reverseXY ? -1 : 1);
       const scale = delta / containerRect[this.unit.wh];
       const newValue = startValue + scale * 100;
       this.tempValue = Math.min(Math.max(newValue, this.min), this.max);
