@@ -316,6 +316,7 @@ export class EmiyaVideo {
               onPlay={() => this.onVideoPlay()}
               onLoadedData={() => this.onVideoLoadedData()}
             />
+            <emiya-watermark />
             <div class="absolute left-0 bottom-0 w-full h-full cursor-pointer flex" onPointerUp={a => this.onClick(a)}>
               <div class="flex-1 h-full" onDblClick={() => this.fastJump(-5)}></div>
               <div class="flex-1 h-full flex items-center justify-center">
