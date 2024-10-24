@@ -1,6 +1,7 @@
 import { Component, h, Host, Prop, State, Watch } from '@stencil/core';
 import devtools from 'devtools-detect';
 import Hls, { Level } from 'hls.js';
+import { exitFullscreen, isFullScreen, requestFullscreen } from '../../utils/utils';
 import fullscreen from './assets/fullscreen.svg';
 import fullscreen1 from './assets/fullscreen1.svg';
 import pauseIcon from './assets/pause.svg';
@@ -33,12 +34,18 @@ export class EmiyaVideo {
   hls: Hls;
   hostRef: Element;
   videoRef: HTMLVideoElement;
+  fullscreenListener: any;
   removeRecentlyClickedStatusTimer: any;
 
   devToolsChangeListener: any;
 
+  // @Watch('isFullScreen')
+  // watchFullScreen(newValue: boolean) {
+  //   newValue ? requestFullscreen() : exitFullscreen();
+  // }
+
   @Watch('src')
-  onSrcChange(newValue: string) {
+  watchSrc(newValue: string) {
     this.status = newValue ? 'loading' : 'idle';
     this.levels = [];
     this.autoLevelEnabled = true;
@@ -124,9 +131,16 @@ export class EmiyaVideo {
         location.href = 'about:blank';
       }
     };
+    document.addEventListener(
+      'fullscreenchange',
+      (this.fullscreenListener = () => {
+        this.isFullScreen = isFullScreen();
+      }),
+    );
+    this.fullscreenListener();
     window.addEventListener('devtoolschange', this.devToolsChangeListener);
     this.devToolsChangeListener();
-    this.onSrcChange(this.src);
+    this.watchSrc(this.src);
   }
 
   componentWillUnload() {
@@ -139,6 +153,7 @@ export class EmiyaVideo {
       this.videoRef.src = '';
       this.videoRef.load();
     }
+    document.removeEventListener('fullscreenchange', this.fullscreenListener);
     window.removeEventListener('devtoolschange', this.devToolsChangeListener);
   }
 
@@ -284,9 +299,9 @@ export class EmiyaVideo {
                       onPointerLeave={() => (this.hoveringTarget = null)}
                     >
                       {this.isFullScreen ? (
-                        <img class="h-[20px]" src={this.hoveringTarget === 'fullscreen' ? smallscreen1 : smallscreen} onClick={() => (this.isFullScreen = false)} />
+                        <img class="h-[20px]" src={this.hoveringTarget === 'fullscreen' ? smallscreen1 : smallscreen} onClick={exitFullscreen} />
                       ) : (
-                        <img class="h-[20px]" src={this.hoveringTarget === 'fullscreen' ? fullscreen1 : fullscreen} onClick={() => (this.isFullScreen = true)} />
+                        <img class="h-[20px]" src={this.hoveringTarget === 'fullscreen' ? fullscreen1 : fullscreen} onClick={requestFullscreen} />
                       )}
                     </div>
                   </div>
