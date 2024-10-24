@@ -35,6 +35,7 @@ export class EmiyaVideo {
   hls: Hls;
   hostRef: Element;
   videoRef: HTMLVideoElement;
+  keyupListener: any;
   orientationListener: any;
   fullscreenListener: any;
   removeRecentlyClickedStatusTimer: any;
@@ -151,6 +152,29 @@ export class EmiyaVideo {
   }
 
   componentDidLoad() {
+    window.addEventListener(
+      'keyup',
+      (this.keyupListener = a => {
+        switch (a.keyCode || a.which) {
+          case 38:
+            // 上键被按下
+            console.log('上键');
+            break;
+          case 40:
+            // 下键被按下
+            console.log('下键');
+            break;
+          case 37:
+            // 左键被按下
+            this.fastJump(-5);
+            break;
+          case 39:
+            // 右键被按下
+            this.fastJump(5);
+            break;
+        }
+      }),
+    );
     this.devToolsChangeListener = (a?: any) => {
       if (location.port !== '3333' && (devtools.isOpen || a?.detail?.isOpen)) {
         location.href = 'about:blank';
