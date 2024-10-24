@@ -2,6 +2,7 @@ import { Component, h, Host, Prop, State, Watch } from '@stencil/core';
 import devtools from 'devtools-detect';
 import Hls, { Level } from 'hls.js';
 import { exitFullscreen, isFullScreen, isMobile, requestFullscreen } from '../../utils/utils';
+import errorImg from './assets/error.svg';
 import fullscreen from './assets/fullscreen.svg';
 import fullscreen1 from './assets/fullscreen1.svg';
 import pauseIcon from './assets/pause.svg';
@@ -333,6 +334,7 @@ export class EmiyaVideo {
                     />
                   </div>
                 )}
+                {this.status === 'error' && <img class="h-[100px]" src={errorImg} alt="无法播放" />}
                 {this.shouldShowLoading && <img class="h-[100px]" src={spinnerImg} alt="加载中.." />}
               </div>
               <div class="flex-1 h-full" onDblClick={() => this.fastJump(5)}></div>
