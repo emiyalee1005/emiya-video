@@ -70,6 +70,13 @@ export namespace Components {
          */
         "middle": string;
     }
+    interface PlaybackRateController {
+        "auto"?: boolean;
+        "onChange": (value: number) => any;
+        "options": { id: number; name: string; level?: Level }[];
+        "value": number;
+        "videoRef": HTMLVideoElement;
+    }
     interface VolumeController {
         "reverseXY"?: boolean;
         "videoRef": HTMLVideoElement;
@@ -124,6 +131,12 @@ declare global {
         prototype: HTMLMyComponentElement;
         new (): HTMLMyComponentElement;
     };
+    interface HTMLPlaybackRateControllerElement extends Components.PlaybackRateController, HTMLStencilElement {
+    }
+    var HTMLPlaybackRateControllerElement: {
+        prototype: HTMLPlaybackRateControllerElement;
+        new (): HTMLPlaybackRateControllerElement;
+    };
     interface HTMLVolumeControllerElement extends Components.VolumeController, HTMLStencilElement {
     }
     var HTMLVolumeControllerElement: {
@@ -139,6 +152,7 @@ declare global {
         "emiya-video-progress-bar": HTMLEmiyaVideoProgressBarElement;
         "level-controller": HTMLLevelControllerElement;
         "my-component": HTMLMyComponentElement;
+        "playback-rate-controller": HTMLPlaybackRateControllerElement;
         "volume-controller": HTMLVolumeControllerElement;
     }
 }
@@ -205,6 +219,13 @@ declare namespace LocalJSX {
          */
         "middle"?: string;
     }
+    interface PlaybackRateController {
+        "auto"?: boolean;
+        "onChange"?: (value: number) => any;
+        "options"?: { id: number; name: string; level?: Level }[];
+        "value"?: number;
+        "videoRef"?: HTMLVideoElement;
+    }
     interface VolumeController {
         "reverseXY"?: boolean;
         "videoRef"?: HTMLVideoElement;
@@ -218,6 +239,7 @@ declare namespace LocalJSX {
         "emiya-video-progress-bar": EmiyaVideoProgressBar;
         "level-controller": LevelController;
         "my-component": MyComponent;
+        "playback-rate-controller": PlaybackRateController;
         "volume-controller": VolumeController;
     }
 }
@@ -233,6 +255,7 @@ declare module "@stencil/core" {
             "emiya-video-progress-bar": LocalJSX.EmiyaVideoProgressBar & JSXBase.HTMLAttributes<HTMLEmiyaVideoProgressBarElement>;
             "level-controller": LocalJSX.LevelController & JSXBase.HTMLAttributes<HTMLLevelControllerElement>;
             "my-component": LocalJSX.MyComponent & JSXBase.HTMLAttributes<HTMLMyComponentElement>;
+            "playback-rate-controller": LocalJSX.PlaybackRateController & JSXBase.HTMLAttributes<HTMLPlaybackRateControllerElement>;
             "volume-controller": LocalJSX.VolumeController & JSXBase.HTMLAttributes<HTMLVolumeControllerElement>;
         }
     }

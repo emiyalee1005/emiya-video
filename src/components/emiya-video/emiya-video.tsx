@@ -77,13 +77,12 @@ export class EmiyaVideo {
               name: `${level.name}p`,
             };
           });
-          console.log('可用分辨率: ', this.levels);
+          //console.log('可用分辨率: ', this.levels);
         });
 
-        const onLevelChange = (event?: any, data?: any) => {
-          console.log(event, data);
+        const onLevelChange = (_1?: any, _2?: any) => {
           this.currentLevel = this.hls.currentLevel;
-          console.log('当前分辨率: ', this.currentLevel);
+          //console.log('当前分辨率: ', this.currentLevel);
         };
 
         this.hls.on(Hls.Events.LEVEL_SWITCHED, onLevelChange);
@@ -120,7 +119,7 @@ export class EmiyaVideo {
   }
 
   get shouldShowControl() {
-    return true || this.isRecentlyClicked || this.isMouseHover;
+    return this.isRecentlyClicked || this.isMouseHover;
   }
 
   get isPlaying() {
@@ -226,13 +225,16 @@ export class EmiyaVideo {
     this.isMouseHover = false;
   }
 
-  onClick() {
+  onClick(_1: PointerEvent) {
+    if (this.shouldShowCenterPlay || this.shouldShowControl) {
+      this.videoRef.paused ? this.videoRef.play() : this.videoRef.pause();
+    }
     this.isRecentlyClicked = true;
     clearTimeout(this.removeRecentlyClickedStatusTimer);
     this.removeRecentlyClickedStatusTimer = setTimeout(() => {
       this.isRecentlyClicked = false;
       this.removeRecentlyClickedStatusTimer = undefined;
-    }, 3000);
+    }, 6000);
   }
 
   render() {
@@ -248,10 +250,9 @@ export class EmiyaVideo {
             }}
             style={this.rotateStyle}
             class={`emiya-video-portable ${this.isFullScreen ? 'fixed top-0 left-0' : 'relative'} bg-black text-white w-full h-full select-none`}
-            onPointerEnter={() => this.onMouseEnter()}
-            onPointerLeave={() => this.onMouseLeave()}
+            onPointerEnter={a => a.pointerType === 'mouse' && this.onMouseEnter()}
+            onPointerLeave={a => a.pointerType === 'mouse' && this.onMouseLeave()}
             onPointerCancel={() => this.onMouseLeave()}
-            onClick={() => this.onClick()}
           >
             <video
               onContextMenu={a => {
@@ -274,7 +275,7 @@ export class EmiyaVideo {
               onPlay={() => this.onVideoPlay()}
               onLoadedData={() => this.onVideoLoadedData()}
             />
-            <div class="absolute left-0 bottom-0 w-full h-full cursor-pointer" onClick={() => (this.videoRef.paused ? this.videoRef.play() : this.videoRef.pause())}></div>
+            <div class="absolute left-0 bottom-0 w-full h-full cursor-pointer" onPointerUp={a => this.onClick(a)}></div>
             {this.shouldShowCenterPlay && (
               <div class="absolute left-0 top-0 w-full h-full flex items-center justify-center pointer-events-none">
                 <div
@@ -286,7 +287,7 @@ export class EmiyaVideo {
                     class="h-[68px] m-3"
                     style={{ borderRadius: '50%', backgroundColor: 'rgba(0, 16, 27, 0.7)' }}
                     src={this.hoveringTarget === 'center-play' ? playIcon1 : playIcon}
-                    onClick={() => this.videoRef.play()}
+                    onPointerUp={a => this.onClick(a)}
                   />
                 </div>
               </div>
@@ -328,6 +329,7 @@ export class EmiyaVideo {
                       <level-controller class="h-full mr-1" auto={this.autoLevelEnabled} value={this.currentLevel} onChange={a => this.onSelectLevel(a)} options={this.levels} />
                     )}
                     <volume-controller reverseXY={this.shouldRotate} class="h-full mr-1" videoRef={this.videoRef} />
+                    <playback-rate-controller class="h-full mr-1" videoRef={this.videoRef} />
                     <div
                       class="flex items-center justify-center cursor-pointer h-full w-[34px]"
                       onPointerEnter={() => (this.hoveringTarget = 'fullscreen')}
