@@ -158,11 +158,9 @@ export class EmiyaVideo {
         switch (a.keyCode || a.which) {
           case 38:
             // 上键被按下
-            console.log('上键');
             break;
           case 40:
             // 下键被按下
-            console.log('下键');
             break;
           case 37:
             // 左键被按下
@@ -209,6 +207,7 @@ export class EmiyaVideo {
       this.videoRef.src = '';
       this.videoRef.load();
     }
+    window.removeEventListener('keyup', this.keyupListener);
     window.removeEventListener('orientationchange', this.orientationListener);
     document.removeEventListener('fullscreenchange', this.fullscreenListener);
     window.removeEventListener('devtoolschange', this.devToolsChangeListener);
