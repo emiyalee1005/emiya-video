@@ -48,14 +48,19 @@ export class EmiyaTooltip {
     return (
       <Host
         class="emiya-tooltip-trigger relative"
-        onPointerDown={a => {
-          a.stopPropagation();
-          if (a.pointerType !== 'mouse') this.visibleByTouch = !this.visibleByTouch;
-        }}
         onPointerEnter={a => a.pointerType === 'mouse' && (this.onTriggerHovered = true)}
         onPointerLeave={a => a.pointerType === 'mouse' && (this.onTriggerHovered = false)}
       >
-        <slot name="trigger"></slot>
+        <div
+          class="contents"
+          onPointerDown={a => {
+            setTimeout(() => {
+              if (a.pointerType !== 'mouse') this.visibleByTouch = !this.visibleByTouch;
+            });
+          }}
+        >
+          <slot name="trigger"></slot>
+        </div>
         <div
           class={`emiya-tooltip absolute left-0 bottom-[100%] w-full overflow-visible justify-center flex ${this.isActualVisible ? '' : 'hidden'}`}
           onPointerDown={a => a.stopPropagation()}
