@@ -3,8 +3,7 @@ export function isIphone() {
 }
 
 export function isMobile() {
-  return window.screen.width < 640;
-  //return /Mobi|Android|iPhone/i.test(navigator.userAgent) && window.screen.width < 640;
+  return /Mobi|Android|iPhone/i.test(navigator.userAgent) && window.screen.width < 640;
 }
 
 export function isWechat() {
