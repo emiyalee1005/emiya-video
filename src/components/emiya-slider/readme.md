@@ -16,6 +16,7 @@
 | `progressBarHeight`    | `progress-bar-height`     |             | `number`                  | `6`                           |
 | `progressBarLeftColor` | `progress-bar-left-color` |             | `string`                  | `'#e12617'`                   |
 | `realtime`             | `realtime`                |             | `boolean`                 | `true`                        |
+| `reverseXY`            | `reverse-x-y`             |             | `boolean`                 | `undefined`                   |
 | `slideHandleRadius`    | `slide-handle-radius`     |             | `number`                  | `5`                           |
 | `value`                | `value`                   |             | `number`                  | `0`                           |
 

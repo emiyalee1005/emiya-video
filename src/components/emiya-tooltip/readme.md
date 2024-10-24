@@ -10,7 +10,7 @@
 | Property             | Attribute       | Description | Type                   | Default     |
 | -------------------- | --------------- | ----------- | ---------------------- | ----------- |
 | `boundingElement`    | --              |             | `HTMLElement`          | `undefined` |
-| `forceVisible`       | `force-visible` |             | `boolean`              | `false`     |
+| `forceVisible`       | `force-visible` |             | `boolean`              | `undefined` |
 | `onVisibilityChange` | --              |             | `(a: boolean) => void` | `undefined` |
 
 

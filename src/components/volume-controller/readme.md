@@ -7,9 +7,10 @@
 
 ## Properties
 
-| Property   | Attribute | Description | Type               | Default     |
-| ---------- | --------- | ----------- | ------------------ | ----------- |
-| `videoRef` | --        |             | `HTMLVideoElement` | `undefined` |
+| Property    | Attribute     | Description | Type               | Default     |
+| ----------- | ------------- | ----------- | ------------------ | ----------- |
+| `reverseXY` | `reverse-x-y` |             | `boolean`          | `undefined` |
+| `videoRef`  | --            |             | `HTMLVideoElement` | `undefined` |
 
 
 ## Dependencies
