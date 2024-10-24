@@ -176,7 +176,7 @@ export class EmiyaVideo {
     );
     this.devToolsChangeListener = (a?: any) => {
       if (location.port !== '3333' && (devtools.isOpen || a?.detail?.isOpen)) {
-        location.href = 'about:blank';
+        //location.href = 'about:blank';
       }
     };
     window.addEventListener(
@@ -297,6 +297,9 @@ export class EmiyaVideo {
             onPointerCancel={() => this.onMouseLeave()}
           >
             <video
+              playsInline={true}
+              playsinline={true}
+              preload="auto"
               onContextMenu={a => {
                 a.preventDefault();
                 a.stopPropagation();
