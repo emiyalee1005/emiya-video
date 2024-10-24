@@ -2,6 +2,10 @@ export function isMobile() {
   return /Mobi|Android|iPhone/i.test(navigator.userAgent) && window.screen.width < 640;
 }
 
+export function isWechat() {
+  return navigator.userAgent.toUpperCase().includes('MicroMessenger'.toUpperCase()) || navigator.userAgent.toUpperCase().includes('Wechat'.toUpperCase());
+}
+
 export function format(first?: string, middle?: string, last?: string): string {
   return (first || '') + (middle ? ` ${middle}` : '') + (last ? ` ${last}` : '');
 }

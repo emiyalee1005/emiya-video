@@ -1,7 +1,7 @@
 import { Component, h, Host, Prop, State, Watch } from '@stencil/core';
 import devtools from 'devtools-detect';
 import Hls, { Level } from 'hls.js';
-import { exitFullscreen, isFullScreen, isMobile, requestFullscreen } from '../../utils/utils';
+import { exitFullscreen, isFullScreen, isMobile, isWechat, requestFullscreen } from '../../utils/utils';
 import errorImg from './assets/error.svg';
 import fullscreen from './assets/fullscreen.svg';
 import fullscreen1 from './assets/fullscreen1.svg';
@@ -50,7 +50,7 @@ export class EmiyaVideo {
 
   @Watch('src')
   watchSrc(newValue: string) {
-    this.status = newValue ? 'loading' : 'idle';
+    this.status = newValue ? (isWechat() ? 'loaded' : 'loading') : 'idle';
     this.levels = [];
     this.autoLevelEnabled = true;
     this.currentLevel = -1;
