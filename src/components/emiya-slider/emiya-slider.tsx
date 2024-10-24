@@ -5,6 +5,7 @@ import { Component, h, Prop, State, Watch } from '@stencil/core';
   styleUrl: 'emiya-slider.scss',
 })
 export class EmiyaSlider {
+  @Prop() shadowProgresses: { start: number; end: number }[] = [];
   @Prop() reverseXY?: boolean;
   @Prop() realtime?: boolean = true;
   @Prop() slideHandleRadius: number = 5;
@@ -48,6 +49,9 @@ export class EmiyaSlider {
           class={{ 'slider-container': true, 'focused': this.isDragging }}
           style={{ height: `${this.progressBarHeight}px`, backgroundColor: this.progressBarBaseColor }}
         >
+          {this.shadowProgresses.map(a => (
+            <div class="shadow-progress-bar" key={a.start} style={{ left: `${a.start}%`, width: `${a.end - a.start}%` }}></div>
+          ))}
           <div class="progress-bar" style={{ backgroundColor: this.progressBarLeftColor, width: `${this.renderedValue}%` }}></div>
           <div
             class={{ slider: true, show: this.isDragging }}

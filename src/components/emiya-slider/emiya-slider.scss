@@ -19,12 +19,19 @@
     }
   }
 
+  .shadow-progress-bar {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    background-color: rgba(225, 38, 23, 0.35);
+    pointer-events: none;
+  }
+
   .progress-bar {
     position: absolute;
     top: 0;
     left: 0;
     height: 100%;
-    background-color: #007bff;
     pointer-events: none;
   }
 

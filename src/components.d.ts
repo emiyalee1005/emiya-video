@@ -17,6 +17,7 @@ export namespace Components {
         "progressBarLeftColor": string;
         "realtime"?: boolean;
         "reverseXY"?: boolean;
+        "shadowProgresses": { start: number; end: number }[];
         "slideHandleRadius": number;
         "value": number;
     }
@@ -162,6 +163,7 @@ declare namespace LocalJSX {
         "progressBarLeftColor"?: string;
         "realtime"?: boolean;
         "reverseXY"?: boolean;
+        "shadowProgresses"?: { start: number; end: number }[];
         "slideHandleRadius"?: number;
         "value"?: number;
     }

@@ -120,7 +120,7 @@ export class EmiyaVideo {
   }
 
   get shouldShowControl() {
-    return this.isRecentlyClicked || this.isMouseHover;
+    return true || this.isRecentlyClicked || this.isMouseHover;
   }
 
   get isPlaying() {
