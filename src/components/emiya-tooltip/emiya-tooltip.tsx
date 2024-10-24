@@ -1,4 +1,4 @@
-import { Component, h, Host, Prop, State, Watch } from '@stencil/core';
+import { Component, h, Prop, State, Watch } from '@stencil/core';
 
 @Component({
   tag: 'emiya-tooltip',
@@ -46,8 +46,8 @@ export class EmiyaTooltip {
 
   render() {
     return (
-      <Host
-        class="emiya-tooltip-trigger relative"
+      <div
+        class="emiya-tooltip-trigger relative h-full"
         onPointerEnter={a => a.pointerType === 'mouse' && (this.onTriggerHovered = true)}
         onPointerLeave={a => a.pointerType === 'mouse' && (this.onTriggerHovered = false)}
       >
@@ -72,7 +72,7 @@ export class EmiyaTooltip {
             <slot></slot>
           </div>
         </div>
-      </Host>
+      </div>
     );
   }
 }
