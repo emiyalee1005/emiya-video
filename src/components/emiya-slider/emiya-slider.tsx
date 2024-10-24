@@ -90,12 +90,12 @@ export class EmiyaSlider {
     const containerRect = container.getBoundingClientRect();
 
     this.setIsDragging(true);
-    let startX = e[`client${this.unit.XY}`];
+    let start = e[`client${this.unit.XY}`];
     let startValue = this.renderedValue;
 
     const handlePointerMove = (e: PointerEvent) => {
-      const deltaX = e[`client${this.unit.XY}`] - startX;
-      const scale = this.reverseXY ? deltaX / containerRect[this.unit.wh] : deltaX / containerRect[this.unit.wh];
+      const delta = e[`client${this.unit.XY}`] - start;
+      const scale = delta / containerRect[this.unit.wh];
       const newValue = startValue + scale * 100;
       this.tempValue = Math.min(Math.max(newValue, this.min), this.max);
       this.realtime && this.onChange && this.onChange(this.tempValue);

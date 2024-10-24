@@ -9,6 +9,7 @@ import icon1 from './assets/volume1.svg';
   styleUrl: 'volume-controller.scss',
 })
 export class VolumeController {
+  @Prop() reverseXY?: boolean;
   @Prop() videoRef: HTMLVideoElement;
 
   @State() lastVolume: number;
@@ -68,12 +69,13 @@ export class VolumeController {
 
   render() {
     return (
-      <emiya-tooltip onVisibilityChange={this.onVisibilityChange.bind(this)} forceVisible={this.isDragging} class="h-full">
+      <emiya-tooltip onVisibilityChange={this.onVisibilityChange.bind(this)} forceVisible={true || this.isDragging} class="h-full">
         <div slot="trigger" class="h-full min-w-[34px] flex items-center justify-center cursor-pointer" onClick={() => this.mute()}>
           {this.volume ? <img class="!h-[16px]" src={this.isBarVisible ? icon1 : icon}></img> : <img class="!h-[18px]" src={this.isBarVisible ? mute1 : mute}></img>}
         </div>
         <div>
           <emiya-vertical-slider
+            reverseXY={this.reverseXY}
             onIsDraggingChange={this.onIsDraggingChange.bind(this)}
             class="m-3"
             style={{ height: '100px' }}

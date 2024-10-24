@@ -37,6 +37,7 @@ export namespace Components {
         "progressBarLeftColor": string;
         "progressBarWidth": number;
         "realtime"?: boolean;
+        "reverseXY"?: boolean;
         "slideHandleRadius": number;
         "value": number;
     }
@@ -70,6 +71,7 @@ export namespace Components {
         "middle": string;
     }
     interface VolumeController {
+        "reverseXY"?: boolean;
         "videoRef": HTMLVideoElement;
     }
 }
@@ -170,6 +172,7 @@ declare namespace LocalJSX {
         "progressBarLeftColor"?: string;
         "progressBarWidth"?: number;
         "realtime"?: boolean;
+        "reverseXY"?: boolean;
         "slideHandleRadius"?: number;
         "value"?: number;
     }
@@ -203,6 +206,7 @@ declare namespace LocalJSX {
         "middle"?: string;
     }
     interface VolumeController {
+        "reverseXY"?: boolean;
         "videoRef"?: HTMLVideoElement;
     }
     interface IntrinsicElements {

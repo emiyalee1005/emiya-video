@@ -5,6 +5,7 @@ import { Component, h, Host, Prop, State, Watch } from '@stencil/core';
   styleUrl: 'emiya-vertical-slider.scss',
 })
 export class EmiyaVerticalSlider {
+  @Prop() reverseXY?: boolean;
   @Prop() realtime?: boolean = true;
   @Prop() onIsDraggingChange?: (a: boolean) => void;
   @Prop() slideHandleRadius: number = 5;
@@ -18,6 +19,18 @@ export class EmiyaVerticalSlider {
 
   @State() tempValue: number;
   @State() isDragging: boolean = false;
+
+  get unit() {
+    return this.reverseXY
+      ? {
+          XY: 'X',
+          wh: 'width',
+        }
+      : {
+          XY: 'Y',
+          wh: 'height',
+        };
+  }
 
   @Watch('isDragging')
   watchIsDraggingChange(newValue: boolean) {
@@ -73,7 +86,7 @@ export class EmiyaVerticalSlider {
   handleBarDown(e: PointerEvent) {
     const containerRect = (e.currentTarget as HTMLElement).getBoundingClientRect();
     this.setIsDragging(true);
-    this.onChange && this.onChange((this.tempValue = 100 - (e.offsetY / containerRect.height) * 100));
+    this.onChange && this.onChange((this.tempValue = 100 - (e.offsetY / containerRect[this.unit.wh]) * 100));
     this.handlePointerDown(e);
   }
 
@@ -84,12 +97,13 @@ export class EmiyaVerticalSlider {
     const containerRect = container.getBoundingClientRect();
 
     this.setIsDragging(true);
-    let startY = e.clientY;
+    let start = e[`client${this.unit.XY}`];
     let startValue = this.renderedValue;
 
     const handlePointerMove = (e: PointerEvent) => {
-      const deltaY = startY - e.clientY;
-      const newValue = startValue + (deltaY / containerRect.height) * 100;
+      const delta = start - e[`client${this.unit.XY}`];
+      const scale = delta / containerRect[this.unit.wh];
+      const newValue = startValue + scale * 100;
       this.tempValue = Math.min(Math.max(newValue, this.min), this.max);
       this.realtime && this.onChange && this.onChange(this.tempValue);
     };

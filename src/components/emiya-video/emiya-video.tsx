@@ -327,7 +327,7 @@ export class EmiyaVideo {
                     {!!this.levels.length && (
                       <level-controller class="h-full mr-1" auto={this.autoLevelEnabled} value={this.currentLevel} onChange={a => this.onSelectLevel(a)} options={this.levels} />
                     )}
-                    <volume-controller class="h-full mr-1" videoRef={this.videoRef} />
+                    <volume-controller reverseXY={this.shouldRotate} class="h-full mr-1" videoRef={this.videoRef} />
                     <div
                       class="flex items-center justify-center cursor-pointer h-full w-[34px]"
                       onPointerEnter={() => (this.hoveringTarget = 'fullscreen')}
