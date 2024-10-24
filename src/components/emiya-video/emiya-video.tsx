@@ -1,7 +1,7 @@
 import { Component, h, Host, Prop, State, Watch } from '@stencil/core';
 import devtools from 'devtools-detect';
 import Hls, { Level } from 'hls.js';
-import { exitFullscreen, isFullScreen, requestFullscreen } from '../../utils/utils';
+import { exitFullscreen, isFullScreen, isMobile, requestFullscreen } from '../../utils/utils';
 import fullscreen from './assets/fullscreen.svg';
 import fullscreen1 from './assets/fullscreen1.svg';
 import pauseIcon from './assets/pause.svg';
@@ -127,12 +127,13 @@ export class EmiyaVideo {
   }
 
   get shouldRotate() {
-    if ((this.orientationType === 'portrait-primary' || this.orientationType === 'portrait-secondary') && this.isFullScreen) {
+    if (isMobile() && (this.orientationType === 'portrait-primary' || this.orientationType === 'portrait-secondary') && this.isFullScreen) {
       return true;
     }
     if ((this.orientationType === 'landscape-primary' || this.orientationType === 'landscape-secondary') && this.isFullScreen) {
       return false;
     }
+    return false;
   }
 
   get rotateStyle() {
