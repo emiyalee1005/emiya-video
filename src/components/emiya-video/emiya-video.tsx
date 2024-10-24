@@ -1,7 +1,7 @@
 import { Component, h, Host, Prop, State, Watch } from '@stencil/core';
 import devtools from 'devtools-detect';
 import Hls, { Level } from 'hls.js';
-import { exitFullscreen, isFullScreen, isMobile, isWechat, requestFullscreen } from '../../utils/utils';
+import { exitFullscreen, isFullScreen, isIphone, isMobile, isWechat, requestFullscreen } from '../../utils/utils';
 import errorImg from './assets/error.svg';
 import fullscreen from './assets/fullscreen.svg';
 import fullscreen1 from './assets/fullscreen1.svg';
@@ -153,6 +153,8 @@ export class EmiyaVideo {
   }
 
   componentDidLoad() {
+    this.videoRef.disableRemotePlayback = true;
+    this.videoRef.setAttribute('controlsList', 'nodownload');
     window.addEventListener(
       'keyup',
       (this.keyupListener = a => {
@@ -189,6 +191,7 @@ export class EmiyaVideo {
     document.addEventListener(
       'fullscreenchange',
       (this.fullscreenListener = () => {
+        if (isIphone()) return;
         this.isFullScreen = isFullScreen();
       }),
     );
@@ -310,7 +313,7 @@ export class EmiyaVideo {
               key={this.src}
               // src={this.src}
               autoplay={false}
-              class="w-full h-full pointer-events-none select-none"
+              class="w-full h-full select-none"
               controls={false}
               onError={() => this.onVideoError()}
               onCanPlay={() => this.onVideoCanPlay()}
@@ -404,7 +407,15 @@ export class EmiyaVideo {
                       {this.isFullScreen ? (
                         <img class="h-[20px]" src={this.hoveringTarget === 'fullscreen' ? smallscreen1 : smallscreen} onClick={exitFullscreen} />
                       ) : (
-                        <img class="h-[20px]" src={this.hoveringTarget === 'fullscreen' ? fullscreen1 : fullscreen} onClick={requestFullscreen} />
+                        <img
+                          class="h-[20px]"
+                          src={this.hoveringTarget === 'fullscreen' ? fullscreen1 : fullscreen}
+                          onClick={() => {
+                            if (isIphone()) {
+                              this.videoRef['webkitEnterFullscreen']();
+                            } else requestFullscreen();
+                          }}
+                        />
                       )}
                     </div>
                   </div>

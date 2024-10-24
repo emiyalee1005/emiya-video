@@ -1,3 +1,8 @@
+export function isIphone() {
+  return true;
+  //return /iPhone/i.test(navigator.userAgent);
+}
+
 export function isMobile() {
   return /Mobi|Android|iPhone/i.test(navigator.userAgent) && window.screen.width < 640;
 }
