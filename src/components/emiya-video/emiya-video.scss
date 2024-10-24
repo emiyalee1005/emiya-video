@@ -1,3 +1,15 @@
+.emiya-video-portable {
+  &.horizontal {
+    height: 100vw;
+    transform-origin: 0 0;
+    width: 100vh;
+  }
+
+  &.horizontal-left {
+    transform: rotate(90deg) translateY(-100%);
+  }
+}
+
 :host {
   display: block;
 

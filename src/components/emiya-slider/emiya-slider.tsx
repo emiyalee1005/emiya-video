@@ -81,6 +81,7 @@ export class EmiyaSlider {
     let startValue = this.renderedValue;
 
     const handlePointerMove = (e: PointerEvent) => {
+      console.log(e.clientX, e.clientY, e);
       const deltaX = e.clientX - startX;
       const newValue = startValue + (deltaX / containerRect.width) * 100;
       this.tempValue = Math.min(Math.max(newValue, this.min), this.max);

@@ -20,6 +20,7 @@ import spinnerImg from './assets/spinner.svg';
 export class EmiyaVideo {
   @Prop() src?: string;
 
+  @State() orientationType: OrientationType = window.screen.orientation.type;
   @State() currentTime: number = 0;
   @State() duration: number = 0;
   @State() hoveringTarget: 'fullscreen' | 'center-play' | 'play' | null = null;
@@ -34,6 +35,7 @@ export class EmiyaVideo {
   hls: Hls;
   hostRef: Element;
   videoRef: HTMLVideoElement;
+  orientationListener: any;
   fullscreenListener: any;
   removeRecentlyClickedStatusTimer: any;
 
@@ -125,12 +127,38 @@ export class EmiyaVideo {
     return this.status === 'playing' || this.status === 'play' || this.status === 'waiting';
   }
 
+  get rotateParams() {
+    if ((this.orientationType === 'portrait-primary' || this.orientationType === 'portrait-secondary') && this.isFullScreen) {
+      return {
+        angle: 90,
+        origin: '0 0',
+        width: '100vh',
+        height: '100vw',
+      };
+    }
+    if ((this.orientationType === 'landscape-primary' || this.orientationType === 'landscape-secondary') && this.isFullScreen) {
+      return {
+        angle: 0,
+        origin: '0 0',
+        width: '100vw',
+        height: '100vh',
+      };
+    }
+  }
+
   componentDidLoad() {
     this.devToolsChangeListener = (a?: any) => {
       if (location.port !== '3333' && (devtools.isOpen || a?.detail?.isOpen)) {
         location.href = 'about:blank';
       }
     };
+    window.addEventListener(
+      'orientationchange',
+      (this.orientationListener = () => {
+        this.orientationType = window.screen.orientation.type;
+      }),
+    );
+    this.orientationListener();
     document.addEventListener(
       'fullscreenchange',
       (this.fullscreenListener = () => {
@@ -153,6 +181,7 @@ export class EmiyaVideo {
       this.videoRef.src = '';
       this.videoRef.load();
     }
+    window.removeEventListener('orientationchange', this.orientationListener);
     document.removeEventListener('fullscreenchange', this.fullscreenListener);
     window.removeEventListener('devtoolschange', this.devToolsChangeListener);
   }
@@ -213,7 +242,7 @@ export class EmiyaVideo {
               a.returnValue = false;
               return false;
             }}
-            class={`${this.isFullScreen ? 'fixed top-0 left-0' : 'relative'} bg-black text-white w-full h-full select-none`}
+            class={`emiya-video-portable transition-all ${this.isFullScreen ? 'fixed top-0 left-0' : 'relative'} bg-black text-white w-full h-full select-none`}
             onPointerEnter={() => this.onMouseEnter()}
             onPointerLeave={() => this.onMouseLeave()}
             onPointerCancel={() => this.onMouseLeave()}
