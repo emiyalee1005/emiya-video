@@ -226,16 +226,33 @@ export class EmiyaVideo {
     this.isMouseHover = false;
   }
 
-  onClick(_1: PointerEvent) {
-    if (this.shouldShowCenterPlay || this.shouldShowControl) {
-      this.videoRef.paused ? this.videoRef.play() : this.videoRef.pause();
+  fastJump(length: number) {
+    if (this.videoRef.duration > 0) {
+      this.videoRef.currentTime = Math.max(0, Math.min(this.videoRef.duration, this.videoRef.currentTime + length));
     }
-    this.isRecentlyClicked = true;
-    clearTimeout(this.removeRecentlyClickedStatusTimer);
-    this.removeRecentlyClickedStatusTimer = setTimeout(() => {
-      this.isRecentlyClicked = false;
-      this.removeRecentlyClickedStatusTimer = undefined;
-    }, 6000);
+  }
+
+  lastClickTime: number = 0;
+  dbClickInterval = 200;
+  onClick(_1: PointerEvent) {
+    const time = Date.now();
+    if (time - this.lastClickTime <= this.dbClickInterval) {
+      this.lastClickTime = time;
+      return;
+    }
+    this.lastClickTime = time;
+    setTimeout(() => {
+      if (time !== this.lastClickTime) return;
+      if (this.shouldShowCenterPlay || this.shouldShowControl) {
+        this.videoRef.paused ? this.videoRef.play() : this.videoRef.pause();
+      }
+      this.isRecentlyClicked = true;
+      clearTimeout(this.removeRecentlyClickedStatusTimer);
+      this.removeRecentlyClickedStatusTimer = setTimeout(() => {
+        this.isRecentlyClicked = false;
+        this.removeRecentlyClickedStatusTimer = undefined;
+      }, 6000);
+    }, this.dbClickInterval);
   }
 
   render() {
@@ -276,28 +293,47 @@ export class EmiyaVideo {
               onPlay={() => this.onVideoPlay()}
               onLoadedData={() => this.onVideoLoadedData()}
             />
-            <div class="absolute left-0 bottom-0 w-full h-full cursor-pointer" onPointerUp={a => this.onClick(a)}></div>
-            {this.shouldShowCenterPlay && (
-              <div class="absolute left-0 top-0 w-full h-full flex items-center justify-center pointer-events-none">
-                <div
-                  class="pointer-events-auto flex items-center justify-center cursor-pointer"
-                  onPointerEnter={() => (this.hoveringTarget = 'center-play')}
-                  onPointerLeave={() => (this.hoveringTarget = null)}
-                >
-                  <img
-                    class="h-[68px] m-3"
-                    style={{ borderRadius: '50%', backgroundColor: 'rgba(0, 16, 27, 0.7)' }}
-                    src={this.hoveringTarget === 'center-play' ? playIcon1 : playIcon}
-                    onPointerUp={a => this.onClick(a)}
-                  />
-                </div>
+            <div class="absolute left-0 bottom-0 w-full h-full cursor-pointer flex" onPointerUp={a => this.onClick(a)}>
+              <div class="flex-1 h-full" onDblClick={() => this.fastJump(-5)}></div>
+              <div class="flex-1 h-full flex items-center justify-center">
+                {this.shouldShowCenterPlay && (
+                  <div
+                    class="pointer-events-auto flex items-center justify-center cursor-pointer"
+                    onPointerEnter={() => (this.hoveringTarget = 'center-play')}
+                    onPointerLeave={() => (this.hoveringTarget = null)}
+                  >
+                    <img
+                      class="h-[68px] m-3"
+                      style={{ borderRadius: '50%', backgroundColor: 'rgba(0, 16, 27, 0.7)' }}
+                      src={this.hoveringTarget === 'center-play' ? playIcon1 : playIcon}
+                    />
+                  </div>
+                )}
+                {this.shouldShowLoading && <img class="h-[100px]" src={spinnerImg} alt="加载中.." />}
               </div>
-            )}
-            {this.shouldShowLoading && (
-              <div class="absolute left-0 top-0 w-full h-full flex items-center justify-center pointer-events-none">
-                <img class="h-[100px]" src={spinnerImg} alt="加载中.." />
-              </div>
-            )}
+              <div class="flex-1 h-full" onDblClick={() => this.fastJump(5)}></div>
+            </div>
+            {/*{this.shouldShowCenterPlay && (*/}
+            {/*  <div class="absolute left-0 top-0 w-full h-full flex items-center justify-center pointer-events-none">*/}
+            {/*    <div*/}
+            {/*      class="pointer-events-auto flex items-center justify-center cursor-pointer"*/}
+            {/*      onPointerEnter={() => (this.hoveringTarget = 'center-play')}*/}
+            {/*      onPointerLeave={() => (this.hoveringTarget = null)}*/}
+            {/*    >*/}
+            {/*      <img*/}
+            {/*        class="h-[68px] m-3"*/}
+            {/*        style={{ borderRadius: '50%', backgroundColor: 'rgba(0, 16, 27, 0.7)' }}*/}
+            {/*        src={this.hoveringTarget === 'center-play' ? playIcon1 : playIcon}*/}
+            {/*        onPointerUp={a => this.onClick(a)}*/}
+            {/*      />*/}
+            {/*    </div>*/}
+            {/*  </div>*/}
+            {/*)}*/}
+            {/*{this.shouldShowLoading && (*/}
+            {/*  <div class="absolute left-0 top-0 w-full h-full flex items-center justify-center pointer-events-none">*/}
+            {/*    <img class="h-[100px]" src={spinnerImg} alt="加载中.." />*/}
+            {/*  </div>*/}
+            {/*)}*/}
             {this.shouldShowControl && (
               <div key={this.isFullScreen ? 1 : 0} class="absolute left-0 bottom-0 w-full h-full pointer-events-none">
                 <div class="w-full control-bar absolute bottom-0 left-0 h-[48px] flex justify-between pointer-events-auto">

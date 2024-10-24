@@ -1,6 +1,6 @@
 import { Component, h, Prop, State, Watch } from '@stencil/core';
-import quality from '../level-controller/assets/quality.svg';
-import quality1 from '../level-controller/assets/quality1.svg';
+import rate from './assets/rate.svg';
+import rate1 from './assets/rate1.svg';
 
 @Component({
   tag: 'playback-rate-controller',
@@ -85,7 +85,7 @@ export class PlaybackRateController {
     return (
       <emiya-tooltip onVisibilityChange={this.onVisibilityChange.bind(this)} class="h-full">
         <div slot="trigger" class="h-full min-w-[34px] flex items-center justify-center cursor-pointer">
-          <img class="!h-[16px]" src={this.isBarVisible ? quality1 : quality}></img>
+          <img class="!h-[16px]" src={this.isBarVisible ? rate1 : rate}></img>
         </div>
         <div class="px-2 text-xs">
           {this.actualOptions.map(a => (
