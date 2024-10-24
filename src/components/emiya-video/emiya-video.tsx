@@ -178,7 +178,7 @@ export class EmiyaVideo {
       }),
     );
     this.devToolsChangeListener = (a?: any) => {
-      if (!isMobile() && location.host !== 'localhost' && (devtools.isOpen || a?.detail?.isOpen)) {
+      if (!isMobile() && location.hostname !== 'localhost' && (devtools.isOpen || a?.detail?.isOpen)) {
         location.href = 'about:blank';
       }
     };
