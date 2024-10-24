@@ -36,9 +36,10 @@ export class LevelController {
         <div slot="trigger" class="h-full min-w-[34px] flex items-center justify-center cursor-pointer">
           <img class="!h-[16px]" src={this.isBarVisible ? quality1 : quality}></img>
         </div>
-        <div class="px-2 text-sm">
+        <div class="px-2 text-xs">
           {this.actualOptions.map(a => (
             <div
+              key={a.id}
               style={{ color: (!this.auto && a.id === this.value) || (this.auto && a.id === -1) ? '#E12617' : '' }}
               class={`text-center my-2 hover:text-[#E12617] cursor-pointer whitespace-nowrap`}
               onClick={() => this.onChange && this.onChange(a.id)}

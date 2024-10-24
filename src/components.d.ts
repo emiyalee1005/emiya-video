@@ -71,10 +71,6 @@ export namespace Components {
         "middle": string;
     }
     interface PlaybackRateController {
-        "auto"?: boolean;
-        "onChange": (value: number) => any;
-        "options": { id: number; name: string; level?: Level }[];
-        "value": number;
         "videoRef": HTMLVideoElement;
     }
     interface VolumeController {
@@ -220,10 +216,6 @@ declare namespace LocalJSX {
         "middle"?: string;
     }
     interface PlaybackRateController {
-        "auto"?: boolean;
-        "onChange"?: (value: number) => any;
-        "options"?: { id: number; name: string; level?: Level }[];
-        "value"?: number;
         "videoRef"?: HTMLVideoElement;
     }
     interface VolumeController {

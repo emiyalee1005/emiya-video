@@ -56,7 +56,10 @@ export class EmiyaTooltip {
         onPointerLeave={a => a.pointerType === 'mouse' && (this.onTriggerHovered = false)}
       >
         <slot name="trigger"></slot>
-        <div class={`emiya-tooltip absolute left-0 bottom-[100%] w-full overflow-visible justify-center flex ${this.isActualVisible ? '' : 'hidden'}`}>
+        <div
+          class={`emiya-tooltip absolute left-0 bottom-[100%] w-full overflow-visible justify-center flex ${this.isActualVisible ? '' : 'hidden'}`}
+          onPointerDown={a => a.stopPropagation()}
+        >
           <div
             class={`emiya-tooltip-inner transition-all rounded flex mb-1 ${this.isActualVisible ? '' : 'opacity-0 pointer-events-none'}`}
             style={{ backgroundColor: 'rgba(0,16,27,.7)' }}

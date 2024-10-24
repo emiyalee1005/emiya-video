@@ -1,5 +1,4 @@
-import { Component, h, Prop, State } from '@stencil/core';
-import { Level } from 'hls.js';
+import { Component, h, Prop, State, Watch } from '@stencil/core';
 import quality from '../level-controller/assets/quality.svg';
 import quality1 from '../level-controller/assets/quality1.svg';
 
@@ -9,13 +8,37 @@ import quality1 from '../level-controller/assets/quality1.svg';
 })
 export class PlaybackRateController {
   @Prop() videoRef: HTMLVideoElement;
-  @Prop() auto?: boolean;
-  @Prop() value: number;
-  @Prop() onChange: (value: number) => any;
-  @Prop() options: { id: number; name: string; level?: Level }[] = [];
 
   @State() isBarVisible = false;
-  @State() currentLevel: number;
+  @State() value: number;
+
+  ratechangeListener: any;
+
+  @Watch('videoRef')
+  onVideoRefChange(newValue: HTMLVideoElement, oldValue: HTMLVideoElement) {
+    if (oldValue) {
+      oldValue.removeEventListener('ratechange', this.ratechangeListener);
+    }
+    if (newValue) {
+      this.videoRef.addEventListener(
+        'ratechange',
+        (this.ratechangeListener = () => {
+          this.value = this.videoRef.playbackRate;
+        }),
+      );
+      this.ratechangeListener();
+    }
+  }
+
+  componentDidLoad() {
+    this.onVideoRefChange(this.videoRef, undefined);
+  }
+
+  componentWillUnload() {
+    if (this.videoRef) {
+      this.videoRef.removeEventListener('volumechange', this.ratechangeListener);
+    }
+  }
 
   onVisibilityChange(event: boolean) {
     this.isBarVisible = event;
@@ -24,10 +47,37 @@ export class PlaybackRateController {
   get actualOptions() {
     return [
       {
-        id: -1,
-        name: '',
+        id: 2,
+        name: '2.0X',
       },
-      ...this.options,
+      {
+        id: 1.75,
+        name: '1.75X',
+      },
+      {
+        id: 1.5,
+        name: '1.5X',
+      },
+      {
+        id: 1.25,
+        name: '1.25X',
+      },
+      {
+        id: 1,
+        name: '1.0X',
+      },
+      {
+        id: 0.75,
+        name: '0.75X',
+      },
+      {
+        id: 0.5,
+        name: '0.5X',
+      },
+      {
+        id: 0.25,
+        name: '0.25X',
+      },
     ];
   }
 
@@ -37,14 +87,15 @@ export class PlaybackRateController {
         <div slot="trigger" class="h-full min-w-[34px] flex items-center justify-center cursor-pointer">
           <img class="!h-[16px]" src={this.isBarVisible ? quality1 : quality}></img>
         </div>
-        <div class="px-2 text-sm">
+        <div class="px-2 text-xs">
           {this.actualOptions.map(a => (
             <div
-              style={{ color: (!this.auto && a.id === this.value) || (this.auto && a.id === -1) ? '#E12617' : '' }}
+              key={a.id}
+              style={{ color: a.id === this.value ? '#E12617' : '' }}
               class={`text-center my-2 hover:text-[#E12617] cursor-pointer whitespace-nowrap`}
-              onClick={() => this.onChange && this.onChange(a.id)}
+              onClick={() => this.videoRef && (this.videoRef.playbackRate = a.id)}
             >
-              {a.id === -1 ? `自动${this.auto && this.options[this.value] ? `(${this.options[this.value].name})` : ''}` : a.name}
+              {a.name}
             </div>
           ))}
         </div>
