@@ -3,6 +3,9 @@ import { sass } from '@stencil/sass';
 import tailwind, { tailwindHMR } from 'stencil-tailwind-plugin';
 
 export const config: Config = {
+  devServer: {
+    address: '0.0.0.0',
+  },
   namespace: 'emiya-video',
   plugins: [tailwind(), tailwindHMR(), sass()],
   outputTargets: [
