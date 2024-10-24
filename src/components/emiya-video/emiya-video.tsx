@@ -153,6 +153,7 @@ export class EmiyaVideo {
   }
 
   componentDidLoad() {
+    this.videoRef.disablePictureInPicture = true;
     this.videoRef.disableRemotePlayback = true;
     this.videoRef.setAttribute('controlsList', 'nodownload');
     window.addEventListener(
