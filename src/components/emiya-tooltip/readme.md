@@ -19,12 +19,14 @@
 ### Used by
 
  - [level-controller](../level-controller)
+ - [playback-rate-controller](../playback-rate-controller)
  - [volume-controller](../volume-controller)
 
 ### Graph
 ```mermaid
 graph TD;
   level-controller --> emiya-tooltip
+  playback-rate-controller --> emiya-tooltip
   volume-controller --> emiya-tooltip
   style emiya-tooltip fill:#f9f,stroke:#333,stroke-width:4px
 ```
