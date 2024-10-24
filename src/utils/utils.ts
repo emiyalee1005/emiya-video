@@ -1,6 +1,5 @@
 export function isIphone() {
-  return true;
-  //return /iPhone/i.test(navigator.userAgent);
+  return /iPhone/i.test(navigator.userAgent);
 }
 
 export function isMobile() {

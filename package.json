@@ -54,6 +54,7 @@
   "license": "MIT",
   "dependencies": {
     "devtools-detect": "^4.0.2",
+    "eruda": "^3.4.0",
     "hls.js": "^1.5.17"
   }
 }
