@@ -3,7 +3,8 @@ export function isIphone() {
 }
 
 export function isMobile() {
-  return /Mobi|Android|iPhone/i.test(navigator.userAgent) && window.screen.width < 640;
+  return window.screen.width < 640;
+  //return /Mobi|Android|iPhone/i.test(navigator.userAgent) && window.screen.width < 640;
 }
 
 export function isWechat() {
@@ -29,7 +30,7 @@ export const requestFullscreen = () => {
 
 export function isFullScreen() {
   const doc = document as any;
-  return doc.fullscreenElement || doc.mozFullScreenElement || doc.webkitFullscreenElement || doc.msFullscreenElement;
+  return !!(doc.fullscreenElement || doc.mozFullScreenElement || doc.webkitFullscreenElement || doc.msFullscreenElement);
 }
 
 //退出全屏方法
