@@ -92,7 +92,7 @@ export class PlaybackRateController {
             <div
               key={a.id}
               style={{ color: a.id === this.value ? '#E12617' : '' }}
-              class={`text-center my-2 hover:text-[#E12617] cursor-pointer whitespace-nowrap`}
+              class={`text-center my-2 cursor-pointer whitespace-nowrap`}
               onClick={() => this.videoRef && (this.videoRef.playbackRate = a.id)}
             >
               {a.name}

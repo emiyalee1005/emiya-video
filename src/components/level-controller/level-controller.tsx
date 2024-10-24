@@ -41,7 +41,7 @@ export class LevelController {
             <div
               key={a.id}
               style={{ color: (!this.auto && a.id === this.value) || (this.auto && a.id === -1) ? '#E12617' : '' }}
-              class={`text-center my-2 hover:text-[#E12617] cursor-pointer whitespace-nowrap`}
+              class={`text-center my-2 cursor-pointer whitespace-nowrap`}
               onClick={() => this.onChange && this.onChange(a.id)}
             >
               {a.id === -1 ? `自动${this.auto && this.options[this.value] ? `(${this.options[this.value].name})` : ''}` : a.name}
