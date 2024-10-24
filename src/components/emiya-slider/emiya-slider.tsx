@@ -5,6 +5,7 @@ import { Component, h, Prop, State, Watch } from '@stencil/core';
   styleUrl: 'emiya-slider.scss',
 })
 export class EmiyaSlider {
+  @Prop() reverseXY?: boolean;
   @Prop() realtime?: boolean = true;
   @Prop() slideHandleRadius: number = 5;
   @Prop() value: number = 0;
@@ -17,6 +18,18 @@ export class EmiyaSlider {
 
   @State() tempValue: number;
   @State() isDragging: boolean = false;
+
+  get unit() {
+    return this.reverseXY
+      ? {
+          XY: 'Y',
+          wh: 'height',
+        }
+      : {
+          XY: 'X',
+          wh: 'width',
+        };
+  }
 
   @Watch('isDragging')
   onDraggingChange(newValue: boolean) {
@@ -66,7 +79,7 @@ export class EmiyaSlider {
   handleBarDown(e: PointerEvent) {
     const containerRect = (e.currentTarget as HTMLElement).getBoundingClientRect();
     this.setIsDragging(true);
-    this.onChange && this.onChange((this.tempValue = (e.offsetX / containerRect.width) * 100));
+    this.onChange && this.onChange((this.tempValue = (e[`offsetX`] / containerRect[this.unit.wh]) * 100));
     this.handlePointerDown(e);
   }
 
@@ -77,13 +90,13 @@ export class EmiyaSlider {
     const containerRect = container.getBoundingClientRect();
 
     this.setIsDragging(true);
-    let startX = e.clientX;
+    let startX = e[`client${this.unit.XY}`];
     let startValue = this.renderedValue;
 
     const handlePointerMove = (e: PointerEvent) => {
-      console.log(e.clientX, e.clientY, e);
-      const deltaX = e.clientX - startX;
-      const newValue = startValue + (deltaX / containerRect.width) * 100;
+      const deltaX = e[`client${this.unit.XY}`] - startX;
+      const scale = this.reverseXY ? deltaX / containerRect[this.unit.wh] : deltaX / containerRect[this.unit.wh];
+      const newValue = startValue + scale * 100;
       this.tempValue = Math.min(Math.max(newValue, this.min), this.max);
       this.realtime && this.onChange && this.onChange(this.tempValue);
     };

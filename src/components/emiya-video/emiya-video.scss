@@ -10,9 +10,7 @@
   }
 }
 
-:host {
-  display: block;
-
+.emiya-video-portable {
   .control-bar {
     background-color: rgba(0, 16, 27, 0.7);
     transition:
@@ -20,4 +18,8 @@
       0.4s opacity,
       0.4s top;
   }
+}
+
+:host {
+  display: block;
 }

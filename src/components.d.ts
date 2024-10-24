@@ -16,6 +16,7 @@ export namespace Components {
         "progressBarHeight": number;
         "progressBarLeftColor": string;
         "realtime"?: boolean;
+        "reverseXY"?: boolean;
         "slideHandleRadius": number;
         "value": number;
     }
@@ -45,6 +46,7 @@ export namespace Components {
     interface EmiyaVideoProgressBar {
         "onCurrentTimeChange"?: (a: number) => void;
         "onDurationChange"?: (a: number) => void;
+        "reverseXY"?: boolean;
         "videoRef"?: HTMLVideoElement | undefined;
     }
     interface LevelController {
@@ -147,6 +149,7 @@ declare namespace LocalJSX {
         "progressBarHeight"?: number;
         "progressBarLeftColor"?: string;
         "realtime"?: boolean;
+        "reverseXY"?: boolean;
         "slideHandleRadius"?: number;
         "value"?: number;
     }
@@ -176,6 +179,7 @@ declare namespace LocalJSX {
     interface EmiyaVideoProgressBar {
         "onCurrentTimeChange"?: (a: number) => void;
         "onDurationChange"?: (a: number) => void;
+        "reverseXY"?: boolean;
         "videoRef"?: HTMLVideoElement | undefined;
     }
     interface LevelController {

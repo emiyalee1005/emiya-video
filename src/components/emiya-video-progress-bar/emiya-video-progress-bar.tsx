@@ -5,6 +5,7 @@ import { Component, h, Host, Prop, State, Watch } from '@stencil/core';
   styleUrl: 'emiya-video-progress-bar.scss',
 })
 export class EmiyaVideoProgressBar {
+  @Prop() reverseXY?: boolean;
   @Prop() onCurrentTimeChange?: (a: number) => void;
   @Prop() onDurationChange?: (a: number) => void;
   @Prop() videoRef?: HTMLVideoElement | undefined;
@@ -73,7 +74,7 @@ export class EmiyaVideoProgressBar {
   render() {
     return (
       <Host>
-        <emiya-slider value={this.progressInPercentage} onChange={a => this.onChangeProgress(a)}></emiya-slider>
+        <emiya-slider reverseXY={this.reverseXY} value={this.progressInPercentage} onChange={a => this.onChangeProgress(a)}></emiya-slider>
       </Host>
     );
   }

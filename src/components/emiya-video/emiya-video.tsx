@@ -127,23 +127,27 @@ export class EmiyaVideo {
     return this.status === 'playing' || this.status === 'play' || this.status === 'waiting';
   }
 
-  get rotateParams() {
+  get shouldRotate() {
     if ((this.orientationType === 'portrait-primary' || this.orientationType === 'portrait-secondary') && this.isFullScreen) {
-      return {
-        angle: 90,
-        origin: '0 0',
-        width: '100vh',
-        height: '100vw',
-      };
+      return true;
     }
     if ((this.orientationType === 'landscape-primary' || this.orientationType === 'landscape-secondary') && this.isFullScreen) {
-      return {
-        angle: 0,
-        origin: '0 0',
-        width: '100vw',
-        height: '100vh',
-      };
+      return false;
     }
+  }
+
+  get rotateStyle() {
+    return this.shouldRotate
+      ? {
+          transform: 'rotate(90deg) translateY(-100%)',
+          transformOrigin: '0 0',
+          width: '100vh',
+          height: '100vw',
+        }
+      : {
+          width: '100vw',
+          height: '100vh',
+        };
   }
 
   componentDidLoad() {
@@ -242,7 +246,8 @@ export class EmiyaVideo {
               a.returnValue = false;
               return false;
             }}
-            class={`emiya-video-portable transition-all ${this.isFullScreen ? 'fixed top-0 left-0' : 'relative'} bg-black text-white w-full h-full select-none`}
+            style={this.rotateStyle}
+            class={`emiya-video-portable ${this.isFullScreen ? 'fixed top-0 left-0' : 'relative'} bg-black text-white w-full h-full select-none`}
             onPointerEnter={() => this.onMouseEnter()}
             onPointerLeave={() => this.onMouseLeave()}
             onPointerCancel={() => this.onMouseLeave()}
@@ -295,6 +300,7 @@ export class EmiyaVideo {
               <div key={this.isFullScreen ? 1 : 0} class="absolute left-0 bottom-0 w-full h-full pointer-events-none">
                 <div class="w-full control-bar absolute bottom-0 left-0 h-[48px] flex justify-between pointer-events-auto">
                   <emiya-video-progress-bar
+                    reverseXY={this.shouldRotate}
                     class="absolute bottom-[100%] left-0 w-full"
                     onCurrentTimeChange={this.onCurrentTimeChange.bind(this)}
                     onDurationChange={this.onDurationChange.bind(this)}
