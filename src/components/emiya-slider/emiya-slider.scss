@@ -14,9 +14,13 @@
       &.focused,
       &:hover {
         transform: scaleY(1);
-        & .slider {
-          opacity: 1;
-        }
+      }
+    }
+
+    &.focused,
+    &:hover {
+      & .slider {
+        opacity: 1;
       }
     }
   }
