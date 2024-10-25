@@ -4,17 +4,19 @@
   .slider-container {
     position: relative;
     width: 100%;
-    transform: scaleY(0.56);
     transition: all 0.1s;
     transform-origin: 50% 100%;
     background-color: rgba(255, 255, 255, 0.35);
     cursor: pointer;
 
-    &.focused,
-    &:hover {
-      transform: scaleY(1);
-      & .slider {
-        opacity: 1;
+    @media (min-width: 640px) {
+      transform: scaleY(0.56);
+      &.focused,
+      &:hover {
+        transform: scaleY(1);
+        & .slider {
+          opacity: 1;
+        }
       }
     }
   }
