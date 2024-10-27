@@ -262,7 +262,16 @@ export class EmiyaVideo {
 
   lastClickTime: number = 0;
   dbClickInterval = 200;
+  initialPointerEl: HTMLElement | undefined;
+  onPointerDown(a: PointerEvent) {
+    this.initialPointerEl = a.target as any;
+  }
+
   onClick(_1: PointerEvent) {
+    if (!this.initialPointerEl || !this.initialPointerEl.classList?.contains('emiya-video-control-backdrop')) {
+      this.initialPointerEl = undefined;
+      return;
+    } else this.initialPointerEl = undefined;
     const time = Date.now();
     if (time - this.lastClickTime <= this.dbClickInterval) {
       this.lastClickTime = time;
@@ -325,26 +334,30 @@ export class EmiyaVideo {
               onLoadedData={() => this.onVideoLoadedData()}
             />
             <emiya-watermark />
-            <div class="absolute left-0 bottom-0 w-full h-full cursor-pointer flex" onPointerUp={a => this.onClick(a)}>
-              <div class="flex-1 h-full" onDblClick={() => this.fastJump(-5)}></div>
-              <div class="flex-1 h-full flex items-center justify-center">
+            <div
+              class="emiya-video-control-backdrop absolute left-0 bottom-0 w-full h-full cursor-pointer flex"
+              onPointerDown={this.onPointerDown.bind(this)}
+              onPointerUp={a => this.onClick(a)}
+            >
+              <div class="emiya-video-control-backdrop flex-1 h-full" onDblClick={() => this.fastJump(-5)}></div>
+              <div class="emiya-video-control-backdrop flex-1 h-full flex items-center justify-center">
                 {this.shouldShowCenterPlay && (
                   <div
-                    class="pointer-events-auto flex items-center justify-center cursor-pointer"
+                    class="emiya-video-control-backdrop pointer-events-auto flex items-center justify-center cursor-pointer"
                     onPointerEnter={() => (this.hoveringTarget = 'center-play')}
                     onPointerLeave={() => (this.hoveringTarget = null)}
                   >
                     <img
-                      class="h-[68px] m-3"
+                      class="emiya-video-control-backdrop h-[68px] m-3"
                       style={{ borderRadius: '50%', backgroundColor: 'rgba(0, 16, 27, 0.7)' }}
                       src={this.hoveringTarget === 'center-play' ? playIcon1 : playIcon}
                     />
                   </div>
                 )}
-                {this.status === 'error' && <img class="h-[100px]" src={errorImg} alt="无法播放" />}
-                {this.shouldShowLoading && <img class="h-[100px]" src={spinnerImg} alt="加载中.." />}
+                {this.status === 'error' && <img class="emiya-video-control-backdrop h-[100px]" src={errorImg} alt="无法播放" />}
+                {this.shouldShowLoading && <img class="emiya-video-control-backdrop h-[100px]" src={spinnerImg} alt="加载中.." />}
               </div>
-              <div class="flex-1 h-full" onDblClick={() => this.fastJump(5)}></div>
+              <div class="emiya-video-control-backdrop flex-1 h-full" onDblClick={() => this.fastJump(5)}></div>
             </div>
             {/*{this.shouldShowCenterPlay && (*/}
             {/*  <div class="absolute left-0 top-0 w-full h-full flex items-center justify-center pointer-events-none">*/}
