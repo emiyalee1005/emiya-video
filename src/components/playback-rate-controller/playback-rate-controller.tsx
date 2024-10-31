@@ -8,7 +8,7 @@ import rate1 from './assets/rate1.svg';
 })
 export class PlaybackRateController {
   @Prop() videoRef: HTMLVideoElement;
-
+  tooltipRef: HTMLEmiyaTooltipElement;
   @State() isBarVisible = false;
   @State() value: number;
 
@@ -83,7 +83,7 @@ export class PlaybackRateController {
 
   render() {
     return (
-      <emiya-tooltip onVisibilityChange={this.onVisibilityChange.bind(this)} class="h-full">
+      <emiya-tooltip ref={a => (this.tooltipRef = a)} onVisibilityChange={this.onVisibilityChange.bind(this)} class="h-full">
         <div slot="trigger" class="h-full min-w-[34px] flex items-center justify-center cursor-pointer">
           <img class="!h-[16px]" src={this.isBarVisible ? rate1 : rate}></img>
         </div>
@@ -93,7 +93,10 @@ export class PlaybackRateController {
               key={a.id}
               style={{ color: a.id === this.value ? '#E12617' : '' }}
               class={`text-center my-2 cursor-pointer whitespace-nowrap`}
-              onClick={() => this.videoRef && (this.videoRef.playbackRate = a.id)}
+              onClick={() => {
+                this.videoRef && (this.videoRef.playbackRate = a.id);
+                this.tooltipRef.setVisibility(false);
+              }}
             >
               {a.name}
             </div>

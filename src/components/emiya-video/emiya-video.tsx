@@ -1,5 +1,6 @@
 import { Component, h, Host, Prop, State, Watch } from '@stencil/core';
 import devtools from 'devtools-detect';
+import Hammer from 'hammerjs';
 import Hls, { Level } from 'hls.js';
 import { exitFullscreen, isFullScreen, isIphone, isMobile, isWechat, requestFullscreen } from '../../utils/utils';
 import errorImg from './assets/error.svg';
@@ -13,7 +14,7 @@ import smallscreen from './assets/smallscreen.svg';
 import smallscreen1 from './assets/smallscreen1.svg';
 import spinnerImg from './assets/spinner.svg';
 
-const defaultAutoHideControlDelay = 3000;
+const defaultAutoHideControlDelay = 6000;
 
 @Component({
   tag: 'emiya-video',
@@ -22,7 +23,7 @@ const defaultAutoHideControlDelay = 3000;
 })
 export class EmiyaVideo {
   @Prop() src?: string;
-  @Prop() autoHideControlDelay?: number = 3000;
+  @Prop() autoHideControlDelay?: number = 6000;
 
   @State() orientationType: OrientationType = window.screen.orientation.type;
   @State() currentTime: number = 0;
@@ -45,6 +46,8 @@ export class EmiyaVideo {
   orientationListener: any;
   fullscreenListener: any;
   removeRecentlyClickedStatusTimer: any;
+  backwardSkipRef: HTMLDivElement;
+  forwardSkipRef: HTMLDivElement;
 
   devToolsChangeListener: any;
 
@@ -157,7 +160,22 @@ export class EmiyaVideo {
         };
   }
 
+  playOrPause() {
+    this.videoRef.paused ? this.videoRef.play() : this.videoRef.pause();
+  }
+
   componentDidLoad() {
+    const hb = new Hammer(this.backwardSkipRef);
+    hb.on('doubletap', () => {
+      this.fastJump(-5);
+    });
+
+    console.log(this.forwardSkipRef);
+    const hf = new Hammer(this.forwardSkipRef);
+    hf.on('doubletap', () => {
+      this.fastJump(5);
+    });
+
     this.videoRef.disablePictureInPicture = true;
     this.videoRef.disableRemotePlayback = true;
     this.videoRef.setAttribute('controlsList', 'nodownload');
@@ -167,6 +185,9 @@ export class EmiyaVideo {
         switch (a.keyCode || a.which) {
           case 38:
             // 上键被按下
+            break;
+          case 32: //space
+            this.playOrPause();
             break;
           case 40:
             // 下键被按下
@@ -301,18 +322,22 @@ export class EmiyaVideo {
     setTimeout(() => {
       if (time !== this.lastClickTime) return;
       if (this.shouldShowCenterPlay || this.shouldShowControl) {
-        this.videoRef.paused ? this.videoRef.play() : this.videoRef.pause();
+        this.playOrPause();
       }
-      this.isRecentlyClicked = true;
-      clearTimeout(this.removeRecentlyClickedStatusTimer);
-      this.removeRecentlyClickedStatusTimer = setTimeout(
-        () => {
-          this.isRecentlyClicked = false;
-          this.removeRecentlyClickedStatusTimer = undefined;
-        },
-        this.autoHideControlDelay >= 0 ? this.autoHideControlDelay : defaultAutoHideControlDelay,
-      );
+      this.onRecentClick();
     }, this.dbClickInterval);
+  }
+
+  onRecentClick() {
+    this.isRecentlyClicked = true;
+    clearTimeout(this.removeRecentlyClickedStatusTimer);
+    this.removeRecentlyClickedStatusTimer = setTimeout(
+      () => {
+        this.isRecentlyClicked = false;
+        this.removeRecentlyClickedStatusTimer = undefined;
+      },
+      this.autoHideControlDelay >= 0 ? this.autoHideControlDelay : defaultAutoHideControlDelay,
+    );
   }
 
   render() {
@@ -329,7 +354,7 @@ export class EmiyaVideo {
             style={this.rotateStyle}
             class={`emiya-video-portable ${this.isFullScreen ? 'fixed top-0 left-0' : 'relative'} bg-black text-white w-full h-full select-none`}
             onPointerEnter={a => a.pointerType === 'mouse' && this.onMouseEnter()}
-            onPointerMove={a => a.pointerType === 'mouse' && this.onMouseMove()}
+            onPointerMove={() => this.onMouseMove()}
             onPointerLeave={a => a.pointerType === 'mouse' && this.onMouseLeave()}
             onPointerCancel={() => this.onMouseLeave()}
           >
@@ -363,7 +388,7 @@ export class EmiyaVideo {
               onPointerDown={this.onPointerDown.bind(this)}
               onPointerUp={a => this.onClick(a)}
             >
-              <div class="emiya-video-control-backdrop flex-1 h-full" onDblClick={() => this.fastJump(-5)}></div>
+              <div class="emiya-video-control-backdrop flex-1 h-full" ref={a => (this.backwardSkipRef = a)}></div>
               <div class="emiya-video-control-backdrop flex-1 h-full flex items-center justify-center">
                 {this.shouldShowCenterPlay && (
                   <div
@@ -381,7 +406,7 @@ export class EmiyaVideo {
                 {this.status === 'error' && <img class="emiya-video-control-backdrop h-[100px]" src={errorImg} alt="无法播放" />}
                 {this.shouldShowLoading && <img class="emiya-video-control-backdrop h-[100px]" src={spinnerImg} alt="加载中.." />}
               </div>
-              <div class="emiya-video-control-backdrop flex-1 h-full" onDblClick={() => this.fastJump(5)}></div>
+              <div class="emiya-video-control-backdrop flex-1 h-full" ref={a => (this.forwardSkipRef = a)}></div>
             </div>
             {/*{this.shouldShowCenterPlay && (*/}
             {/*  <div class="absolute left-0 top-0 w-full h-full flex items-center justify-center pointer-events-none">*/}
@@ -405,7 +430,7 @@ export class EmiyaVideo {
             {/*  </div>*/}
             {/*)}*/}
             {this.shouldShowControl && (
-              <div key={this.isFullScreen ? 1 : 0} class="absolute left-0 bottom-0 w-full h-full pointer-events-none">
+              <div key={this.isFullScreen ? 1 : 0} class="absolute left-0 bottom-0 w-full h-full pointer-events-none" onClick={this.onRecentClick.bind(this)}>
                 <div class="w-full control-bar absolute bottom-0 left-0 h-[48px] flex justify-between pointer-events-auto">
                   <emiya-video-progress-bar
                     reverseXY={this.shouldRotate}

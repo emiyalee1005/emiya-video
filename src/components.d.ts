@@ -28,6 +28,7 @@ export namespace Components {
         "boundingElement"?: HTMLElement | undefined;
         "forceVisible"?: boolean | undefined | null;
         "onVisibilityChange"?: (a: boolean) => void;
+        "setVisibility": (visible: boolean) => Promise<void>;
     }
     interface EmiyaVerticalSlider {
         "max": number;

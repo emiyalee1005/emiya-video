@@ -7,9 +7,10 @@
 
 ## Properties
 
-| Property | Attribute | Description | Type     | Default     |
-| -------- | --------- | ----------- | -------- | ----------- |
-| `src`    | `src`     |             | `string` | `undefined` |
+| Property               | Attribute                 | Description | Type     | Default     |
+| ---------------------- | ------------------------- | ----------- | -------- | ----------- |
+| `autoHideControlDelay` | `auto-hide-control-delay` |             | `number` | `6000`      |
+| `src`                  | `src`                     |             | `string` | `undefined` |
 
 
 ## Dependencies

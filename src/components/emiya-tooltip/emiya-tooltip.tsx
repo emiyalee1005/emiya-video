@@ -1,4 +1,4 @@
-import { Component, h, Prop, State, Watch } from '@stencil/core';
+import { Component, h, Method, Prop, State, Watch } from '@stencil/core';
 
 @Component({
   tag: 'emiya-tooltip',
@@ -15,6 +15,7 @@ export class EmiyaTooltip {
 
   globalPointerDownListener: any;
 
+  @State() vs = 1;
   @State() isActualVisible: boolean;
 
   @Watch('forceVisible')
@@ -29,6 +30,12 @@ export class EmiyaTooltip {
   @Watch('isActualVisible')
   watchVisibilityChange() {
     this.onVisibilityChange && this.onVisibilityChange(this.isActualVisible);
+  }
+
+  @Method()
+  setVisibility(visible: boolean) {
+    this.onTriggerHovered = visible;
+    this.visibleByTouch = visible;
   }
 
   componentDidLoad() {
@@ -46,13 +53,12 @@ export class EmiyaTooltip {
 
   render() {
     return (
-      <div
-        class="emiya-tooltip-trigger relative h-full"
-        onPointerEnter={a => a.pointerType === 'mouse' && (this.onTriggerHovered = true)}
-        onPointerLeave={a => a.pointerType === 'mouse' && (this.onTriggerHovered = false)}
-      >
+      <div class="emiya-tooltip-trigger relative h-full" onPointerLeave={a => a.pointerType === 'mouse' && (this.onTriggerHovered = false)}>
         <div
           class="contents"
+          onPointerEnter={a => {
+            a.pointerType === 'mouse' && (this.onTriggerHovered = true);
+          }}
           onPointerDown={a => {
             setTimeout(() => {
               if (a.pointerType !== 'mouse') this.visibleByTouch = !this.visibleByTouch;
@@ -62,7 +68,7 @@ export class EmiyaTooltip {
           <slot name="trigger"></slot>
         </div>
         <div
-          class={`emiya-tooltip absolute left-0 bottom-[100%] w-full overflow-visible justify-center flex ${this.isActualVisible ? '' : 'hidden'}`}
+          class={`emiya-tooltip absolute left-0 bottom-[100%] w-full overflow-visible justify-center flex ${this.isActualVisible ? '' : '!hidden'}`}
           onPointerDown={a => a.stopPropagation()}
         >
           <div

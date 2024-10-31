@@ -14,6 +14,9 @@ importers:
       eruda:
         specifier: ^3.4.0
         version: 3.4.0
+      hammerjs:
+        specifier: ^2.0.8
+        version: 2.0.8
       hls.js:
         specifier: ^1.5.17
         version: 1.5.17
@@ -1005,6 +1008,10 @@ packages:
 
   grammex@3.1.3:
     resolution: {integrity: sha512-rUZoJJQguOCaAMTuoyxs40OxqSLgVhzCCwDn1mbp2vETWutv/TmgAz7KxMR8Tz4z4cty/zIh88HrOWKqWgeGjg==}
+
+  hammerjs@2.0.8:
+    resolution: {integrity: sha512-tSQXBXS/MWQOn/RKckawJ61vvsDpCom87JgxiYdGwHdOa0ht0vzUWDlfioofFCRU0L+6NGDt6XzbgoJvZkMeRQ==}
+    engines: {node: '>=0.8.0'}
 
   has-flag@3.0.0:
     resolution: {integrity: sha512-sKJf1+ceQBr4SMkvQnBDNDtf4TXpVhVGateu0t918bl30FnbE2m4vNLX+VWe/dpjlb+HugGYzW7uQXH98HPEYw==}
@@ -3390,6 +3397,8 @@ snapshots:
   graceful-fs@4.2.11: {}
 
   grammex@3.1.3: {}
+
+  hammerjs@2.0.8: {}
 
   has-flag@3.0.0: {}
 

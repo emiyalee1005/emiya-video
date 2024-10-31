@@ -14,6 +14,25 @@
 | `onVisibilityChange` | --              |             | `(a: boolean) => void` | `undefined` |
 
 
+## Methods
+
+### `setVisibility(visible: boolean) => Promise<void>`
+
+
+
+#### Parameters
+
+| Name      | Type      | Description |
+| --------- | --------- | ----------- |
+| `visible` | `boolean` |             |
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
+
 ## Dependencies
 
 ### Used by
