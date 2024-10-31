@@ -13,6 +13,8 @@ import smallscreen from './assets/smallscreen.svg';
 import smallscreen1 from './assets/smallscreen1.svg';
 import spinnerImg from './assets/spinner.svg';
 
+const defaultAutoHideControlDelay = 3000;
+
 @Component({
   tag: 'emiya-video',
   styleUrl: 'emiya-video.scss',
@@ -20,6 +22,7 @@ import spinnerImg from './assets/spinner.svg';
 })
 export class EmiyaVideo {
   @Prop() src?: string;
+  @Prop() autoHideControlDelay?: number = 3000;
 
   @State() orientationType: OrientationType = window.screen.orientation.type;
   @State() currentTime: number = 0;
@@ -28,11 +31,13 @@ export class EmiyaVideo {
   @State() isFullScreen: boolean = false;
   @State() status: 'idle' | 'loading' | 'loaded' | 'canPlay' | 'waiting' | 'play' | 'playing' | 'paused' | 'ended' | 'error' = 'loaded';
   @State() isMouseHover: boolean = false;
+  @State() isPointerRecentlyMoved: boolean = false;
   @State() isRecentlyClicked: boolean = false;
   @State() levels: { id: number; name: string; level?: Level }[] = [];
   @State() autoLevelEnabled: boolean = true;
   @State() currentLevel: number = -1;
 
+  pointerMoveFlagAutoClearListener: any;
   hls: Hls;
   hostRef: Element;
   videoRef: HTMLVideoElement;
@@ -121,7 +126,7 @@ export class EmiyaVideo {
   }
 
   get shouldShowControl() {
-    return true || this.isRecentlyClicked || this.isMouseHover;
+    return this.isRecentlyClicked || this.isPointerRecentlyMoved;
   }
 
   get isPlaying() {
@@ -250,8 +255,23 @@ export class EmiyaVideo {
     this.isMouseHover = true;
   }
 
+  onMouseMove() {
+    this.isPointerRecentlyMoved = true;
+    clearTimeout(this.pointerMoveFlagAutoClearListener);
+    this.pointerMoveFlagAutoClearListener = setTimeout(
+      () => (this.isPointerRecentlyMoved = false),
+      this.autoHideControlDelay >= 0 ? this.autoHideControlDelay : defaultAutoHideControlDelay,
+    );
+  }
+
   onMouseLeave() {
     this.isMouseHover = false;
+    this.isPointerRecentlyMoved = false;
+    this.isRecentlyClicked = false;
+    clearTimeout(this.pointerMoveFlagAutoClearListener);
+    this.pointerMoveFlagAutoClearListener = undefined;
+    clearTimeout(this.removeRecentlyClickedStatusTimer);
+    this.removeRecentlyClickedStatusTimer = undefined;
   }
 
   fastJump(length: number) {
@@ -285,10 +305,13 @@ export class EmiyaVideo {
       }
       this.isRecentlyClicked = true;
       clearTimeout(this.removeRecentlyClickedStatusTimer);
-      this.removeRecentlyClickedStatusTimer = setTimeout(() => {
-        this.isRecentlyClicked = false;
-        this.removeRecentlyClickedStatusTimer = undefined;
-      }, 6000);
+      this.removeRecentlyClickedStatusTimer = setTimeout(
+        () => {
+          this.isRecentlyClicked = false;
+          this.removeRecentlyClickedStatusTimer = undefined;
+        },
+        this.autoHideControlDelay >= 0 ? this.autoHideControlDelay : defaultAutoHideControlDelay,
+      );
     }, this.dbClickInterval);
   }
 
@@ -306,6 +329,7 @@ export class EmiyaVideo {
             style={this.rotateStyle}
             class={`emiya-video-portable ${this.isFullScreen ? 'fixed top-0 left-0' : 'relative'} bg-black text-white w-full h-full select-none`}
             onPointerEnter={a => a.pointerType === 'mouse' && this.onMouseEnter()}
+            onPointerMove={a => a.pointerType === 'mouse' && this.onMouseMove()}
             onPointerLeave={a => a.pointerType === 'mouse' && this.onMouseLeave()}
             onPointerCancel={() => this.onMouseLeave()}
           >

@@ -43,6 +43,7 @@ export namespace Components {
         "value": number;
     }
     interface EmiyaVideo {
+        "autoHideControlDelay"?: number;
         "src"?: string;
     }
     interface EmiyaVideoProgressBar {
@@ -198,6 +199,7 @@ declare namespace LocalJSX {
         "value"?: number;
     }
     interface EmiyaVideo {
+        "autoHideControlDelay"?: number;
         "src"?: string;
     }
     interface EmiyaVideoProgressBar {
