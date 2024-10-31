@@ -167,6 +167,7 @@ export class EmiyaVideo {
   }
 
   componentDidLoad() {
+    document.addEventListener('visibilitychange', this.devToolsChangeListener);
     this.hb = new Hammer(this.backwardSkipRef);
     this.hb.on('doubletap', () => {
       this.fastJump(-5);
@@ -243,6 +244,7 @@ export class EmiyaVideo {
     window.removeEventListener('orientationchange', this.orientationListener);
     document.removeEventListener('fullscreenchange', this.fullscreenListener);
     window.removeEventListener('devtoolschange', this.devToolsChangeListener);
+    document.addEventListener('visibilitychange', this.devToolsChangeListener);
     this.hb.destroy();
     this.hf.destroy();
   }
