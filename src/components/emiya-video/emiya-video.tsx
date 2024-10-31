@@ -38,6 +38,8 @@ export class EmiyaVideo {
   @State() autoLevelEnabled: boolean = true;
   @State() currentLevel: number = -1;
 
+  hb: any;
+  hf: any;
   pointerMoveFlagAutoClearListener: any;
   hls: Hls;
   hostRef: Element;
@@ -165,14 +167,13 @@ export class EmiyaVideo {
   }
 
   componentDidLoad() {
-    const hb = new Hammer(this.backwardSkipRef);
-    hb.on('doubletap', () => {
+    this.hb = new Hammer(this.backwardSkipRef);
+    this.hb.on('doubletap', () => {
       this.fastJump(-5);
     });
 
-    console.log(this.forwardSkipRef);
-    const hf = new Hammer(this.forwardSkipRef);
-    hf.on('doubletap', () => {
+    this.hf = new Hammer(this.forwardSkipRef);
+    this.hf.on('doubletap', () => {
       this.fastJump(5);
     });
 
@@ -242,6 +243,8 @@ export class EmiyaVideo {
     window.removeEventListener('orientationchange', this.orientationListener);
     document.removeEventListener('fullscreenchange', this.fullscreenListener);
     window.removeEventListener('devtoolschange', this.devToolsChangeListener);
+    this.hb.destroy();
+    this.hf.destroy();
   }
 
   onVideoLoadedData() {
