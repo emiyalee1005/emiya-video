@@ -37,9 +37,9 @@ export class EmiyaWatermark {
 
   get realCount() {
     if (!this.rect || !this.unitRect) return 1;
-    const cols = Math.ceil(this.rect.width / this.unitRect.width);
-    const rows = Math.ceil(this.rect.height / this.unitRect.height);
-    return cols * rows;
+    const cols = this.rect.width / this.unitRect.width;
+    const rows = this.rect.height / this.unitRect.height;
+    return Math.max(1, Math.ceil(cols * rows));
   }
 
   render() {
@@ -51,7 +51,7 @@ export class EmiyaWatermark {
       </div>
     );
     return (
-      <Host class="emiya-watermark absolute left-0 top-0 h-full w-full flex flex-wrap items-center justify-between" ref={a => (this.containerRef = a)}>
+      <Host class="emiya-watermark pointer-events-none absolute left-0 top-0 h-full w-full flex flex-wrap items-center justify-between" ref={a => (this.containerRef = a)}>
         <div class="inline-block opacity-0 absolute top-[100%] right-[100%]" ref={a => (this.unitRef = a)}>
           {unit}
         </div>
