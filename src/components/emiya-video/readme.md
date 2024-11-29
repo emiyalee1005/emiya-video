@@ -9,7 +9,7 @@
 
 | Property               | Attribute                 | Description | Type                                                              | Default     |
 | ---------------------- | ------------------------- | ----------- | ----------------------------------------------------------------- | ----------- |
-| `allowSeek`            | `allow-seek`              |             | `boolean`                                                         | `true`      |
+| `allowSeek`            | `allow-seek`              |             | `string`                                                          | `'true'`    |
 | `autoHideControlDelay` | `auto-hide-control-delay` |             | `number`                                                          | `6000`      |
 | `onCurrentTimeChange`  | --                        |             | `(currentTime: number) => any`                                    | `undefined` |
 | `onDurationChange`     | --                        |             | `(duration: number) => any`                                       | `undefined` |

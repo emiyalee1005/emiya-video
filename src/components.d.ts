@@ -46,7 +46,7 @@ export namespace Components {
         "value": number;
     }
     interface EmiyaVideo {
-        "allowSeek"?: boolean;
+        "allowSeek"?: string;
         "autoHideControlDelay"?: number;
         "getCurrentTime": () => Promise<number>;
         "getDuration": () => Promise<number>;
@@ -240,7 +240,7 @@ declare namespace LocalJSX {
         "value"?: number;
     }
     interface EmiyaVideo {
-        "allowSeek"?: boolean;
+        "allowSeek"?: string;
         "autoHideControlDelay"?: number;
         "onCurrentTimeChange"?: (currentTime: number) => any;
         "onDurationChange"?: (duration: number) => any;

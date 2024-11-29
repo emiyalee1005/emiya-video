@@ -572,7 +572,7 @@ export class EmiyaVideo {
               <div key={this.isFullScreen ? 1 : 0} class="absolute left-0 bottom-0 w-full h-full pointer-events-none" onClick={this.onRecentClick.bind(this)}>
                 <div class="w-full control-bar absolute bottom-0 left-0 h-[48px] flex justify-between pointer-events-auto">
                   <emiya-video-progress-bar
-                    allowSeek={this.allowSeek !== 'true'}
+                    allowSeek={this.allowSeek !== 'false'}
                     reverseXY={this.shouldRotate}
                     class="absolute bottom-[100%] left-0 w-full"
                     onCurrentTimeChange={this.onCurrentTimeChangeHandler.bind(this)}
