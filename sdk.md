@@ -1,21 +1,37 @@
-好的，我来帮你写一个清晰的使用文档：
-
-```markdown:docs/usage.md
-# Emiya Video 播放器使用文档
+# Emiya Video 播放器SDK文档
 
 ## 安装
 ```bash
 npm install emiya-video
 ```
 
+## 准备工作
+将loader和dist两个文件夹放到静态资源目录
+
 ## 基础使用
 ```html
-<emiya-video 
-  id="emiya-video"
-  src="视频ID"
-  watermark="水印内容"
-  seekable="true"
-></emiya-video>
+<html>
+  <head>
+    <script type="module">
+      import { defineCustomElements } from './loader/index.js'; //这里import路径请按实际路径修改
+  
+      defineCustomElements();
+    </script>
+  </head>
+  
+  <body>
+  <emiya-video
+    id="emiya-video"
+    src="视频ID"
+    watermark="水印内容"
+    seekable="true"
+  ></emiya-video>
+  <script type="text/javascript">
+    const player = document.getElementById('emiya-video')
+    // ...
+  </script>
+  </body>
+</html>
 ```
 ##### src: 视频ID
 ##### watermark: 是否可以拖拽进度
@@ -168,4 +184,135 @@ player.onPlaybackRateChange = (rate: number) => {
 ## 销毁浏览器
 ```typescript
 //设计上无需手动销毁浏览器，只要<emiya-video/>标签从dom树移除后，就会自动销毁
+```
+
+## 完整示例
+```html
+<!doctype html>
+<html dir="ltr" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0" />
+  <title>Emiya Video</title>
+
+  <script type="module">
+    import { defineCustomElements } from './loader/index.js';
+
+    defineCustomElements();
+  </script>
+</head>
+<body>
+<emiya-video class="emiya-video" style="width: 80%; height: 380px; margin: 10%" id="video" watermark="EMIYA" seekable="true" src="888" onStatusChange="onStatusChange" />
+<button onclick="play()">播放</button>
+<button onclick="pause()">暂停</button>
+<button onclick="stop()">停止</button>
+<button onclick="destroy()">销毁</button>
+<button onclick="changeVideo()">更换视频</button>
+<button onclick="getStatus()">获取当前状态</button>
+<button onclick="getLevels()">获取清晰度列表</button>
+<button onclick="getLevel()">获取当前清晰度</button>
+<button onclick="setLevel()">设置清晰度</button>
+<button onclick="getVolume()">获取音量</button>
+<button onclick="setVolume()">设置音量</button>
+<button onclick="mute()">静音</button>
+<button onclick="unmute()">取消静音</button>
+<button onclick="getFullScreen()">获取全屏状态</button>
+<button onclick="setFullScreen()">全屏开关</button>
+<button onclick="getPlaybackRate()">获取倍速</button>
+<button onclick="setPlaybackRate()">设置倍速</button>
+<button onclick="getDuration()">获取时长</button>
+<button onclick="getCurrentTime()">获取当前播放时间</button>
+<button onclick="setCurrentTime()">设置当前播放时间</button>
+<script type="text/javascript">
+  let player = document.getElementById('video');
+  async function play() {
+    await player.play();
+  }
+  async function pause() {
+    await player.pause();
+  }
+  function stop() {
+    player.src = undefined;
+  }
+  function destroy() {
+    player.remove();
+    player = undefined;
+    alert(`已销毁，如需重新生成播放器请刷新页面`);
+  }
+  function changeVideo() {
+    player.src = player.src === '888' ? 'http://playertest.longtailvideo.com/adaptive/bipbop/gear4/prog_index.m3u8' : '888'; //正常是传视频ID，但是这里为了测试方便，也可以直接传url
+  }
+  async function getStatus() {
+    alert(await player.getStatus());
+  }
+  async function getLevels() {
+    console.log(await player.getLevels());
+  }
+  async function getLevel() {
+    alert(await player.getLevel());
+  }
+  async function getVolume() {
+    alert(await player.getVolume());
+  }
+  async function getFullScreen() {
+    alert(await player.getFullScreen());
+  }
+  async function setLevel() {
+    await player.setLevel(1);
+  }
+  async function setVolume() {
+    await player.setVolume(80);
+  }
+  async function mute() {
+    await player.mute();
+  }
+  async function unmute() {
+    await player.unmute();
+  }
+  async function setFullScreen() {
+    await player.setFullScreen(!(await player.getFullScreen()));
+  }
+  async function getPlaybackRate() {
+    alert(await player.getPlaybackRate());
+  }
+  async function setPlaybackRate() {
+    await player.setPlaybackRate(2);
+  }
+  async function getDuration() {
+    alert(await player.getDuration());
+  }
+  async function getCurrentTime() {
+    alert(await player.getCurrentTime());
+  }
+  async function setCurrentTime() {
+    await player.setCurrentTime(3.8);
+  }
+  player.onFullScreenChange = function (value) {
+    console.log('是否全屏', value);
+  };
+  player.onVolumeChange = function (value) {
+    console.log('音量', value);
+  };
+  player.onLevelChange = function (value) {
+    console.log('当前清晰度', value);
+  };
+  player.onLevelsChange = function (value) {
+    console.log('清晰度列表', value);
+  };
+  player.onStatusChange = function (status) {
+    console.log('播放状态', status);
+  };
+  player.onPlaybackRateChange = function (rate) {
+    console.log('播放速度', rate);
+  };
+  player.onDurationChange = function (value) {
+    console.log('总时长', value);
+  };
+  player.onCurrentTimeChange = function (value) {
+    console.log('当前播放时间', value);
+  };
+</script>
+</body>
+</html>
+
 ```
