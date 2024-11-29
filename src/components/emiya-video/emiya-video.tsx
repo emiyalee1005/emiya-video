@@ -28,6 +28,7 @@ export class EmiyaVideo {
   @Prop() src?: string;
   @Prop() autoHideControlDelay?: number = 6000;
   @Prop() onStatusChange?: (status: VideoStatus, message?: any) => any;
+  @Prop() onPlaybackRateChange?: (duration: number) => any;
   @Prop() onDurationChange?: (duration: number) => any;
   @Prop() onFullScreenChange?: (fullScreen: boolean) => any;
   @Prop() onCurrentTimeChange?: (currentTime: number) => any;
@@ -128,6 +129,22 @@ export class EmiyaVideo {
   @Method()
   setVolume(value: number) {
     this.videoRef.volume = value / 100;
+  }
+
+  @Method()
+  async getPlaybackRate() {
+    return this.playbackRate;
+  }
+
+  @Method()
+  setPlaybackRate(value: number) {
+    this.videoRef.playbackRate = value;
+  }
+
+  playbackRate = 1;
+  onPlaybackRateChangeHandler(value: number) {
+    this.playbackRate = value;
+    this.onPlaybackRateChange && this.onPlaybackRateChange(this.playbackRate);
   }
 
   // @Watch('isFullScreen')
@@ -584,7 +601,7 @@ export class EmiyaVideo {
                       <level-controller class="h-full mr-1" auto={this.autoLevelEnabled} value={this.currentLevel} onChange={a => this.onSelectLevel(a)} options={this.levels} />
                     )}
                     <volume-controller reverseXY={this.shouldRotate} class="h-full mr-1" videoRef={this.videoRef} onChange={e => this.onVolumeChange(e)} />
-                    <playback-rate-controller class="h-full mr-1" videoRef={this.videoRef} />
+                    <playback-rate-controller class="h-full mr-1" videoRef={this.videoRef} onChange={a => this.onPlaybackRateChangeHandler(a as any)} />
                     <div
                       class="flex items-center justify-center cursor-pointer h-full w-[34px]"
                       onPointerEnter={() => (this.hoveringTarget = 'fullscreen')}

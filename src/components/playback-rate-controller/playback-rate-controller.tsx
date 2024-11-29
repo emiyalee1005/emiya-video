@@ -7,6 +7,7 @@ import rate1 from './assets/rate1.svg';
   styleUrl: 'playback-rate-controller.scss',
 })
 export class PlaybackRateController {
+  @Prop() onChange?: (value: number) => any;
   @Prop() videoRef: HTMLVideoElement;
   tooltipRef: HTMLEmiyaTooltipElement;
   @State() isBarVisible = false;
@@ -24,6 +25,7 @@ export class PlaybackRateController {
         'ratechange',
         (this.ratechangeListener = () => {
           this.value = this.videoRef.playbackRate;
+          this.onChange && this.onChange(this.value);
         }),
       );
       this.ratechangeListener();

@@ -137,27 +137,21 @@ player.onLevelsChange = (levels: { id: number; name: string }[]) => {
 }
 ```
 
+## 播放速度控制
+```typescript
+// 设置播放速度
+await player.setPlaybackRate(1);
+
+// 获取播放速度
+await player.getPlaybackRate();
+
+// 监听播放速度变化
+player.onPlaybackRateChange = (rate: number) => {
+  console.log('当前清晰度:', rate);
+}
+```
+
 ## 销毁浏览器
 ```typescript
 //设计上无需手动销毁浏览器，只要<emiya-video/>标签从dom树移除后，就会自动销毁
-```
-
-## 属性配置
-| 属性名 | 类型 | 默认值 | 说明 |
-|--------|------|--------|------|
-| src | string | - | 视频源地址 |
-| watermark | string | - | 水印文字 |
-| autoHideControlDelay | number | 6000 | 控制栏自动隐藏延迟(毫秒) |
-| allowSeek | boolean | true | 是否允许拖动进度条 |
-
-## 事件回调
-| 事件名 | 参数类型 | 说明 |
-|--------|----------|------|
-| onStatusChange | (status: VideoStatus) => void | 播放状态变化回调 |
-| onCurrentTimeChange | (time: number) => void | 播放进度变化回调 |
-| onDurationChange | (duration: number) => void | 视频时长变化回调 |
-| onVolumeChange | (volume: number) => void | 音量变化回调 |
-| onFullScreenChange | (isFullScreen: boolean) => void | 全屏状态变化回调 |
-| onLevelChange | (level: number) => void | 清晰度变化回调 |
-| onLevelsChange | (levels: Array) => void | 可用清晰度列表变化回调 |
 ```
