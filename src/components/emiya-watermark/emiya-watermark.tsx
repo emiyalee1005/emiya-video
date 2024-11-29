@@ -52,7 +52,10 @@ export class EmiyaWatermark {
       </div>
     );
     return (
-      <Host class="emiya-watermark pointer-events-none absolute left-0 top-0 h-full w-full flex flex-wrap items-center justify-between" ref={a => (this.containerRef = a)}>
+      <Host
+        class="emiya-watermark pointer-events-none absolute overflow-hidden left-0 top-0 h-full w-full flex flex-wrap items-center justify-between"
+        ref={a => (this.containerRef = a)}
+      >
         <div class="inline-block opacity-0 absolute top-[100%] right-[100%]" ref={a => (this.unitRef = a)}>
           {unit}
         </div>

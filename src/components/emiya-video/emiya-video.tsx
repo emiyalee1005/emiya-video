@@ -35,7 +35,7 @@ export class EmiyaVideo {
   @Prop() onLevelsChange?: (levels: { id: number; name: string; level?: Level }[]) => any;
   @Prop() onLevelChange?: (level: number) => any;
   @Prop() onVolumeChange?: (volume: number) => any;
-  @Prop() allowSeek?: boolean = true;
+  @Prop() allowSeek?: string = 'true';
 
   @State() orientationType: OrientationType = window.screen.orientation.type;
   @State() currentTime: number = 0;
@@ -433,7 +433,7 @@ export class EmiyaVideo {
   }
 
   fastJump(length: number) {
-    if (!this.allowSeek) return;
+    if (this.allowSeek === 'false') return;
     if (this.videoRef.duration > 0) {
       this.videoRef.currentTime = Math.max(0, Math.min(this.videoRef.duration, this.videoRef.currentTime + length));
     }
@@ -572,7 +572,7 @@ export class EmiyaVideo {
               <div key={this.isFullScreen ? 1 : 0} class="absolute left-0 bottom-0 w-full h-full pointer-events-none" onClick={this.onRecentClick.bind(this)}>
                 <div class="w-full control-bar absolute bottom-0 left-0 h-[48px] flex justify-between pointer-events-auto">
                   <emiya-video-progress-bar
-                    allowSeek={this.allowSeek}
+                    allowSeek={this.allowSeek !== 'true'}
                     reverseXY={this.shouldRotate}
                     class="absolute bottom-[100%] left-0 w-full"
                     onCurrentTimeChange={this.onCurrentTimeChangeHandler.bind(this)}
