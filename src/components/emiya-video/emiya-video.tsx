@@ -14,6 +14,7 @@ import smallscreen from './assets/smallscreen.svg';
 import smallscreen1 from './assets/smallscreen1.svg';
 import spinnerImg from './assets/spinner.svg';
 
+export type VideoStatus = 'idle' | 'loading' | 'loaded' | 'canPlay' | 'waiting' | 'play' | 'playing' | 'paused' | 'ended' | 'error';
 const defaultAutoHideControlDelay = 6000;
 
 @Component({
@@ -22,24 +23,31 @@ const defaultAutoHideControlDelay = 6000;
   scoped: true,
 })
 export class EmiyaVideo {
+  @Prop() watermark?: string;
   @Prop() src?: string;
   @Prop() autoHideControlDelay?: number = 6000;
+  @Prop() onStatusChange?: (status: VideoStatus, message?: any) => any;
+  @Prop() onDurationChange?: (duration: number) => any;
+  @Prop() onFullScreenChange?: (fullScreen: boolean) => any;
+  @Prop() onCurrentTimeChange?: (currentTime: number) => any;
   @Prop() onLevelsChange?: (levels: { id: number; name: string; level?: Level }[]) => any;
   @Prop() onLevelChange?: (level: number) => any;
-  @Prop() allowSeek?: boolean = false;
+  @Prop() onVolumeChange?: (volume: number) => any;
+  @Prop() allowSeek?: boolean = true;
 
   @State() orientationType: OrientationType = window.screen.orientation.type;
   @State() currentTime: number = 0;
   @State() duration: number = 0;
   @State() hoveringTarget: 'fullscreen' | 'center-play' | 'play' | null = null;
   @State() isFullScreen: boolean = false;
-  @State() status: 'idle' | 'loading' | 'loaded' | 'canPlay' | 'waiting' | 'play' | 'playing' | 'paused' | 'ended' | 'error' = 'loaded';
+  @State() status: VideoStatus = 'loaded';
   @State() isMouseHover: boolean = false;
   @State() isPointerRecentlyMoved: boolean = false;
   @State() isRecentlyClicked: boolean = false;
   @State() levels: { id: number; name: string; level?: Level }[] = [];
   @State() autoLevelEnabled: boolean = true;
   @State() currentLevel: number = -1;
+  @State() error?: any;
 
   hb: any;
   hf: any;
@@ -56,6 +64,31 @@ export class EmiyaVideo {
 
   devToolsChangeListener: any;
 
+  @Watch('status')
+  watchStatusChange(newValue: VideoStatus) {
+    this.onStatusChange && this.onStatusChange(newValue, newValue === 'error' ? this.error : undefined);
+  }
+
+  @Method()
+  async getStatus() {
+    return this.status;
+  }
+
+  @Watch('isFullScreen')
+  watchFullScreenChange(newValue: boolean) {
+    this.onFullScreenChange && this.onFullScreenChange(newValue);
+  }
+
+  @Method()
+  async getFullScreen() {
+    return this.isFullScreen;
+  }
+
+  @Method()
+  setFullScreen(value: boolean) {
+    this.isFullScreen = value;
+  }
+
   @Watch('levels')
   watchLevelsChange(newValue: any[]) {
     this.onLevelsChange && this.onLevelsChange(newValue);
@@ -64,6 +97,16 @@ export class EmiyaVideo {
   @Method()
   setLevel(level: number) {
     this.onSelectLevel(level);
+  }
+
+  @Method()
+  async getVolume() {
+    return this.videoRef.volume;
+  }
+
+  @Method()
+  setVolume(value: number) {
+    this.videoRef.volume = value;
   }
 
   // @Watch('isFullScreen')
@@ -123,11 +166,13 @@ export class EmiyaVideo {
     }
   }
 
-  onCurrentTimeChange(event: number) {
+  onCurrentTimeChangeHandler(event: number) {
     this.currentTime = event || 0;
+    this.onCurrentTimeChange && this.onCurrentTimeChange(this.currentTime);
   }
-  onDurationChange(event: number) {
+  onDurationChangeHandler(event: number) {
     this.duration = event || 0;
+    this.onDurationChange && this.onDurationChange(this.duration);
   }
 
   onSelectLevel(level: number) {
@@ -174,6 +219,21 @@ export class EmiyaVideo {
           width: '100%',
           height: '100%',
         };
+  }
+
+  @Method()
+  play() {
+    return this.videoRef.play();
+  }
+
+  @Method()
+  pause() {
+    return this.videoRef.pause();
+  }
+
+  @Method()
+  setCurrentTime(time: number) {
+    this.currentTime = this.videoRef.currentTime = time;
   }
 
   playOrPause() {
@@ -267,8 +327,13 @@ export class EmiyaVideo {
     this.status = 'loaded';
   }
 
-  onVideoError() {
+  onVideoEnded() {
+    this.status = 'ended';
+  }
+
+  onVideoError(error: any) {
     this.status = 'error';
+    this.error = error;
   }
 
   onVideoCanPlay() {
@@ -394,7 +459,8 @@ export class EmiyaVideo {
               autoplay={false}
               class="w-full h-full select-none"
               controls={false}
-              onError={() => this.onVideoError()}
+              onEnded={() => this.onVideoEnded()}
+              onError={a => this.onVideoError(a)}
               onCanPlay={() => this.onVideoCanPlay()}
               onWaiting={() => this.onVideoWaiting()}
               onPlaying={() => this.onVideoPlaying()}
@@ -402,7 +468,7 @@ export class EmiyaVideo {
               onPlay={() => this.onVideoPlay()}
               onLoadedData={() => this.onVideoLoadedData()}
             />
-            <emiya-watermark />
+            <emiya-watermark value={this.watermark} />
             <div
               class="emiya-video-control-backdrop absolute left-0 bottom-0 w-full h-full cursor-pointer flex"
               onPointerDown={this.onPointerDown.bind(this)}
@@ -456,8 +522,8 @@ export class EmiyaVideo {
                     allowSeek={this.allowSeek}
                     reverseXY={this.shouldRotate}
                     class="absolute bottom-[100%] left-0 w-full"
-                    onCurrentTimeChange={this.onCurrentTimeChange.bind(this)}
-                    onDurationChange={this.onDurationChange.bind(this)}
+                    onCurrentTimeChange={this.onCurrentTimeChangeHandler.bind(this)}
+                    onDurationChange={this.onDurationChangeHandler.bind(this)}
                     key={this.src}
                     videoRef={this.videoRef}
                   />
@@ -481,7 +547,7 @@ export class EmiyaVideo {
                     {!!this.levels.length && (
                       <level-controller class="h-full mr-1" auto={this.autoLevelEnabled} value={this.currentLevel} onChange={a => this.onSelectLevel(a)} options={this.levels} />
                     )}
-                    <volume-controller reverseXY={this.shouldRotate} class="h-full mr-1" videoRef={this.videoRef} />
+                    <volume-controller reverseXY={this.shouldRotate} class="h-full mr-1" videoRef={this.videoRef} onChange={e => this.onVolumeChange(e)} />
                     <playback-rate-controller class="h-full mr-1" videoRef={this.videoRef} />
                     <div
                       class="flex items-center justify-center cursor-pointer h-full w-[34px]"

@@ -5,7 +5,9 @@
  * It contains typing information for all components that exist in this project.
  */
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
+import { VideoStatus } from "./components/emiya-video/emiya-video";
 import { Level } from "hls.js";
+export { VideoStatus } from "./components/emiya-video/emiya-video";
 export { Level } from "hls.js";
 export namespace Components {
     interface EmiyaSlider {
@@ -46,10 +48,24 @@ export namespace Components {
     interface EmiyaVideo {
         "allowSeek"?: boolean;
         "autoHideControlDelay"?: number;
+        "getFullScreen": () => Promise<boolean>;
+        "getStatus": () => Promise<VideoStatus>;
+        "getVolume": () => Promise<number>;
+        "onCurrentTimeChange"?: (currentTime: number) => any;
+        "onDurationChange"?: (duration: number) => any;
+        "onFullScreenChange"?: (fullScreen: boolean) => any;
         "onLevelChange"?: (level: number) => any;
         "onLevelsChange"?: (levels: { id: number; name: string; level?: Level }[]) => any;
+        "onStatusChange"?: (status: VideoStatus, message?: any) => any;
+        "onVolumeChange"?: (volume: number) => any;
+        "pause": () => Promise<void>;
+        "play": () => Promise<void>;
+        "setCurrentTime": (time: number) => Promise<void>;
+        "setFullScreen": (value: boolean) => Promise<void>;
         "setLevel": (level: number) => Promise<void>;
+        "setVolume": (value: number) => Promise<void>;
         "src"?: string;
+        "watermark"?: string;
     }
     interface EmiyaVideoPlayer {
     }
@@ -61,6 +77,7 @@ export namespace Components {
         "videoRef"?: HTMLVideoElement | undefined;
     }
     interface EmiyaWatermark {
+        "value": string;
     }
     interface LevelController {
         "auto"?: boolean;
@@ -86,6 +103,7 @@ export namespace Components {
         "videoRef": HTMLVideoElement;
     }
     interface VolumeController {
+        "onChange"?: (value: number) => any;
         "reverseXY"?: boolean;
         "videoRef": HTMLVideoElement;
     }
@@ -216,9 +234,15 @@ declare namespace LocalJSX {
     interface EmiyaVideo {
         "allowSeek"?: boolean;
         "autoHideControlDelay"?: number;
+        "onCurrentTimeChange"?: (currentTime: number) => any;
+        "onDurationChange"?: (duration: number) => any;
+        "onFullScreenChange"?: (fullScreen: boolean) => any;
         "onLevelChange"?: (level: number) => any;
         "onLevelsChange"?: (levels: { id: number; name: string; level?: Level }[]) => any;
+        "onStatusChange"?: (status: VideoStatus, message?: any) => any;
+        "onVolumeChange"?: (volume: number) => any;
         "src"?: string;
+        "watermark"?: string;
     }
     interface EmiyaVideoPlayer {
     }
@@ -230,6 +254,7 @@ declare namespace LocalJSX {
         "videoRef"?: HTMLVideoElement | undefined;
     }
     interface EmiyaWatermark {
+        "value"?: string;
     }
     interface LevelController {
         "auto"?: boolean;
@@ -255,6 +280,7 @@ declare namespace LocalJSX {
         "videoRef"?: HTMLVideoElement;
     }
     interface VolumeController {
+        "onChange"?: (value: number) => any;
         "reverseXY"?: boolean;
         "videoRef"?: HTMLVideoElement;
     }

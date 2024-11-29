@@ -1,10 +1,11 @@
-import { Component, h, Host, State } from '@stencil/core';
+import { Component, h, Host, Prop, State } from '@stencil/core';
 
 @Component({
   tag: 'emiya-watermark',
   styleUrl: 'emiya-watermark.scss',
 })
 export class EmiyaWatermark {
+  @Prop() value: string;
   @State() rect: DOMRectReadOnly;
   @State() unitRect: DOMRectReadOnly;
   @State() count: number = 1;
@@ -46,7 +47,7 @@ export class EmiyaWatermark {
     const unit = (
       <div class="emiya-watermark-unit inline-block p-12">
         <div class="text-white opacity-[.3]" style={{ transform: 'rotate(-45deg)', transformOrigin: '50% 50%' }}>
-          Emiya
+          {this.value}
         </div>
       </div>
     );

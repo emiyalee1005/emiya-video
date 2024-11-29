@@ -11,6 +11,7 @@ import icon1 from './assets/volume1.svg';
 export class VolumeController {
   @Prop() reverseXY?: boolean;
   @Prop() videoRef: HTMLVideoElement;
+  @Prop() onChange?: (value: number) => any;
 
   @State() lastVolume: number;
   @State() isDragging = false;
@@ -29,6 +30,7 @@ export class VolumeController {
         'volumechange',
         (this.volumechangeHandler = () => {
           this.volume = this.videoRef.volume;
+          this.onChange && this.onChange(this.volume);
         }),
       );
       this.volumechangeHandler();
