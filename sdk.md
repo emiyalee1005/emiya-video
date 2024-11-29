@@ -316,3 +316,68 @@ player.onPlaybackRateChange = (rate: number) => {
 </html>
 
 ```
+
+# OssHelper API 文档
+## 类初始化
+```typescript
+constructor(options: OssUploader.ConstructionOptions)
+```
+### 参数选项
+- `apiBaseUrl?: string` - API基础URL
+- `chunkSize?: number` - 分片大小（默认：5MB）
+- `concurrency?: number` - 并发上传数（默认：4）
+- `chunkFailureRetry?: number` - 分片上传失败重试次数（默认：3）
+## 公共方法
+### 上传视频
+```typescript
+async upload(options: OssUploader.UploadOptions): Promise<string>
+```
+#### 参数
+- `options.file: File | Blob` - 要上传的文件
+- `options.filename?: string` - 文件名（可选）
+- `options.onProgress: (event) => any` - 上传进度回调函数
+  - `event.totalSize: number` - 文件总大小
+  - `event.uploadedSize: number` - 已上传大小
+  - `event.totalChunkCount: number` - 总分片数
+  - `event.uploadedChunkCount: number` - 已上传分片数
+  - `event.uploadedChunks: number[]` - 已上传分片序号列表
+#### 返回值
+- `Promise<string>` - 返回视频ID
+### 获取视频URL
+```typescript
+async getUrl(options: { videoId: string }): Promise<string>
+```
+#### 参数
+- `options.videoId: string` - 视频ID
+#### 返回值
+- `Promise<string>` - 返回视频播放URL
+### 获取视频时长
+```typescript
+async getVideoDuration(options: { videoId: string }): Promise<number>
+```
+#### 参数
+- `options.videoId: string` - 视频ID
+#### 返回值
+- `Promise<number>` - 返回视频时长
+## 使用示例
+```typescript
+// 初始化
+const ossHelper = new OssHelper({
+  apiBaseUrl: 'https://api.example.com',
+  chunkSize: 5 * 1024 * 1024, // 5MB
+  concurrency: 4,
+  chunkFailureRetry: 3
+});
+// 上传视频
+const videoId = await ossHelper.upload({
+  file: videoFile,
+  filename: 'example.mp4',
+  onProgress: (event) => {
+    console.log(`上传进度：${(event.uploadedSize / event.totalSize * 100).toFixed(2)}%`);
+  }
+});
+// 获取视频URL
+const url = await ossHelper.getUrl({ videoId });
+// 获取视频时长
+const duration = await ossHelper.getVideoDuration({ videoId });
+```
