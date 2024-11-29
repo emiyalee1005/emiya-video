@@ -10,6 +10,7 @@
 | Property               | Attribute                 | Description | Type                                                              | Default     |
 | ---------------------- | ------------------------- | ----------- | ----------------------------------------------------------------- | ----------- |
 | `autoHideControlDelay` | `auto-hide-control-delay` |             | `number`                                                          | `6000`      |
+| `autoplay`             | `autoplay`                |             | `boolean`                                                         | `undefined` |
 | `onCurrentTimeChange`  | --                        |             | `(currentTime: number) => any`                                    | `undefined` |
 | `onDurationChange`     | --                        |             | `(duration: number) => any`                                       | `undefined` |
 | `onFullScreenChange`   | --                        |             | `(fullScreen: boolean) => any`                                    | `undefined` |

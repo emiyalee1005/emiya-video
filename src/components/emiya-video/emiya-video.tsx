@@ -24,6 +24,7 @@ const defaultAutoHideControlDelay = 6000;
   scoped: true,
 })
 export class EmiyaVideo {
+  @Prop() autoplay?: boolean;
   @Prop() watermark?: string;
   @Prop() src?: string;
   @Prop() autoHideControlDelay?: number = 6000;
@@ -403,6 +404,7 @@ export class EmiyaVideo {
 
   onVideoCanPlay() {
     this.status = 'canPlay';
+    if (this.autoplay) this.videoRef.play();
   }
 
   onVideoPlay() {
