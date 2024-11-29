@@ -30,7 +30,7 @@ export class VolumeController {
         'volumechange',
         (this.volumechangeHandler = () => {
           this.volume = this.videoRef.volume;
-          this.onChange && this.onChange(this.volume);
+          this.onChange && this.onChange(this.volume * 100);
         }),
       );
       this.volumechangeHandler();

@@ -568,8 +568,12 @@ export class EmiyaVideo {
             {/*    <img class="h-[100px]" src={spinnerImg} alt="加载中.." />*/}
             {/*  </div>*/}
             {/*)}*/}
-            {this.shouldShowControl && (
-              <div key={this.isFullScreen ? 1 : 0} class="absolute left-0 bottom-0 w-full h-full pointer-events-none" onClick={this.onRecentClick.bind(this)}>
+            {(true || this.shouldShowControl) && (
+              <div
+                key={this.isFullScreen ? 1 : 0}
+                class={`absolute left-0 bottom-0 w-full h-full pointer-events-none ${this.shouldShowControl ? '' : 'hidden'}`}
+                onClick={this.onRecentClick.bind(this)}
+              >
                 <div class="w-full control-bar absolute bottom-0 left-0 h-[48px] flex justify-between pointer-events-auto">
                   <emiya-video-progress-bar
                     allowSeek={this.seekable}
