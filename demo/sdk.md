@@ -23,6 +23,7 @@
       src="视频ID"
       watermark="水印内容"
       seekable="true"
+      autoplay="false"
     ></emiya-video>
 
     <script type="text/javascript">
@@ -37,7 +38,7 @@
 - `src`：视频 ID
 - `watermark`：水印内容
 - `seekable`：是否可以拖拽进度
-
+- `autoplay`：是否自动播放（由于现代浏览器安全策略，如果用户一定时间没有与网页进行交互，那么自动播放功能是强制禁用的，因此这个功能不保证100%正常工作）
 ## 🎮 播放器控制
 
 ### 获取播放器实例
