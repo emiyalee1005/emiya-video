@@ -519,7 +519,6 @@ export class EmiyaVideo {
                 return false;
               }}
               ref={a => (this.videoRef = a)}
-              key={this.src}
               // src={this.src}
               autoplay={false}
               class="w-full h-full select-none"

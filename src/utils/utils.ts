@@ -47,3 +47,7 @@ export const exitFullscreen = () => {
     (window.parent as any)['showTopBottom']();
   }
 };
+
+export function sleep(duration?: number) {
+  return new Promise(r => setTimeout(r, duration));
+}
