@@ -324,67 +324,105 @@ player.onPlaybackRateChange = (rate: number) => {
 
 ```
 
-# OssHelper API 文档
-## 类初始化
+# 🗃️ OssHelper API 文档
+
+## 📝 类初始化
+
 ```typescript
 constructor(options: OssUploader.ConstructionOptions)
 ```
-### 参数选项
-- `apiBaseUrl?: string` - API基础URL
-- `chunkSize?: number` - 分片大小（默认：5MB）
-- `concurrency?: number` - 并发上传数（默认：4）
-- `chunkFailureRetry?: number` - 分片上传失败重试次数（默认：3）
-## 公共方法
-### 上传视频
+
+### 🔧 参数选项
+
+| 参数 | 类型 | 描述 | 默认值 |
+|------|------|------|--------|
+| `apiBaseUrl` | `string?` | API 基础 URL | - |
+| `chunkSize` | `number?` | 分片大小 | `5MB` |
+| `concurrency` | `number?` | 并发上传数 | `4` |
+| `chunkFailureRetry` | `number?` | 分片上传失败重试次数 | `3` |
+
+## 🚀 公共方法
+
+### 📤 上传视频
+
 ```typescript
 async upload(options: OssUploader.UploadOptions): Promise<string>
 ```
-#### 参数
-- `options.file: File | Blob` - 要上传的文件
-- `options.filename?: string` - 文件名（可选）
-- `options.onProgress: (event) => any` - 上传进度回调函数
-  - `event.totalSize: number` - 文件总大小
-  - `event.uploadedSize: number` - 已上传大小
-  - `event.totalChunkCount: number` - 总分片数
-  - `event.uploadedChunkCount: number` - 已上传分片数
-  - `event.uploadedChunks: number[]` - 已上传分片序号列表
-#### 返回值
-- `Promise<string>` - 返回视频ID
-### 获取视频URL
+
+#### 🔍 参数详情
+
+| 参数 | 类型 | 描述 | 必填 |
+|------|------|------|------|
+| `options.file` | `File \| Blob` | 要上传的文件 | 是 |
+| `options.filename` | `string?` | 文件名 | 否 |
+| `options.onProgress` | `(event) => any` | 上传进度回调函数 | 是 |
+
+#### 📊 进度事件属性
+
+| 属性 | 类型 | 描述 |
+|------|------|------|
+| `totalSize` | `number` | 文件总大小 |
+| `uploadedSize` | `number` | 已上传大小 |
+| `totalChunkCount` | `number` | 总分片数 |
+| `uploadedChunkCount` | `number` | 已上传分片数 |
+| `uploadedChunks` | `number[]` | 已上传分片序号列表 |
+
+#### 🔙 返回值
+- `Promise<string>` - 返回视频 ID
+
+### 🔗 获取视频 URL
+
 ```typescript
 async getUrl(options: { videoId: string }): Promise<string>
 ```
-#### 参数
-- `options.videoId: string` - 视频ID
-#### 返回值
-- `Promise<string>` - 返回视频播放URL
-### 获取视频时长
+
+#### 🔍 参数
+- `options.videoId: string` - 视频 ID
+
+#### 🔙 返回值
+- `Promise<string>` - 返回视频播放 URL
+
+### ⏱️ 获取视频时长
+
 ```typescript
 async getVideoDuration(options: { videoId: string }): Promise<number>
 ```
-#### 参数
-- `options.videoId: string` - 视频ID
-#### 返回值
-- `Promise<number>` - 返回视频时长
-## 使用示例
+
+#### 🔍 参数
+- `options.videoId: string` - 视频 ID
+
+#### 🔙 返回值
+- `Promise<number>` - 返回视频时长（秒）
+
+## 🧩 使用示例
+
 ```typescript
-// 初始化
+// 初始化 OssHelper
 const ossHelper = new OssHelper({
   apiBaseUrl: 'https://api.example.com',
   chunkSize: 5 * 1024 * 1024, // 5MB
   concurrency: 4,
   chunkFailureRetry: 3
 });
+
 // 上传视频
 const videoId = await ossHelper.upload({
   file: videoFile,
   filename: 'example.mp4',
   onProgress: (event) => {
-    console.log(`上传进度：${(event.uploadedSize / event.totalSize * 100).toFixed(2)}%`);
+    // 实时显示上传进度
+    const progressPercentage = (event.uploadedSize / event.totalSize * 100).toFixed(2);
+    console.log(`上传进度：${progressPercentage}%`);
   }
 });
-// 获取视频URL
+
+// 获取视频 URL
 const url = await ossHelper.getUrl({ videoId });
+
 // 获取视频时长
 const duration = await ossHelper.getVideoDuration({ videoId });
+
+console.log('视频 ID:', videoId);
+console.log('视频 URL:', url);
+console.log('视频时长:', duration);
 ```
