@@ -627,14 +627,23 @@ export class EmiyaVideo {
                       class="flex items-center justify-center cursor-pointer h-full w-[34px]"
                       onPointerEnter={() => (this.hoveringTarget = 'fullscreen')}
                       onPointerLeave={() => (this.hoveringTarget = null)}
+                      onPointerCancel={() => (this.hoveringTarget = null)}
                     >
                       {this.isFullScreen ? (
-                        <img class="h-[20px]" src={this.hoveringTarget === 'fullscreen' ? smallscreen1 : smallscreen} onClick={exitFullscreen} />
+                        <img
+                          class="h-[20px]"
+                          src={this.hoveringTarget === 'fullscreen' ? smallscreen1 : smallscreen}
+                          onClick={() => {
+                            this.hoveringTarget = null;
+                            exitFullscreen();
+                          }}
+                        />
                       ) : (
                         <img
                           class="h-[20px]"
                           src={this.hoveringTarget === 'fullscreen' ? fullscreen1 : fullscreen}
                           onClick={() => {
+                            this.hoveringTarget = null;
                             if (isIphone()) {
                               this.videoRef['webkitEnterFullscreen']();
                             } else requestFullscreen();
