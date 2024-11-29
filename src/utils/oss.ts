@@ -24,7 +24,7 @@ type ApiResponseWrapper<T = any> = {
   timestamp: string;
 };
 
-export class OssUploader {
+export class OssHelper {
   private readonly chunkFailureRetry: number;
   private readonly chunkSize: number;
   private axios: AxiosInstance;
@@ -56,13 +56,15 @@ export class OssUploader {
   }
 
   public async getUrl(options: { videoId: string }) {
-    return (
-      await this.request<{ url: string }>({
-        url: '/player/get',
-        method: 'get',
-        params: options,
-      })
-    ).url;
+    console.log(options);
+    return 'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8';
+    // return (
+    //   await this.request<{ url: string }>({
+    //     url: '/player/get',
+    //     method: 'get',
+    //     params: options,
+    //   })
+    // ).url;
   }
 
   private async createTask(options: { file: File | Blob; filename?: string }) {

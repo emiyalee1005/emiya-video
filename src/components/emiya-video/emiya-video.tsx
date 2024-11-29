@@ -2,6 +2,7 @@ import { Component, h, Host, Method, Prop, State, Watch } from '@stencil/core';
 import devtools from 'devtools-detect';
 import Hammer from 'hammerjs';
 import Hls, { Level } from 'hls.js';
+import { OssHelper } from '../../utils/oss';
 import { exitFullscreen, isFullScreen, isIphone, isMobile, isWechat, requestFullscreen } from '../../utils/utils';
 import errorImg from './assets/error.svg';
 import fullscreen from './assets/fullscreen.svg';
@@ -115,8 +116,7 @@ export class EmiyaVideo {
   // }
 
   @Watch('src')
-  watchSrc(newValue: string) {
-    this.status = newValue ? (isWechat() ? 'loaded' : 'loading') : 'idle';
+  async watchSrc(newValue: string) {
     this.levels = [];
     this.autoLevelEnabled = true;
     this.currentLevel = -1;
@@ -129,6 +129,22 @@ export class EmiyaVideo {
       this.videoRef.src = '';
       this.videoRef.load();
     }
+
+    if (newValue && !newValue.startsWith('http') && !newValue.startsWith('blob')) {
+      this.status = 'loading';
+      const ossHelper = new OssHelper({} as any);
+      try {
+        const url = await ossHelper.getUrl({ videoId: newValue });
+        if (newValue !== this.src) return;
+        newValue = url;
+      } catch (e) {
+        this.status = 'error';
+        this.error = e;
+        throw e;
+      }
+    }
+
+    this.status = newValue ? (isWechat() ? 'loaded' : 'loading') : 'idle';
 
     if (newValue) {
       if (Hls.isSupported()) {
