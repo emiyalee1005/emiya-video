@@ -46,7 +46,6 @@ export namespace Components {
         "value": number;
     }
     interface EmiyaVideo {
-        "allowSeek"?: string;
         "autoHideControlDelay"?: number;
         "getCurrentTime": () => Promise<number>;
         "getDuration": () => Promise<number>;
@@ -66,6 +65,7 @@ export namespace Components {
         "onVolumeChange"?: (volume: number) => any;
         "pause": () => Promise<void>;
         "play": () => Promise<void>;
+        "seekable"?: boolean;
         "setCurrentTime": (time: number) => Promise<void>;
         "setFullScreen": (value: boolean) => Promise<void>;
         "setLevel": (level: number) => Promise<void>;
@@ -240,7 +240,6 @@ declare namespace LocalJSX {
         "value"?: number;
     }
     interface EmiyaVideo {
-        "allowSeek"?: string;
         "autoHideControlDelay"?: number;
         "onCurrentTimeChange"?: (currentTime: number) => any;
         "onDurationChange"?: (duration: number) => any;
@@ -250,6 +249,7 @@ declare namespace LocalJSX {
         "onPlaybackRateChange"?: (duration: number) => any;
         "onStatusChange"?: (status: VideoStatus, message?: any) => any;
         "onVolumeChange"?: (volume: number) => any;
+        "seekable"?: boolean;
         "src"?: string;
         "watermark"?: string;
     }
