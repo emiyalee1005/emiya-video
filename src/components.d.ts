@@ -44,6 +44,7 @@ export namespace Components {
         "value": number;
     }
     interface EmiyaVideo {
+        "allowSeek"?: boolean;
         "autoHideControlDelay"?: number;
         "onLevelChange"?: (level: number) => any;
         "onLevelsChange"?: (levels: { id: number; name: string; level?: Level }[]) => any;
@@ -53,6 +54,7 @@ export namespace Components {
     interface EmiyaVideoPlayer {
     }
     interface EmiyaVideoProgressBar {
+        "allowSeek"?: boolean;
         "onCurrentTimeChange"?: (a: number) => void;
         "onDurationChange"?: (a: number) => void;
         "reverseXY"?: boolean;
@@ -212,6 +214,7 @@ declare namespace LocalJSX {
         "value"?: number;
     }
     interface EmiyaVideo {
+        "allowSeek"?: boolean;
         "autoHideControlDelay"?: number;
         "onLevelChange"?: (level: number) => any;
         "onLevelsChange"?: (levels: { id: number; name: string; level?: Level }[]) => any;
@@ -220,6 +223,7 @@ declare namespace LocalJSX {
     interface EmiyaVideoPlayer {
     }
     interface EmiyaVideoProgressBar {
+        "allowSeek"?: boolean;
         "onCurrentTimeChange"?: (a: number) => void;
         "onDurationChange"?: (a: number) => void;
         "reverseXY"?: boolean;
