@@ -1,9 +1,9 @@
-import { Component, Host, h } from '@stencil/core';
+import { Component, h, Host } from '@stencil/core';
 
 @Component({
   tag: 'emiya-video-player',
   styleUrl: 'emiya-video-player.scss',
-  shadow: true,
+  scoped: true,
 })
 export class EmiyaVideoPlayer {
   render() {

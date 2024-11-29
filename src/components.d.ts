@@ -45,6 +45,9 @@ export namespace Components {
     }
     interface EmiyaVideo {
         "autoHideControlDelay"?: number;
+        "onLevelChange"?: (level: number) => any;
+        "onLevelsChange"?: (levels: { id: number; name: string; level?: Level }[]) => any;
+        "setLevel": (level: number) => Promise<void>;
         "src"?: string;
     }
     interface EmiyaVideoPlayer {
@@ -210,6 +213,8 @@ declare namespace LocalJSX {
     }
     interface EmiyaVideo {
         "autoHideControlDelay"?: number;
+        "onLevelChange"?: (level: number) => any;
+        "onLevelsChange"?: (levels: { id: number; name: string; level?: Level }[]) => any;
         "src"?: string;
     }
     interface EmiyaVideoPlayer {

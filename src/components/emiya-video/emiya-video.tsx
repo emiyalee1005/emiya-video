@@ -1,4 +1,4 @@
-import { Component, h, Host, Prop, State, Watch } from '@stencil/core';
+import { Component, h, Host, Method, Prop, State, Watch } from '@stencil/core';
 import devtools from 'devtools-detect';
 import Hammer from 'hammerjs';
 import Hls, { Level } from 'hls.js';
@@ -24,6 +24,8 @@ const defaultAutoHideControlDelay = 6000;
 export class EmiyaVideo {
   @Prop() src?: string;
   @Prop() autoHideControlDelay?: number = 6000;
+  @Prop() onLevelsChange?: (levels: { id: number; name: string; level?: Level }[]) => any;
+  @Prop() onLevelChange?: (level: number) => any;
 
   @State() orientationType: OrientationType = window.screen.orientation.type;
   @State() currentTime: number = 0;
@@ -52,6 +54,16 @@ export class EmiyaVideo {
   forwardSkipRef: HTMLDivElement;
 
   devToolsChangeListener: any;
+
+  @Watch('levels')
+  watchLevelsChange(newValue: any[]) {
+    this.onLevelsChange && this.onLevelsChange(newValue);
+  }
+
+  @Method()
+  setLevel(level: number) {
+    this.onSelectLevel(level);
+  }
 
   // @Watch('isFullScreen')
   // watchFullScreen(newValue: boolean) {
@@ -94,6 +106,7 @@ export class EmiyaVideo {
 
         const onLevelChange = (_1?: any, _2?: any) => {
           this.currentLevel = this.hls.currentLevel;
+          this.onLevelChange && this.onLevelChange(this.currentLevel);
           //console.log('当前分辨率: ', this.currentLevel);
         };
 
