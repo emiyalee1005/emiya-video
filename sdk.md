@@ -47,7 +47,7 @@ player.onCurrentTimeChange = (value: number) => {
 }
 
 // 跳转到指定时间(单位:秒)
-await player.setCurrentTime(3000)
+await player.setCurrentTime(8.3)
 
 // 获取当前播放进度
 const value = await player.getCurrentTime();
