@@ -9,7 +9,6 @@
 
 | Property               | Attribute                 | Description | Type                                                              | Default     |
 | ---------------------- | ------------------------- | ----------- | ----------------------------------------------------------------- | ----------- |
-| `allowSeek`            | `allow-seek`              |             | `string`                                                          | `'true'`    |
 | `autoHideControlDelay` | `auto-hide-control-delay` |             | `number`                                                          | `6000`      |
 | `onCurrentTimeChange`  | --                        |             | `(currentTime: number) => any`                                    | `undefined` |
 | `onDurationChange`     | --                        |             | `(duration: number) => any`                                       | `undefined` |
@@ -19,6 +18,7 @@
 | `onPlaybackRateChange` | --                        |             | `(duration: number) => any`                                       | `undefined` |
 | `onStatusChange`       | --                        |             | `(status: VideoStatus, message?: any) => any`                     | `undefined` |
 | `onVolumeChange`       | --                        |             | `(volume: number) => any`                                         | `undefined` |
+| `seekable`             | `seekable`                |             | `boolean`                                                         | `true`      |
 | `src`                  | `src`                     |             | `string`                                                          | `undefined` |
 | `watermark`            | `watermark`               |             | `string`                                                          | `undefined` |
 

@@ -12,10 +12,12 @@ npm install emiya-video
 ```html
 <emiya-video 
   id="player"
-  src="视频地址"
-  watermark="版权所有"
-  allowSeek="true"
+  src="视频ID"
+  watermark="水印内容"
+  seekable="true"
 ></emiya-video>
+
+// seekable 是否可以拖拽进度
 ```
 
 ## 播放控制
