@@ -47,6 +47,8 @@ export namespace Components {
         "autoHideControlDelay"?: number;
         "src"?: string;
     }
+    interface EmiyaVideoPlayer {
+    }
     interface EmiyaVideoProgressBar {
         "onCurrentTimeChange"?: (a: number) => void;
         "onDurationChange"?: (a: number) => void;
@@ -114,6 +116,12 @@ declare global {
         prototype: HTMLEmiyaVideoElement;
         new (): HTMLEmiyaVideoElement;
     };
+    interface HTMLEmiyaVideoPlayerElement extends Components.EmiyaVideoPlayer, HTMLStencilElement {
+    }
+    var HTMLEmiyaVideoPlayerElement: {
+        prototype: HTMLEmiyaVideoPlayerElement;
+        new (): HTMLEmiyaVideoPlayerElement;
+    };
     interface HTMLEmiyaVideoProgressBarElement extends Components.EmiyaVideoProgressBar, HTMLStencilElement {
     }
     var HTMLEmiyaVideoProgressBarElement: {
@@ -156,6 +164,7 @@ declare global {
         "emiya-tooltip": HTMLEmiyaTooltipElement;
         "emiya-vertical-slider": HTMLEmiyaVerticalSliderElement;
         "emiya-video": HTMLEmiyaVideoElement;
+        "emiya-video-player": HTMLEmiyaVideoPlayerElement;
         "emiya-video-progress-bar": HTMLEmiyaVideoProgressBarElement;
         "emiya-watermark": HTMLEmiyaWatermarkElement;
         "level-controller": HTMLLevelControllerElement;
@@ -203,6 +212,8 @@ declare namespace LocalJSX {
         "autoHideControlDelay"?: number;
         "src"?: string;
     }
+    interface EmiyaVideoPlayer {
+    }
     interface EmiyaVideoProgressBar {
         "onCurrentTimeChange"?: (a: number) => void;
         "onDurationChange"?: (a: number) => void;
@@ -244,6 +255,7 @@ declare namespace LocalJSX {
         "emiya-tooltip": EmiyaTooltip;
         "emiya-vertical-slider": EmiyaVerticalSlider;
         "emiya-video": EmiyaVideo;
+        "emiya-video-player": EmiyaVideoPlayer;
         "emiya-video-progress-bar": EmiyaVideoProgressBar;
         "emiya-watermark": EmiyaWatermark;
         "level-controller": LevelController;
@@ -261,6 +273,7 @@ declare module "@stencil/core" {
             "emiya-tooltip": LocalJSX.EmiyaTooltip & JSXBase.HTMLAttributes<HTMLEmiyaTooltipElement>;
             "emiya-vertical-slider": LocalJSX.EmiyaVerticalSlider & JSXBase.HTMLAttributes<HTMLEmiyaVerticalSliderElement>;
             "emiya-video": LocalJSX.EmiyaVideo & JSXBase.HTMLAttributes<HTMLEmiyaVideoElement>;
+            "emiya-video-player": LocalJSX.EmiyaVideoPlayer & JSXBase.HTMLAttributes<HTMLEmiyaVideoPlayerElement>;
             "emiya-video-progress-bar": LocalJSX.EmiyaVideoProgressBar & JSXBase.HTMLAttributes<HTMLEmiyaVideoProgressBarElement>;
             "emiya-watermark": LocalJSX.EmiyaWatermark & JSXBase.HTMLAttributes<HTMLEmiyaWatermarkElement>;
             "level-controller": LocalJSX.LevelController & JSXBase.HTMLAttributes<HTMLLevelControllerElement>;
