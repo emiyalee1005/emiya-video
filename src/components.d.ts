@@ -48,7 +48,11 @@ export namespace Components {
     interface EmiyaVideo {
         "allowSeek"?: boolean;
         "autoHideControlDelay"?: number;
+        "getCurrentTime": () => Promise<number>;
+        "getDuration": () => Promise<number>;
         "getFullScreen": () => Promise<boolean>;
+        "getLevel": () => Promise<number>;
+        "getLevels": () => Promise<{ id: number; name: string; level?: Level; }[]>;
         "getStatus": () => Promise<VideoStatus>;
         "getVolume": () => Promise<number>;
         "onCurrentTimeChange"?: (currentTime: number) => any;

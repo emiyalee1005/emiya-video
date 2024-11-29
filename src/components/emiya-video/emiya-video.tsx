@@ -81,6 +81,16 @@ export class EmiyaVideo {
   }
 
   @Method()
+  async getDuration() {
+    return this.duration;
+  }
+
+  @Method()
+  async getCurrentTime() {
+    return this.videoRef.currentTime;
+  }
+
+  @Method()
   async getFullScreen() {
     return this.isFullScreen;
   }
@@ -96,18 +106,28 @@ export class EmiyaVideo {
   }
 
   @Method()
+  async getLevels() {
+    return this.levels;
+  }
+
+  @Method()
+  async getLevel() {
+    return this.currentLevel;
+  }
+
+  @Method()
   setLevel(level: number) {
     this.onSelectLevel(level);
   }
 
   @Method()
   async getVolume() {
-    return this.videoRef.volume;
+    return this.videoRef.volume * 100;
   }
 
   @Method()
   setVolume(value: number) {
-    this.videoRef.volume = value;
+    this.videoRef.volume = value / 100;
   }
 
   // @Watch('isFullScreen')
