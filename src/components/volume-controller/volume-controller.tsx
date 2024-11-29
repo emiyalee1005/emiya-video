@@ -1,4 +1,4 @@
-import { Component, h, Prop, State, Watch } from '@stencil/core';
+import { Component, h, Method, Prop, State, Watch } from '@stencil/core';
 import mute from './assets/mute.svg';
 import mute1 from './assets/mute1.svg';
 import icon from './assets/volume.svg';
@@ -60,7 +60,17 @@ export class VolumeController {
     this.volume = this.videoRef.volume = volume / 100;
   }
 
+  @Method()
   mute() {
+    this.volume > 0 && this.muteOrUnmute();
+  }
+
+  @Method()
+  unmute() {
+    this.volume === 0 && this.muteOrUnmute();
+  }
+
+  muteOrUnmute() {
     if (this.volume) {
       this.lastVolume = this.volume;
       this.onChangeVolume(0);
@@ -72,7 +82,7 @@ export class VolumeController {
   render() {
     return (
       <emiya-tooltip onVisibilityChange={this.onVisibilityChange.bind(this)} forceVisible={this.isDragging ? true : undefined} class="h-full">
-        <div slot="trigger" class="h-full min-w-[34px] flex items-center justify-center cursor-pointer" onPointerUp={a => a.pointerType === 'mouse' && this.mute()}>
+        <div slot="trigger" class="h-full min-w-[34px] flex items-center justify-center cursor-pointer" onPointerUp={a => a.pointerType === 'mouse' && this.muteOrUnmute()}>
           {this.volume ? <img class="!h-[16px]" src={this.isBarVisible ? icon1 : icon}></img> : <img class="!h-[18px]" src={this.isBarVisible ? mute1 : mute}></img>}
         </div>
         <div>

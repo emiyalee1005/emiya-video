@@ -51,6 +51,8 @@ export class EmiyaVideo {
   @State() currentLevel: number = -1;
   @State() error?: any;
 
+  volumeControllerRef: HTMLVolumeControllerElement;
+
   hb: any;
   hf: any;
   pointerMoveFlagAutoClearListener: any;
@@ -79,6 +81,16 @@ export class EmiyaVideo {
   @Watch('isFullScreen')
   watchFullScreenChange(newValue: boolean) {
     this.onFullScreenChange && this.onFullScreenChange(newValue);
+  }
+
+  @Method()
+  async mute() {
+    return this.volumeControllerRef.mute();
+  }
+
+  @Method()
+  async unmute() {
+    return this.volumeControllerRef.unmute();
   }
 
   @Method()
@@ -604,7 +616,13 @@ export class EmiyaVideo {
                     {!!this.levels.length && (
                       <level-controller class="h-full mr-1" auto={this.autoLevelEnabled} value={this.currentLevel} onChange={a => this.onSelectLevel(a)} options={this.levels} />
                     )}
-                    <volume-controller reverseXY={this.shouldRotate} class="h-full mr-1" videoRef={this.videoRef} onChange={e => this.onVolumeChange && this.onVolumeChange(e)} />
+                    <volume-controller
+                      reverseXY={this.shouldRotate}
+                      class="h-full mr-1"
+                      ref={el => (this.volumeControllerRef = el)}
+                      videoRef={this.videoRef}
+                      onChange={e => this.onVolumeChange && this.onVolumeChange(e)}
+                    />
                     <playback-rate-controller class="h-full mr-1" videoRef={this.videoRef} onChange={a => this.onPlaybackRateChangeHandler(a as any)} />
                     <div
                       class="flex items-center justify-center cursor-pointer h-full w-[34px]"

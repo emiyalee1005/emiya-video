@@ -96,15 +96,21 @@ player.onDurationChange = (duration: number) => {
 
 ## 音量控制
 ```typescript
-// 设置音量(0-100), 当为0时表示静音
-await player.setVolume(60);
+// 设置音量(0-100)，静音时为0
+await player.setVolume(88);
+
+// 静音
+await player.mute()
+
+// 取消静音
+await player.unmute()
 
 // 获取当前音量
 const volume = await player.getVolume();
 
 // 监听音量变化
 player.onVolumeChange = (volume: number) => {
-  console.log('当前音量:', volume);
+  console.log('当前音量:', volume); //静音时为0
 }
 ```
 

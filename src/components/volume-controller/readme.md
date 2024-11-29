@@ -14,6 +14,29 @@
 | `videoRef`  | --            |             | `HTMLVideoElement`       | `undefined` |
 
 
+## Methods
+
+### `mute() => Promise<void>`
+
+
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
+### `unmute() => Promise<void>`
+
+
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
+
 ## Dependencies
 
 ### Used by

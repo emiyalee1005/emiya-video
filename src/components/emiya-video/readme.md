@@ -105,6 +105,16 @@ Type: `Promise<number>`
 
 
 
+### `mute() => Promise<void>`
+
+
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
 ### `pause() => Promise<void>`
 
 
@@ -198,6 +208,16 @@ Type: `Promise<void>`
 | Name    | Type     | Description |
 | ------- | -------- | ----------- |
 | `value` | `number` |             |
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
+### `unmute() => Promise<void>`
+
+
 
 #### Returns
 

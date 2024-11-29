@@ -55,6 +55,7 @@ export namespace Components {
         "getPlaybackRate": () => Promise<number>;
         "getStatus": () => Promise<VideoStatus>;
         "getVolume": () => Promise<number>;
+        "mute": () => Promise<void>;
         "onCurrentTimeChange"?: (currentTime: number) => any;
         "onDurationChange"?: (duration: number) => any;
         "onFullScreenChange"?: (fullScreen: boolean) => any;
@@ -72,6 +73,7 @@ export namespace Components {
         "setPlaybackRate": (value: number) => Promise<void>;
         "setVolume": (value: number) => Promise<void>;
         "src"?: string;
+        "unmute": () => Promise<void>;
         "watermark"?: string;
     }
     interface EmiyaVideoPlayer {
@@ -111,8 +113,10 @@ export namespace Components {
         "videoRef": HTMLVideoElement;
     }
     interface VolumeController {
+        "mute": () => Promise<void>;
         "onChange"?: (value: number) => any;
         "reverseXY"?: boolean;
+        "unmute": () => Promise<void>;
         "videoRef": HTMLVideoElement;
     }
 }
