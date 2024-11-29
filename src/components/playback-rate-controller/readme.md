@@ -7,9 +7,10 @@
 
 ## Properties
 
-| Property   | Attribute | Description | Type               | Default     |
-| ---------- | --------- | ----------- | ------------------ | ----------- |
-| `videoRef` | --        |             | `HTMLVideoElement` | `undefined` |
+| Property   | Attribute | Description | Type                     | Default     |
+| ---------- | --------- | ----------- | ------------------------ | ----------- |
+| `onChange` | --        |             | `(value: number) => any` | `undefined` |
+| `videoRef` | --        |             | `HTMLVideoElement`       | `undefined` |
 
 
 ## Dependencies

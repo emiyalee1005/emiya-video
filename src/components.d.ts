@@ -53,6 +53,7 @@ export namespace Components {
         "getFullScreen": () => Promise<boolean>;
         "getLevel": () => Promise<number>;
         "getLevels": () => Promise<{ id: number; name: string; level?: Level; }[]>;
+        "getPlaybackRate": () => Promise<number>;
         "getStatus": () => Promise<VideoStatus>;
         "getVolume": () => Promise<number>;
         "onCurrentTimeChange"?: (currentTime: number) => any;
@@ -60,6 +61,7 @@ export namespace Components {
         "onFullScreenChange"?: (fullScreen: boolean) => any;
         "onLevelChange"?: (level: number) => any;
         "onLevelsChange"?: (levels: { id: number; name: string; level?: Level }[]) => any;
+        "onPlaybackRateChange"?: (duration: number) => any;
         "onStatusChange"?: (status: VideoStatus, message?: any) => any;
         "onVolumeChange"?: (volume: number) => any;
         "pause": () => Promise<void>;
@@ -67,6 +69,7 @@ export namespace Components {
         "setCurrentTime": (time: number) => Promise<void>;
         "setFullScreen": (value: boolean) => Promise<void>;
         "setLevel": (level: number) => Promise<void>;
+        "setPlaybackRate": (value: number) => Promise<void>;
         "setVolume": (value: number) => Promise<void>;
         "src"?: string;
         "watermark"?: string;
@@ -104,6 +107,7 @@ export namespace Components {
         "middle": string;
     }
     interface PlaybackRateController {
+        "onChange"?: (value: number) => any;
         "videoRef": HTMLVideoElement;
     }
     interface VolumeController {
@@ -243,6 +247,7 @@ declare namespace LocalJSX {
         "onFullScreenChange"?: (fullScreen: boolean) => any;
         "onLevelChange"?: (level: number) => any;
         "onLevelsChange"?: (levels: { id: number; name: string; level?: Level }[]) => any;
+        "onPlaybackRateChange"?: (duration: number) => any;
         "onStatusChange"?: (status: VideoStatus, message?: any) => any;
         "onVolumeChange"?: (volume: number) => any;
         "src"?: string;
@@ -281,6 +286,7 @@ declare namespace LocalJSX {
         "middle"?: string;
     }
     interface PlaybackRateController {
+        "onChange"?: (value: number) => any;
         "videoRef"?: HTMLVideoElement;
     }
     interface VolumeController {

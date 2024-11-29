@@ -7,10 +7,203 @@
 
 ## Properties
 
-| Property               | Attribute                 | Description | Type     | Default     |
-| ---------------------- | ------------------------- | ----------- | -------- | ----------- |
-| `autoHideControlDelay` | `auto-hide-control-delay` |             | `number` | `6000`      |
-| `src`                  | `src`                     |             | `string` | `undefined` |
+| Property               | Attribute                 | Description | Type                                                              | Default     |
+| ---------------------- | ------------------------- | ----------- | ----------------------------------------------------------------- | ----------- |
+| `allowSeek`            | `allow-seek`              |             | `boolean`                                                         | `true`      |
+| `autoHideControlDelay` | `auto-hide-control-delay` |             | `number`                                                          | `6000`      |
+| `onCurrentTimeChange`  | --                        |             | `(currentTime: number) => any`                                    | `undefined` |
+| `onDurationChange`     | --                        |             | `(duration: number) => any`                                       | `undefined` |
+| `onFullScreenChange`   | --                        |             | `(fullScreen: boolean) => any`                                    | `undefined` |
+| `onLevelChange`        | --                        |             | `(level: number) => any`                                          | `undefined` |
+| `onLevelsChange`       | --                        |             | `(levels: { id: number; name: string; level?: Level; }[]) => any` | `undefined` |
+| `onPlaybackRateChange` | --                        |             | `(duration: number) => any`                                       | `undefined` |
+| `onStatusChange`       | --                        |             | `(status: VideoStatus, message?: any) => any`                     | `undefined` |
+| `onVolumeChange`       | --                        |             | `(volume: number) => any`                                         | `undefined` |
+| `src`                  | `src`                     |             | `string`                                                          | `undefined` |
+| `watermark`            | `watermark`               |             | `string`                                                          | `undefined` |
+
+
+## Methods
+
+### `getCurrentTime() => Promise<number>`
+
+
+
+#### Returns
+
+Type: `Promise<number>`
+
+
+
+### `getDuration() => Promise<number>`
+
+
+
+#### Returns
+
+Type: `Promise<number>`
+
+
+
+### `getFullScreen() => Promise<boolean>`
+
+
+
+#### Returns
+
+Type: `Promise<boolean>`
+
+
+
+### `getLevel() => Promise<number>`
+
+
+
+#### Returns
+
+Type: `Promise<number>`
+
+
+
+### `getLevels() => Promise<{ id: number; name: string; level?: Level; }[]>`
+
+
+
+#### Returns
+
+Type: `Promise<{ id: number; name: string; level?: Level; }[]>`
+
+
+
+### `getPlaybackRate() => Promise<number>`
+
+
+
+#### Returns
+
+Type: `Promise<number>`
+
+
+
+### `getStatus() => Promise<VideoStatus>`
+
+
+
+#### Returns
+
+Type: `Promise<VideoStatus>`
+
+
+
+### `getVolume() => Promise<number>`
+
+
+
+#### Returns
+
+Type: `Promise<number>`
+
+
+
+### `pause() => Promise<void>`
+
+
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
+### `play() => Promise<void>`
+
+
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
+### `setCurrentTime(time: number) => Promise<void>`
+
+
+
+#### Parameters
+
+| Name   | Type     | Description |
+| ------ | -------- | ----------- |
+| `time` | `number` |             |
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
+### `setFullScreen(value: boolean) => Promise<void>`
+
+
+
+#### Parameters
+
+| Name    | Type      | Description |
+| ------- | --------- | ----------- |
+| `value` | `boolean` |             |
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
+### `setLevel(level: number) => Promise<void>`
+
+
+
+#### Parameters
+
+| Name    | Type     | Description |
+| ------- | -------- | ----------- |
+| `level` | `number` |             |
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
+### `setPlaybackRate(value: number) => Promise<void>`
+
+
+
+#### Parameters
+
+| Name    | Type     | Description |
+| ------- | -------- | ----------- |
+| `value` | `number` |             |
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
+### `setVolume(value: number) => Promise<void>`
+
+
+
+#### Parameters
+
+| Name    | Type     | Description |
+| ------- | -------- | ----------- |
+| `value` | `number` |             |
+
+#### Returns
+
+Type: `Promise<void>`
+
+
 
 
 ## Dependencies

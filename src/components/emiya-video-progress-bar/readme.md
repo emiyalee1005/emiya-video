@@ -9,6 +9,7 @@
 
 | Property              | Attribute     | Description | Type                  | Default     |
 | --------------------- | ------------- | ----------- | --------------------- | ----------- |
+| `allowSeek`           | `allow-seek`  |             | `boolean`             | `undefined` |
 | `onCurrentTimeChange` | --            |             | `(a: number) => void` | `undefined` |
 | `onDurationChange`    | --            |             | `(a: number) => void` | `undefined` |
 | `reverseXY`           | `reverse-x-y` |             | `boolean`             | `undefined` |

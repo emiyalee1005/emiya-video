@@ -600,7 +600,7 @@ export class EmiyaVideo {
                     {!!this.levels.length && (
                       <level-controller class="h-full mr-1" auto={this.autoLevelEnabled} value={this.currentLevel} onChange={a => this.onSelectLevel(a)} options={this.levels} />
                     )}
-                    <volume-controller reverseXY={this.shouldRotate} class="h-full mr-1" videoRef={this.videoRef} onChange={e => this.onVolumeChange(e)} />
+                    <volume-controller reverseXY={this.shouldRotate} class="h-full mr-1" videoRef={this.videoRef} onChange={e => this.onVolumeChange && this.onVolumeChange(e)} />
                     <playback-rate-controller class="h-full mr-1" videoRef={this.videoRef} onChange={a => this.onPlaybackRateChangeHandler(a as any)} />
                     <div
                       class="flex items-center justify-center cursor-pointer h-full w-[34px]"
