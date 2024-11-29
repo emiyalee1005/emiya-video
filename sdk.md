@@ -11,13 +11,19 @@ npm install emiya-video
 ## 基础使用
 ```html
 <emiya-video 
-  id="player"
+  id="emiya-video"
   src="视频ID"
   watermark="水印内容"
   seekable="true"
 ></emiya-video>
+```
+##### src: 视频ID
+##### watermark: 是否可以拖拽进度
+##### seekable: 水印内容
 
-// seekable 是否可以拖拽进度
+## 获取播放器实例
+```typescript
+const player = document.getElementById('emiya-video')
 ```
 
 ## 播放控制
