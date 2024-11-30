@@ -12,7 +12,7 @@
 <html>
   <head>
     <script type="module">
-      import { defineCustomElements } from './loader/index.js';
+      import { defineCustomElements } from './loader/index.js'; //这里import路径以loader实际静态访问路径为准，自行按需修改
       defineCustomElements();
     </script>
   </head>
@@ -210,122 +210,150 @@ player.onPlaybackRateChange = (rate: number) => {
   </script>
 </head>
 <body>
-<emiya-video class="emiya-video" style="width: 80%; height: 380px; margin: 10%" id="video" watermark="EMIYA" seekable="true" src="888" onStatusChange="onStatusChange" />
-<button onclick="play()">播放</button>
-<button onclick="pause()">暂停</button>
-<button onclick="stop()">停止</button>
-<button onclick="destroy()">销毁</button>
-<button onclick="changeVideo()">更换视频</button>
-<button onclick="getStatus()">获取当前状态</button>
-<button onclick="getLevels()">获取清晰度列表</button>
-<button onclick="getLevel()">获取当前清晰度</button>
-<button onclick="setLevel()">设置清晰度</button>
-<button onclick="getVolume()">获取音量</button>
-<button onclick="setVolume()">设置音量</button>
-<button onclick="mute()">静音</button>
-<button onclick="unmute()">取消静音</button>
-<button onclick="getFullScreen()">获取全屏状态</button>
-<button onclick="setFullScreen()">全屏开关</button>
-<button onclick="getPlaybackRate()">获取倍速</button>
-<button onclick="setPlaybackRate()">设置倍速</button>
-<button onclick="getDuration()">获取时长</button>
-<button onclick="getCurrentTime()">获取当前播放时间</button>
-<button onclick="setCurrentTime()">设置当前播放时间</button>
-<script type="text/javascript">
-  let player = document.getElementById('video');
-  async function play() {
-    await player.play();
-  }
-  async function pause() {
-    await player.pause();
-  }
-  function stop() {
-    player.src = undefined;
-  }
-  function destroy() {
-    player.remove();
-    player = undefined;
-    alert(`已销毁，如需重新生成播放器请刷新页面`);
-  }
-  function changeVideo() {
-    player.src = player.src === '888' ? 'http://playertest.longtailvideo.com/adaptive/bipbop/gear4/prog_index.m3u8' : '888'; //正常是传视频ID，但是这里为了测试方便，也可以直接传url
-  }
-  async function getStatus() {
-    alert(await player.getStatus());
-  }
-  async function getLevels() {
-    console.log(await player.getLevels());
-  }
-  async function getLevel() {
-    alert(await player.getLevel());
-  }
-  async function getVolume() {
-    alert(await player.getVolume());
-  }
-  async function getFullScreen() {
-    alert(await player.getFullScreen());
-  }
-  async function setLevel() {
-    await player.setLevel(1);
-  }
-  async function setVolume() {
-    await player.setVolume(80);
-  }
-  async function mute() {
-    await player.mute();
-  }
-  async function unmute() {
-    await player.unmute();
-  }
-  async function setFullScreen() {
-    await player.setFullScreen(!(await player.getFullScreen()));
-  }
-  async function getPlaybackRate() {
-    alert(await player.getPlaybackRate());
-  }
-  async function setPlaybackRate() {
-    await player.setPlaybackRate(2);
-  }
-  async function getDuration() {
-    alert(await player.getDuration());
-  }
-  async function getCurrentTime() {
-    alert(await player.getCurrentTime());
-  }
-  async function setCurrentTime() {
-    await player.setCurrentTime(3.8);
-  }
-  player.onFullScreenChange = function (value) {
-    console.log('是否全屏', value);
-  };
-  player.onVolumeChange = function (value) {
-    console.log('音量', value);
-  };
-  player.onLevelChange = function (value) {
-    console.log('当前清晰度', value);
-  };
-  player.onLevelsChange = function (value) {
-    console.log('清晰度列表', value);
-  };
-  player.onStatusChange = function (status) {
-    console.log('播放状态', status);
-  };
-  player.onPlaybackRateChange = function (rate) {
-    console.log('播放速度', rate);
-  };
-  player.onDurationChange = function (value) {
-    console.log('总时长', value);
-  };
-  player.onCurrentTimeChange = function (value) {
-    console.log('当前播放时间', value);
-  };
-</script>
+  <emiya-video class="emiya-video" style="width: 80%; height: 380px; margin: 10%" id="video" watermark="EMIYA" seekable="true" src="888" onStatusChange="onStatusChange" />
+  <button onclick="play()">播放</button>
+  <button onclick="pause()">暂停</button>
+  <button onclick="stop()">停止</button>
+  <button onclick="destroy()">销毁</button>
+  <button onclick="changeVideo()">更换视频</button>
+  <button onclick="getStatus()">获取当前状态</button>
+  <button onclick="getLevels()">获取清晰度列表</button>
+  <button onclick="getLevel()">获取当前清晰度</button>
+  <button onclick="setLevel()">设置清晰度</button>
+  <button onclick="getVolume()">获取音量</button>
+  <button onclick="setVolume()">设置音量</button>
+  <button onclick="mute()">静音</button>
+  <button onclick="unmute()">取消静音</button>
+  <button onclick="getFullScreen()">获取全屏状态</button>
+  <button onclick="setFullScreen()">全屏开关</button>
+  <button onclick="getPlaybackRate()">获取倍速</button>
+  <button onclick="setPlaybackRate()">设置倍速</button>
+  <button onclick="getDuration()">获取时长</button>
+  <button onclick="getCurrentTime()">获取当前播放时间</button>
+  <button onclick="setCurrentTime()">设置当前播放时间</button>
+  <script type="text/javascript">
+    let player = document.getElementById('video');
+    async function play() {
+      await player.play();
+    }
+    async function pause() {
+      await player.pause();
+    }
+    function stop() {
+      player.src = undefined;
+    }
+    function destroy() {
+      player.remove();
+      player = undefined;
+      alert(`已销毁，如需重新生成播放器请刷新页面`);
+    }
+    function changeVideo() {
+      player.src = player.src === '888' ? 'http://playertest.longtailvideo.com/adaptive/bipbop/gear4/prog_index.m3u8' : '888'; //正常是传视频ID，但是这里为了测试方便，也可以直接传url
+    }
+    async function getStatus() {
+      alert(await player.getStatus());
+    }
+    async function getLevels() {
+      console.log(await player.getLevels());
+    }
+    async function getLevel() {
+      alert(await player.getLevel());
+    }
+    async function getVolume() {
+      alert(await player.getVolume());
+    }
+    async function getFullScreen() {
+      alert(await player.getFullScreen());
+    }
+    async function setLevel() {
+      await player.setLevel(1);
+    }
+    async function setVolume() {
+      await player.setVolume(80);
+    }
+    async function mute() {
+      await player.mute();
+    }
+    async function unmute() {
+      await player.unmute();
+    }
+    async function setFullScreen() {
+      await player.setFullScreen(!(await player.getFullScreen()));
+    }
+    async function getPlaybackRate() {
+      alert(await player.getPlaybackRate());
+    }
+    async function setPlaybackRate() {
+      await player.setPlaybackRate(2);
+    }
+    async function getDuration() {
+      alert(await player.getDuration());
+    }
+    async function getCurrentTime() {
+      alert(await player.getCurrentTime());
+    }
+    async function setCurrentTime() {
+      await player.setCurrentTime(3.8);
+    }
+    player.onFullScreenChange = function (value) {
+      console.log('是否全屏', value);
+    };
+    player.onVolumeChange = function (value) {
+      console.log('音量', value);
+    };
+    player.onLevelChange = function (value) {
+      console.log('当前清晰度', value);
+    };
+    player.onLevelsChange = function (value) {
+      console.log('清晰度列表', value);
+    };
+    player.onStatusChange = function (status) {
+      console.log('播放状态', status);
+    };
+    player.onPlaybackRateChange = function (rate) {
+      console.log('播放速度', rate);
+    };
+    player.onDurationChange = function (value) {
+      console.log('总时长', value);
+    };
+    player.onCurrentTimeChange = function (value) {
+      console.log('当前播放时间', value);
+    };
+  </script>
 </body>
 </html>
-
 ```
 
 # 🗃️ OssHelper API 文档
+
+## 🚀 准备工作
+
+将 `dist` 文件夹放置到静态资源目录。
+
+### HTML 结构
+
+```html
+<html>
+  <head>
+    <script type="module">
+      import { OssHelper } from './dist/index.js'; //这里import路径以dist实际静态访问路径为准，自行按需修改
+      window.OssHelper = OssHelper //可选步骤，把OssHelper注入到window对象里，方便在工程任意地方使用
+    </script>
+  </head>
+  
+  <body>
+    <script type="text/javascript">
+      const ossHelper = new OssHelper({
+        apiBaseUrl: 'https://api.example.com',
+        chunkSize: 5 * 1024 * 1024, // 5MB
+        concurrency: 4,
+        chunkFailureRetry: 3
+      })
+      // 使用ossHelper实例
+    </script>
+  </body>
+</html>
+```
 
 ## 📝 类初始化
 
@@ -397,33 +425,64 @@ async getVideoDuration(options: { videoId: string }): Promise<number>
 
 ## 🧩 使用示例
 
-```typescript
-// 初始化 OssHelper
-const ossHelper = new OssHelper({
-  apiBaseUrl: 'https://api.example.com',
-  chunkSize: 5 * 1024 * 1024, // 5MB
-  concurrency: 4,
-  chunkFailureRetry: 3
-});
+```html
+<!doctype html>
+<html dir="ltr" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0" />
+  <title>Emiya Video</title>
 
-// 上传视频
-const videoId = await ossHelper.upload({
-  file: videoFile,
-  filename: 'example.mp4',
-  onProgress: (event) => {
-    // 实时显示上传进度
-    const progressPercentage = (event.uploadedSize / event.totalSize * 100).toFixed(2);
-    console.log(`上传进度：${progressPercentage}%`);
-  }
-});
+  <script type="module">
+    import { OssHelper } from './dist/index.js';
+    window.OssHelper = OssHelper
+  </script>
+</head>
+<body>
+  <script type="text/javascript">
+    // 初始化 OssHelper
+    const ossHelper = new OssHelper({
+      apiBaseUrl: 'https://api.example.com',
+      chunkSize: 5 * 1024 * 1024, // 5MB
+      concurrency: 4,
+      chunkFailureRetry: 3
+    });
 
-// 获取视频 URL
-const url = await ossHelper.getUrl({ videoId });
+    const main = async () => {
+      // 上传视频
+      const videoId = await ossHelper.upload({
+        file: FileObject, //这里是File对象，可以从<input type=file onChange="onChange"/>的onChange方法中获取到用户选择的File对象
+        filename: 'example.mp4',
+        onProgress: (event) => {
+          // 实时显示上传进度
+          const progressPercentage = (event.uploadedSize / event.totalSize * 100).toFixed(2);
+          console.log(`上传进度：${progressPercentage}%`);
+        }
+      });
 
-// 获取视频时长
-const duration = await ossHelper.getVideoDuration({ videoId });
+      // 获取视频 URL
+      const url = await ossHelper.getUrl({ videoId });
 
-console.log('视频 ID:', videoId);
-console.log('视频 URL:', url);
-console.log('视频时长:', duration);
+      // 获取视频时长
+      const duration = await ossHelper.getVideoDuration({ videoId });
+
+      console.log('视频 ID:', videoId);
+      console.log('视频 URL:', url);
+      console.log('视频时长:', duration)
+      
+      return {
+        videoId, url, duration
+      }
+    }
+    
+    main()
+      .then(res=> {
+        console.log("上传结果", res)
+      })
+      .catch(err=>{
+        console.error("上传出错", err)
+      })
+  </script>
+</body>
+</html>
 ```
