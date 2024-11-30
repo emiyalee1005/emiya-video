@@ -432,59 +432,72 @@ async getVideoDuration(options: { videoId: string }): Promise<number>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0" />
   <title>Emiya Video</title>
-
   <script type="module">
     import { OssHelper } from './dist/index.js';
     window.OssHelper = OssHelper
   </script>
 </head>
 <body>
-  <script type="text/javascript">
-    window.onload = async () => {
-      // 初始化 OssHelper
-      const ossHelper = new OssHelper({
-        apiBaseUrl: 'https://api.example.com',
-        chunkSize: 5 * 1024 * 1024, // 5MB
-        concurrency: 4,
-        chunkFailureRetry: 3
-      });
+<input type="file" id="videoInput" accept="video/*" />
+<div id="uploadProgress"></div>
 
-      const upload = async () => {
+<script type="text/javascript">
+  document.addEventListener('DOMContentLoaded', () => {
+    const videoInput = document.getElementById('videoInput');
+    const progressElement = document.getElementById('uploadProgress');
+
+    // 初始化 OssHelper
+    const ossHelper = new OssHelper({
+      apiBaseUrl: 'https://api.example.com',
+      chunkSize: 5 * 1024 * 1024, // 5MB
+      concurrency: 4,
+      chunkFailureRetry: 3
+    });
+
+    const upload = async (file) => {
+      try {
         // 上传视频
         const videoId = await ossHelper.upload({
-          file: FileObject, //这里是File对象，可以从<input type=file onChange="onChange"/>的onChange回调函数中获取到用户选择的File对象
-          filename: 'example.mp4',
+          file: file, // 直接传入File对象
+          filename: file.name,
           onProgress: (event) => {
             // 实时显示上传进度
             const progressPercentage = (event.uploadedSize / event.totalSize * 100).toFixed(2);
+            progressElement.textContent = `上传进度：${progressPercentage}%`;
             console.log(`上传进度：${progressPercentage}%`);
           }
         });
 
         // 获取视频 URL
         const url = await ossHelper.getUrl({ videoId });
-
         // 获取视频时长
         const duration = await ossHelper.getVideoDuration({ videoId });
 
         console.log('视频 ID:', videoId);
         console.log('视频 URL:', url);
-        console.log('视频时长:', duration)
+        console.log('视频时长:', duration);
 
-        return {
-          videoId, url, duration
+        return { videoId, url, duration };
+      } catch (error) {
+        console.error("上传出错", error);
+        progressElement.textContent = `上传失败：${error.message}`;
+        throw error;
+      }
+    };
+
+    videoInput.addEventListener('change', async (event) => {
+      const file = event.target.files[0];
+      if (file) {
+        try {
+          const result = await upload(file);
+          console.log("上传结果", result);
+        } catch (err) {
+          console.error("上传处理错误", err);
         }
       }
-
-      upload()
-        .then(res=> {
-          console.log("上传结果", res)
-        })
-        .catch(err=>{
-          console.error("上传出错", err)
-        })
-    }
-  </script>
+    });
+  });
+</script>
 </body>
 </html>
 ```
