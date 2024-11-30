@@ -165,7 +165,7 @@ player.onFullScreenChange = (isFullScreen: boolean) => {
 // 清晰度管理
 await player.getLevel();
 await player.getLevels();
-await player.setLevel(levelIndex);
+await player.setLevel(-1); //此处传入对应的清晰度在可用清晰度列表里的下标，从0开始，如果设置为-1，播放器随后会自动选择合适的清晰度。初始默认值为-1
 
 // 监听清晰度变化
 player.onLevelChange = (levelIndex: number) => {
