@@ -440,48 +440,50 @@ async getVideoDuration(options: { videoId: string }): Promise<number>
 </head>
 <body>
   <script type="text/javascript">
-    // 初始化 OssHelper
-    const ossHelper = new OssHelper({
-      apiBaseUrl: 'https://api.example.com',
-      chunkSize: 5 * 1024 * 1024, // 5MB
-      concurrency: 4,
-      chunkFailureRetry: 3
-    });
-
-    const main = async () => {
-      // 上传视频
-      const videoId = await ossHelper.upload({
-        file: FileObject, //这里是File对象，可以从<input type=file onChange="onChange"/>的onChange方法中获取到用户选择的File对象
-        filename: 'example.mp4',
-        onProgress: (event) => {
-          // 实时显示上传进度
-          const progressPercentage = (event.uploadedSize / event.totalSize * 100).toFixed(2);
-          console.log(`上传进度：${progressPercentage}%`);
-        }
+    window.onload = async () => {
+      // 初始化 OssHelper
+      const ossHelper = new OssHelper({
+        apiBaseUrl: 'https://api.example.com',
+        chunkSize: 5 * 1024 * 1024, // 5MB
+        concurrency: 4,
+        chunkFailureRetry: 3
       });
 
-      // 获取视频 URL
-      const url = await ossHelper.getUrl({ videoId });
+      const upload = async () => {
+        // 上传视频
+        const videoId = await ossHelper.upload({
+          file: FileObject, //这里是File对象，可以从<input type=file onChange="onChange"/>的onChange回调函数中获取到用户选择的File对象
+          filename: 'example.mp4',
+          onProgress: (event) => {
+            // 实时显示上传进度
+            const progressPercentage = (event.uploadedSize / event.totalSize * 100).toFixed(2);
+            console.log(`上传进度：${progressPercentage}%`);
+          }
+        });
 
-      // 获取视频时长
-      const duration = await ossHelper.getVideoDuration({ videoId });
+        // 获取视频 URL
+        const url = await ossHelper.getUrl({ videoId });
 
-      console.log('视频 ID:', videoId);
-      console.log('视频 URL:', url);
-      console.log('视频时长:', duration)
-      
-      return {
-        videoId, url, duration
+        // 获取视频时长
+        const duration = await ossHelper.getVideoDuration({ videoId });
+
+        console.log('视频 ID:', videoId);
+        console.log('视频 URL:', url);
+        console.log('视频时长:', duration)
+
+        return {
+          videoId, url, duration
+        }
       }
+
+      upload()
+        .then(res=> {
+          console.log("上传结果", res)
+        })
+        .catch(err=>{
+          console.error("上传出错", err)
+        })
     }
-    
-    main()
-      .then(res=> {
-        console.log("上传结果", res)
-      })
-      .catch(err=>{
-        console.error("上传出错", err)
-      })
   </script>
 </body>
 </html>
