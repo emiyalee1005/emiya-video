@@ -1,8 +1,8 @@
-# Emiya Video 播放器 SDK 文档
+# EMIYA Video 播放器 SDK 文档
 
 ## 🚀 准备工作
 
-将 `loader` 和 `dist` 两个文件夹放置到静态资源目录。
+将 [loader](loader) 和 [dist](dist) 两个文件夹放置到静态资源目录。
 
 ## 🎬 基础使用
 
@@ -324,11 +324,11 @@ player.onPlaybackRateChange = (rate: number) => {
 </html>
 ```
 
-# 🗃️ OssHelper API 文档
+# 🗃️ EMIYA OssHelper API 文档
 
 ## 🚀 准备工作
 
-将 `dist` 文件夹放置到静态资源目录。
+将 [dist](dist) 文件夹放置到静态资源目录。
 
 ### HTML 结构
 
