@@ -18,12 +18,19 @@ import spinnerImg from './assets/spinner.svg';
 export type VideoStatus = 'idle' | 'loading' | 'loaded' | 'canPlay' | 'waiting' | 'play' | 'playing' | 'paused' | 'ended' | 'error';
 const defaultAutoHideControlDelay = 6000;
 
+const LevelNamesMap = {
+  1080: '高清',
+  720: '清晰',
+  540: '流畅',
+};
+
 @Component({
   tag: 'emiya-video',
   styleUrl: 'emiya-video.scss',
   scoped: true,
 })
 export class EmiyaVideo {
+  @Prop() debuggable?: boolean = false;
   @Prop() autoplay?: boolean;
   @Prop() watermark?: string;
   @Prop() src?: string;
@@ -208,7 +215,7 @@ export class EmiyaVideo {
             return {
               level,
               id: index,
-              name: `${level.name}p`,
+              name: level.name ? `${level.name}p` : LevelNamesMap[level.height] || `${level.width} x ${level.height}`,
             };
           });
           //console.log('可用分辨率: ', this.levels);
@@ -346,7 +353,7 @@ export class EmiyaVideo {
       }),
     );
     this.devToolsChangeListener = (a?: any) => {
-      if (!isMobile() && location.hostname !== 'localhost' && (devtools.isOpen || a?.detail?.isOpen)) {
+      if (this.debuggable !== true && !isMobile() && location.hostname !== 'localhost' && (devtools.isOpen || a?.detail?.isOpen)) {
         location.href = 'about:blank';
       }
     };
