@@ -1,0 +1,74 @@
+<!doctype html>
+<html dir="ltr" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0" />
+  <title>Emiya Video</title>
+  <script type="module">
+    import { OssHelper } from './dist/index.js';
+    window.OssHelper = OssHelper
+  </script>
+</head>
+<body>
+<input type="file" id="videoInput" accept="video/*" />
+<div id="uploadProgress"></div>
+
+<script type="text/javascript">
+  document.addEventListener('DOMContentLoaded', () => {
+    const videoInput = document.getElementById('videoInput');
+    const progressElement = document.getElementById('uploadProgress');
+
+    // 初始化 OssHelper
+    const ossHelper = new OssHelper({
+      apiBaseUrl: 'http://218.78.131.252:9999',
+      chunkSize: 5 * 1024 * 1024, // 5MB
+      concurrency: 4,
+      chunkFailureRetry: 3
+    });
+
+    const upload = async (file) => {
+      try {
+        // 上传视频
+        const videoId = await ossHelper.upload({
+          file: file, // 直接传入File对象
+          filename: file.name,
+          onProgress: (event) => {
+            // 实时显示上传进度
+            const progressPercentage = (event.uploadedSize / event.totalSize * 100).toFixed(2);
+            progressElement.textContent = `上传进度：${progressPercentage}%`;
+            console.log(`上传进度：${progressPercentage}%`);
+          }
+        });
+
+        // 获取视频 URL
+        const url = await ossHelper.getUrl({ videoId });
+        // 获取视频时长
+        const duration = await ossHelper.getVideoDuration({ videoId });
+
+        console.log('视频 ID:', videoId);
+        console.log('视频 URL:', url);
+        console.log('视频时长:', duration);
+
+        return { videoId, url, duration };
+      } catch (error) {
+        console.error("上传出错", error);
+        progressElement.textContent = `上传失败：${error.message}`;
+        throw error;
+      }
+    };
+
+    videoInput.addEventListener('change', async (event) => {
+      const file = event.target.files[0];
+      if (file) {
+        try {
+          const result = await upload(file);
+          console.log("上传结果", result);
+        } catch (err) {
+          console.error("上传处理错误", err);
+        }
+      }
+    });
+  });
+</script>
+</body>
+</html>
