@@ -48,6 +48,7 @@ export namespace Components {
     interface EmiyaVideo {
         "autoHideControlDelay"?: number;
         "autoplay"?: boolean;
+        "debuggable"?: boolean;
         "getCurrentTime": () => Promise<number>;
         "getDuration": () => Promise<number>;
         "getFullScreen": () => Promise<boolean>;
@@ -247,6 +248,7 @@ declare namespace LocalJSX {
     interface EmiyaVideo {
         "autoHideControlDelay"?: number;
         "autoplay"?: boolean;
+        "debuggable"?: boolean;
         "onCurrentTimeChange"?: (currentTime: number) => any;
         "onDurationChange"?: (duration: number) => any;
         "onFullScreenChange"?: (fullScreen: boolean) => any;

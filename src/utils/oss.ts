@@ -52,6 +52,8 @@ export class OssHelper {
       ((res.data instanceof Blob && res.headers['content-type'] !== 'application/json') || (!(res.data instanceof Blob) && res.data.code === 'OK' && res.data.success))
     ) {
       return res.data instanceof Blob ? (res.data as T) : res.data.data;
+    } else {
+      throw new Error(res.data?.code || res.status.toString());
     }
   }
 
@@ -68,11 +70,26 @@ export class OssHelper {
   }
 
   private async createTask(options: { file: File | Blob; filename?: string }) {
-    return await this.request<{ videoId: string; url: string }>({
-      url: '/admin/createUploadTask',
-      method: 'post',
-      data: { name: options.filename || (options.file as File).name, fileSize: options.file.size },
-    });
+    return await this.request<{ videoId: string; uploadUrls: string[] }>(
+      {
+        url: '/admin/createUploadTask',
+        method: 'post',
+        data: { name: options.filename || (options.file as File).name, fileSize: options.file.size },
+      },
+      {
+        mockEnabled: true,
+        mockData: {
+          videoId: '6cd380a444a74f3abe1b7873ac53d26d',
+          uploadUrls: [
+            'https://vod-origin-xkg8.shoss.xstore.ctyun.cn/6cd380a444a74f3abe1b7873ac53d26d.mp4?uploadId=2~vQW_JGGGx9nxlsELfu0suatHU1MDBza&partNumber=1&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20241208T165833Z&X-Amz-SignedHeaders=host&X-Amz-Expires=86400&X-Amz-Credential=OP2IZ4L763MYVB757HM8%2F20241208%2Fcn-north-1%2Fs3%2Faws4_request&X-Amz-Signature=093bb686538047288569e173731e40744f9a02d1ebb8aaa39d6e6f02d6d3ddc1',
+            'https://vod-origin-xkg8.shoss.xstore.ctyun.cn/6cd380a444a74f3abe1b7873ac53d26d.mp4?uploadId=2~vQW_JGGGx9nxlsELfu0suatHU1MDBza&partNumber=2&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20241208T165833Z&X-Amz-SignedHeaders=host&X-Amz-Expires=86400&X-Amz-Credential=OP2IZ4L763MYVB757HM8%2F20241208%2Fcn-north-1%2Fs3%2Faws4_request&X-Amz-Signature=d4c13f9f9635046bfb56bfd5df1569889c5d8d8745cc71c565a3340cfc1c9b3b',
+            'https://vod-origin-xkg8.shoss.xstore.ctyun.cn/6cd380a444a74f3abe1b7873ac53d26d.mp4?uploadId=2~vQW_JGGGx9nxlsELfu0suatHU1MDBza&partNumber=3&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20241208T165833Z&X-Amz-SignedHeaders=host&X-Amz-Expires=86399&X-Amz-Credential=OP2IZ4L763MYVB757HM8%2F20241208%2Fcn-north-1%2Fs3%2Faws4_request&X-Amz-Signature=d00c1ec26a84a2be6fa1c94f86e7bbd01ffb469ada57395f15e7c5db59010bdb',
+            'https://vod-origin-xkg8.shoss.xstore.ctyun.cn/6cd380a444a74f3abe1b7873ac53d26d.mp4?uploadId=2~vQW_JGGGx9nxlsELfu0suatHU1MDBza&partNumber=4&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20241208T165833Z&X-Amz-SignedHeaders=host&X-Amz-Expires=86399&X-Amz-Credential=OP2IZ4L763MYVB757HM8%2F20241208%2Fcn-north-1%2Fs3%2Faws4_request&X-Amz-Signature=e0f01d73c01cde640e71f4c5c61e33ff51f208b6033b14a2f7ca748085858f66',
+            'https://vod-origin-xkg8.shoss.xstore.ctyun.cn/6cd380a444a74f3abe1b7873ac53d26d.mp4?uploadId=2~vQW_JGGGx9nxlsELfu0suatHU1MDBza&partNumber=5&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20241208T165833Z&X-Amz-SignedHeaders=host&X-Amz-Expires=86399&X-Amz-Credential=OP2IZ4L763MYVB757HM8%2F20241208%2Fcn-north-1%2Fs3%2Faws4_request&X-Amz-Signature=bb5a9d89fd',
+          ],
+        },
+      },
+    );
   }
 
   private async updateTask(options: { partNumber: number; eTag: string; videoId: string }) {
@@ -130,7 +147,7 @@ export class OssHelper {
             const formData = new FormData();
             const chunkFile = options.file.slice(chunk.start, chunk.end);
             formData.append('file', chunkFile);
-            const res = await axios<{ eTag: string }>({ url: taskMeta.url, method: 'post', data: formData, params: { partNum: chunk.partNum } });
+            const res = await axios<{ eTag: string }>({ url: taskMeta.uploadUrls[chunk.partNum - 1], method: 'post', data: formData, params: { partNum: chunk.partNum } });
             if (controller.signal.aborted) throw new Error(`Aborted`);
             await this.updateTask({ videoId: taskMeta.videoId, partNumber: chunk.partNum, eTag: res.data.eTag });
             if (controller.signal.aborted) throw new Error(`Aborted`);
@@ -166,3 +183,5 @@ export class OssHelper {
     return taskMeta.videoId;
   }
 }
+
+(window as any).OssHelper = OssHelper;

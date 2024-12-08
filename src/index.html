@@ -11,14 +11,72 @@
     <script nomodule src="/build/emiya-video.js"></script>
   </head>
   <body style="margin: 0">
+    <input type="file" id="videoInput" accept="video/*" />
+    <div id="uploadProgress"></div>
     //http://playertest.longtailvideo.com/adaptive/bipbop/gear4/prog_index.m3u8 //https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8
     <!--  <emiya-video id="emiya" src="https://vod-transcode-xkg8.shoss.xstore.ctyun.cn/369bd205d1cd4b6bb91ff2bf87367de4/master_signed.m3u8?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20241021T164819Z&X-Amz-SignedHeaders=host&X-Amz-Expires=86399&X-Amz-Credential=OP2IZ4L763MYVB757HM8%2F20241021%2Fcn-north-1%2Fs3%2Faws4_request&X-Amz-Signature=2291ef09e42c82eaba5e9a62f14daf1abf11895c701d2ac9a93863522cfddb49 "></emiya-video>-->
     <emiya-video
+      style="width: 800px; height: 300px"
       watermark="EMIYALEE"
       autoplay="false"
       seekable="true"
       id="emiya"
-      src="https://vod-transcode-xkg8.shoss.xstore.ctyun.cn/b43074088880487ca26fbaee3cbe3307/master_signed.m3u8?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20241208T124918Z&X-Amz-SignedHeaders=host&X-Amz-Expires=86399&X-Amz-Credential=OP2IZ4L763MYVB757HM8%2F20241208%2Fcn-north-1%2Fs3%2Faws4_request&X-Amz-Signature=7e2fcf41ad8d2a3dbeea3834af524428dbc6f5841d312a774322152a21d9891c"
+      src="https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8"
     ></emiya-video>
+    <script type="text/javascript">
+      document.addEventListener('DOMContentLoaded', () => {
+        const videoInput = document.getElementById('videoInput');
+        const progressElement = document.getElementById('uploadProgress');
+
+        const upload = async file => {
+          try {
+            const ossHelper = new OssHelper({
+              apiBaseUrl: 'http://218.78.131.252:9999',
+              chunkSize: 5 * 1024 * 1024, // 5MB
+              concurrency: 4,
+              chunkFailureRetry: 3,
+            });
+            // 上传视频
+            const videoId = await ossHelper.upload({
+              file: file, // 直接传入File对象
+              filename: file.name,
+              onProgress: event => {
+                // 实时显示上传进度
+                const progressPercentage = ((event.uploadedSize / event.totalSize) * 100).toFixed(2);
+                progressElement.textContent = `上传进度：${progressPercentage}%`;
+                console.log(`上传进度：${progressPercentage}%`);
+              },
+            });
+
+            // 获取视频 URL
+            const url = await ossHelper.getUrl({ videoId });
+            // 获取视频时长
+            const duration = await ossHelper.getVideoDuration({ videoId });
+
+            console.log('视频 ID:', videoId);
+            console.log('视频 URL:', url);
+            console.log('视频时长:', duration);
+
+            return { videoId, url, duration };
+          } catch (error) {
+            console.error('上传出错', error);
+            progressElement.textContent = `上传失败：${error.message}`;
+            throw error;
+          }
+        };
+
+        videoInput.addEventListener('change', async event => {
+          const file = event.target.files[0];
+          if (file) {
+            try {
+              const result = await upload(file);
+              console.log('上传结果', result);
+            } catch (err) {
+              console.error('上传处理错误', err);
+            }
+          }
+        });
+      });
+    </script>
   </body>
 </html>

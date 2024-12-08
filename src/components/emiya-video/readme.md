@@ -11,6 +11,7 @@
 | ---------------------- | ------------------------- | ----------- | ----------------------------------------------------------------- | ----------- |
 | `autoHideControlDelay` | `auto-hide-control-delay` |             | `number`                                                          | `6000`      |
 | `autoplay`             | `autoplay`                |             | `boolean`                                                         | `undefined` |
+| `debuggable`           | `debuggable`              |             | `boolean`                                                         | `false`     |
 | `onCurrentTimeChange`  | --                        |             | `(currentTime: number) => any`                                    | `undefined` |
 | `onDurationChange`     | --                        |             | `(duration: number) => any`                                       | `undefined` |
 | `onFullScreenChange`   | --                        |             | `(fullScreen: boolean) => any`                                    | `undefined` |
