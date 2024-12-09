@@ -147,7 +147,7 @@ export class OssHelper {
             const formData = new FormData();
             const chunkFile = options.file.slice(chunk.start, chunk.end);
             formData.append('file', chunkFile);
-            const res = await axios<{ eTag: string }>({ url: taskMeta.uploadUrls[chunk.partNum - 1], method: 'post', data: formData, params: { partNum: chunk.partNum } });
+            const res = await axios<{ eTag: string }>({ url: taskMeta.uploadUrls[chunk.partNum - 1], method: 'put', data: formData, params: { partNum: chunk.partNum } });
             if (controller.signal.aborted) throw new Error(`Aborted`);
             await this.updateTask({ videoId: taskMeta.videoId, partNumber: chunk.partNum, eTag: res.data.eTag });
             if (controller.signal.aborted) throw new Error(`Aborted`);
